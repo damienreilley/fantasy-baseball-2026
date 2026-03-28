@@ -5,89 +5,86 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Money Balls 2026</title>
 <style>
-:root{--bg:#f8f8f6;--card:#ffffff;--border:#e2e1dc;--text:#1a1a1a;--dim:#6b6a65;--accent:#2563eb;--green:#16a34a;--red:#dc2626;--amber:#d97706;--teal:#0d9488}
+:root{--bg:#f5f5f0;--card:#fff;--border:#ddd;--text:#1a1a1a;--dim:#777;--accent:#2563eb;--green:#16a34a;--red:#dc2626;--amber:#d97706;--teal:#0d9488}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);padding:12px;max-width:480px;margin:0 auto}
-h1{font-size:18px;font-weight:600;margin-bottom:4px}
-.sub{font-size:12px;color:var(--dim);margin-bottom:16px}
-.updated{font-size:10px;color:var(--dim);text-align:right;margin-bottom:12px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
-.metric{background:var(--card);border-radius:10px;padding:10px 12px;border:1px solid var(--border)}
-.metric-label{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.5px}
-.metric-val{font-size:22px;font-weight:700;margin-top:2px}
-.g{color:var(--green)}.r{color:var(--red)}.a{color:var(--amber)}.t{color:var(--teal)}.b{color:var(--accent)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);max-width:520px;margin:0 auto;padding:12px}
+h1{font-size:20px;font-weight:700}
+.sub{font-size:12px;color:var(--dim);margin:2px 0 12px}
+.ts{font-size:10px;color:var(--dim);text-align:right;margin-bottom:10px}
+</style>
+<style>
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.m{background:var(--card);border-radius:10px;padding:10px 12px;border:1px solid var(--border)}
+.ml{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.4px}
+.mv{font-size:22px;font-weight:700;margin-top:2px}
+.g{color:var(--green)}.r{color:var(--red)}.a{color:var(--amber)}.b{color:var(--accent)}.t{color:var(--teal)}
+.cut{background:var(--card);border-radius:8px;padding:8px 12px;margin-bottom:12px;border:1px solid var(--border);display:flex;justify-content:space-between;font-size:12px}
+.tabs{display:flex;gap:4px;margin-bottom:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:500;background:var(--card);border:1px solid var(--border);color:var(--dim);cursor:pointer;white-space:nowrap;transition:all .15s}
+.tab.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.pn{display:none}.pn.on{display:block}
+.sec{font-size:13px;font-weight:600;margin:14px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.cd{background:var(--card);border-radius:10px;padding:10px 12px;margin-bottom:8px;border:1px solid var(--border)}
+.rw{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:12px}
+.rw+.rw{border-top:1px solid #eee}
+table{width:100%;border-collapse:collapse;font-size:11px}
+th{text-align:left;padding:4px 5px;color:var(--dim);font-weight:500;font-size:10px;border-bottom:1px solid var(--border)}
+td{padding:4px 5px;border-bottom:1px solid #eee}
+.nm{font-weight:600}
+.cb{background:var(--red);color:#fff;font-size:9px;padding:1px 5px;border-radius:6px;font-weight:600;margin-left:3px}
+.wt{background:var(--amber);color:#fff;font-size:9px;padding:1px 5px;border-radius:6px;font-weight:600;margin-left:3px}
+.pl{display:inline-block;padding:1px 7px;border-radius:8px;font-size:10px;font-weight:600}
+.pl-g{background:#dcfce7;color:var(--green)}.pl-r{background:#fee2e2;color:var(--red)}.pl-a{background:#fef3c7;color:var(--amber)}
 </style>
 </head>
 <body>
 <h1>Money Balls 2026</h1>
 <p class="sub">Hard Balls · ESPN · Matchup 1 vs Wedgie Jackson</p>
-<p class="updated">Updated: Mar 28, 2026 · Chat #2</p>
-<div class="cutoff-bar" style="background:var(--card);border-radius:8px;padding:8px 12px;margin-bottom:12px;border:1px solid var(--border);display:flex;justify-content:space-between;font-size:12px">
-<span>Today's cutoff</span><span style="font-weight:700;color:var(--red)">2:15 PM ET (SAT 3/28)</span>
-</div>
+<p class="ts">Updated: Mar 28, 2026</p>
+<div class="cut"><span>Today's cutoff</span><span style="font-weight:700;color:var(--red)">2:15 PM ET (SAT 3/28)</span></div>
 <div class="grid">
-<div class="metric"><div class="metric-label">Score</div><div class="metric-val g">8-2-2</div></div>
-<div class="metric"><div class="metric-label">Adds left</div><div class="metric-val">11/12</div></div>
-<div class="metric"><div class="metric-label">P CB</div><div class="metric-val a" style="font-size:14px">Kikuchi 4/1</div></div>
-<div class="metric"><div class="metric-label">H CB</div><div class="metric-val" style="font-size:14px;color:var(--dim)">Hicks</div></div>
+<div class="m"><div class="ml">Score</div><div class="mv g">8-2-2</div></div>
+<div class="m"><div class="ml">Adds left</div><div class="mv">11/12</div></div>
+<div class="m"><div class="ml">P CB</div><div class="mv a" style="font-size:14px">Kikuchi → 4/1</div></div>
+<div class="m"><div class="ml">H CB</div><div class="mv" style="font-size:14px;color:var(--dim)">Hicks</div></div>
 </div>
-</body>
-</html>
-<style>
-.section{font-size:13px;font-weight:600;margin:16px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--border)}
-.card{background:var(--card);border-radius:10px;padding:10px 12px;margin-bottom:8px;border:1px solid var(--border)}
-.card-title{font-size:13px;font-weight:600;margin-bottom:6px}
-.row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:12px}
-.row+.row{border-top:1px solid var(--border)}
-.pill{display:inline-block;padding:1px 7px;border-radius:8px;font-size:10px;font-weight:600}
-.pill-g{background:#dcfce7;color:var(--green)}.pill-r{background:#fee2e2;color:var(--red)}
-.pill-a{background:#fef3c7;color:var(--amber)}.pill-b{background:#dbeafe;color:var(--accent)}
-table{width:100%;border-collapse:collapse;font-size:11px}
-th{text-align:left;padding:4px 5px;color:var(--dim);font-weight:500;font-size:10px;border-bottom:1px solid var(--border)}
-td{padding:4px 5px;border-bottom:1px solid var(--border)}
-.nm{font-weight:600}
-.cb-tag{background:var(--red);color:#fff;font-size:9px;padding:1px 5px;border-radius:6px;font-weight:600;margin-left:3px}
-.watch-tag{background:var(--amber);color:#fff;font-size:9px;padding:1px 5px;border-radius:6px;font-weight:600;margin-left:3px}
-.tab-bar{display:flex;gap:4px;margin-bottom:14px;overflow-x:auto;-webkit-overflow-scrolling:touch}
-.tab{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:500;background:var(--card);border:1px solid var(--border);color:var(--dim);cursor:pointer;white-space:nowrap}
-.tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-.panel{display:none}.panel.active{display:block}
-</style>
-<div class="tab-bar">
-<div class="tab active" onclick="showTab('schedule')">Schedule</div>
-<div class="tab" onclick="showTab('roster')">Roster</div>
-<div class="tab" onclick="showTab('streaming')">Stream</div>
-<div class="tab" onclick="showTab('watchlist')">Watch</div>
-<div class="tab" onclick="showTab('emergency')">Backup</div>
+<div class="tabs">
+<div class="tab on" onclick="go('t1')">Schedule</div>
+<div class="tab" onclick="go('t2')">Roster</div>
+<div class="tab" onclick="go('t3')">Stream</div>
+<div class="tab" onclick="go('t4')">Watch</div>
+<div class="tab" onclick="go('t5')">Depth</div>
+<div class="tab" onclick="go('t6')">Matchup</div>
 </div>
-
-<div id="schedule" class="panel active">
-<div class="section">SP starts remaining</div>
-<div class="card">
-<div class="row"><span class="b">SUN 3/29 · 1:35</span><span>Luzardo vs TEX · Lugo @ATL</span></div>
-<div class="row"><span class="b">MON 3/30 · 4:10</span><span>Cabrera vs LAA</span></div>
-<div class="row"><span class="r">WED 4/1 · 12:15</span><span>Peralta @STL · Cameron vs MIN · Kikuchi @CHC<span class="cb-tag">CB</span></span></div>
-<div class="row"><span class="b">THU 4/2 · 2:10</span><span>Ray vs NYM</span></div>
-<div class="row"><span class="b">FRI 4/3 · 1:05</span><span>Sheehan @WSH · King @BOS</span></div>
+<!-- SCHEDULE -->
+<div id="t1" class="pn on">
+<div class="sec">SP starts remaining</div>
+<div class="cd">
+<div class="rw"><span class="b">SUN 3/29 · 1:35</span><span>Luzardo vs TEX · Lugo @ATL</span></div>
+<div class="rw"><span class="b">MON 3/30 · 4:10</span><span>Cabrera vs LAA</span></div>
+<div class="rw"><span class="r">WED 4/1 · 12:15</span><span>Peralta @STL · Cameron vs MIN · Kikuchi @CHC<span class="cb">CB</span></span></div>
+<div class="rw"><span class="b">THU 4/2 · 2:10</span><span>Ray vs NYM</span></div>
+<div class="rw"><span class="b">FRI 4/3 · 1:05</span><span>Sheehan @WSH · King @BOS</span></div>
 </div>
-<div class="section">Daily cutoffs (ET)</div>
-<div class="card">
-<div class="row"><span>SAT 3/28</span><span class="r">2:15 PM</span></div>
-<div class="row"><span>SUN 3/29</span><span>1:35 PM</span></div>
-<div class="row"><span>MON 3/30</span><span class="g">4:10 PM late</span></div>
-<div class="row"><span>TUE 3/31</span><span class="g">6:35 PM very late</span></div>
-<div class="row"><span>WED 4/1</span><span class="r">12:15 PM EARLY</span></div>
-<div class="row"><span>THU 4/2</span><span>2:10 PM (4 games)</span></div>
-<div class="row"><span>FRI 4/3</span><span>1:05 PM</span></div>
-<div class="row"><span>SAT 4/4</span><span>1:10 PM</span></div>
-<div class="row"><span>SUN 4/5</span><span>1:35 PM end</span></div>
+<div class="sec">Daily cutoffs (ET)</div>
+<div class="cd">
+<div class="rw"><span>SAT 3/28</span><span class="r">2:15 PM</span></div>
+<div class="rw"><span>SUN 3/29</span><span>1:35 PM</span></div>
+<div class="rw"><span>MON 3/30</span><span class="g">4:10 PM late</span></div>
+<div class="rw"><span>TUE 3/31</span><span class="g">6:35 PM v.late</span></div>
+<div class="rw"><span>WED 4/1</span><span class="r">12:15 PM EARLY!</span></div>
+<div class="rw"><span>THU 4/2</span><span>2:10 PM (4 games)</span></div>
+<div class="rw"><span>FRI 4/3</span><span>1:05 PM</span></div>
+<div class="rw"><span>SAT 4/4</span><span>1:10 PM</span></div>
+<div class="rw"><span>SUN 4/5</span><span>1:35 PM end</span></div>
 </div>
 </div>
-
-<div id="roster" class="panel">
-<div class="section">Starters</div>
+<!-- ROSTER -->
+<div id="t2" class="pn">
+<div class="sec">Starters</div>
 <table>
-<tr><th>Slot</th><th>Player</th><th>Team</th><th>Stats</th></tr>
+<tr><th>Slot</th><th>Player</th><th>Team</th><th>Early line</th></tr>
 <tr><td>C</td><td class="nm">Goodman</td><td>COL</td><td>2/4 .500</td></tr>
 <tr><td>1B</td><td class="nm">Busch</td><td>CHC</td><td class="g">3/4 .750 HR</td></tr>
 <tr><td>2B</td><td class="nm">Jazz</td><td>NYY</td><td>2/7 .286 SB</td></tr>
@@ -99,92 +96,117 @@ td{padding:4px 5px;border-bottom:1px solid var(--border)}
 <tr><td>UTIL</td><td class="nm">Betts</td><td>LAD</td><td class="g">2/8 4RBI</td></tr>
 <tr><td>UTIL</td><td class="nm">Garcia</td><td>PHI</td><td class="r">0/4 .000</td></tr>
 </table>
-<div class="section">Bench</div>
+<div class="sec">Bench</div>
 <table>
 <tr><td class="nm">Happ</td><td>CHC OF</td><td>1/5 .200</td></tr>
 <tr><td class="nm">Castro</td><td>COL OF/2B/3B</td><td>0/4</td></tr>
-<tr><td class="nm">Hicks<span class="cb-tag">CB</span></td><td>MIA C/1B/DH</td><td>--</td></tr>
+<tr><td class="nm">Hicks<span class="cb">CB</span></td><td>MIA C/1B/DH</td><td>--</td></tr>
 <tr><td class="nm">Smith</td><td>TEX SS/1B/3B</td><td>0/3</td></tr>
 </table>
-<div class="section">Pitchers</div>
+<div class="sec">Pitchers</div>
 <table>
-<tr><th>Pitcher</th><th>First start</th><th>Grade</th></tr>
+<tr><th>Arm</th><th>First start</th><th></th></tr>
 <tr><td class="nm">King (SD)</td><td>5IP 1H 0ER 6K 4BB</td><td class="g">A</td></tr>
 <tr><td class="nm">Ray (SF)</td><td>5.1IP 5H 2ER 4K 0BB</td><td class="b">B</td></tr>
 <tr><td class="nm">Peralta (NYM)</td><td>5IP 6H 4ER 7K 0BB W</td><td class="b">B</td></tr>
 <tr><td class="nm">Sheehan (LAD)</td><td>3.1IP 5H 4ER 6K</td><td class="a">C</td></tr>
-<tr><td class="nm">Kikuchi (LAA)<span class="cb-tag">CB</span></td><td>4.1IP 8H 2ER 3K</td><td class="r">F</td></tr>
+<tr><td class="nm">Kikuchi<span class="cb">CB</span></td><td>4.1IP 8H 2ER 3K</td><td class="r">F</td></tr>
 </table>
 </div>
-
-<div id="streaming" class="panel">
-<div class="section">Streaming targets (26-man verified)</div>
+<!-- STREAMING -->
+<div id="t3" class="pn">
+<div class="sec">Verified targets (26-man ✓, park + team factored)</div>
 <table>
 <tr><th>#</th><th>Pitcher</th><th>K>IP</th><th>ERA</th><th>Team</th><th>Park</th></tr>
-<tr><td>1</td><td class="nm">Cantillo (CLE)</td><td class="g">1.10</td><td>3.86</td><td class="g">Elite</td><td class="g">1.009</td></tr>
+<tr><td>1</td><td class="nm">Cantillo (CLE)<span class="wt">W</span></td><td class="g">1.10</td><td>3.86</td><td class="g">Elite</td><td class="g">1.009</td></tr>
 <tr><td>2</td><td class="nm">Seymour (TB)</td><td class="g">1.03</td><td>3.61</td><td>Avg</td><td class="g">1.000</td></tr>
-<tr><td>3</td><td class="nm">Eflin (BAL)</td><td>0.81</td><td>4.27</td><td class="g">Elite</td><td class="g">1.009</td></tr>
+<tr><td>3</td><td class="nm">Eflin (BAL)<span class="wt">W</span></td><td>0.81</td><td>4.27</td><td class="g">Elite</td><td class="g">1.009</td></tr>
 <tr><td>4</td><td class="nm">Martinez (TB)</td><td>0.77</td><td class="g">3.70</td><td>Avg</td><td class="g">1.000</td></tr>
-<tr><td>5</td><td class="nm">Boyle (TB)</td><td class="g">1.10</td><td>4.05</td><td>Avg</td><td class="g">1.000</td></tr>
+<tr><td>5</td><td class="nm">Boyle (TB)<span class="wt">W</span></td><td class="g">1.10</td><td>4.05</td><td>Avg</td><td class="g">1.000</td></tr>
 <tr><td>6</td><td class="nm">Holmes (ATL)</td><td class="g">1.06</td><td>4.21</td><td class="g">Elite</td><td class="g">0.982</td></tr>
 </table>
-<div class="card" style="margin-top:8px"><div class="card-title">Execution</div>
-<div class="row"><span>1</span><span>Kikuchi starts WED 4/1 → drop after</span></div>
-<div class="row"><span>2</span><span>Add best streamer into freed slot</span></div>
-<div class="row"><span>3</span><span>Target: 2-3 streams this matchup</span></div>
-</div></div>
-
-<div id="watchlist" class="panel">
-<div class="section">SP watchlist (26-man verified)</div>
+<div class="cd" style="margin-top:8px;font-size:12px;line-height:1.6">
+<strong>Plan:</strong> Kikuchi starts Wed 4/1 → collect stats → drop → add best streamer → new CB → repeat. Target 2-3 streams this matchup.
+</div>
+</div>
+<!-- WATCHLIST -->
+<div id="t4" class="pn">
+<div class="sec">SP watchlist (26-man ✓)</div>
 <table>
-<tr><th>Player</th><th>K>IP</th><th>ERA</th><th>Win</th><th>Trigger</th></tr>
-<tr><td class="nm">Cantillo (CLE)</td><td class="g">1.10</td><td>3.86</td><td class="g">Elite</td><td>Today 3/28 @SEA</td></tr>
+<tr><th>Player</th><th>K>IP</th><th>ERA</th><th>Win</th><th>Next</th></tr>
+<tr><td class="nm">Cantillo (CLE)</td><td class="g">1.10</td><td>3.86</td><td class="g">Elite</td><td>Today 3/28 9:40p</td></tr>
 <tr><td class="nm">Seymour (TB)</td><td class="g">1.03</td><td>3.61</td><td>Avg</td><td>Full roster add</td></tr>
-<tr><td class="nm">Eflin (BAL)</td><td>0.81</td><td>4.27</td><td class="g">Elite</td><td>Starts 3/31</td></tr>
-<tr><td class="nm">Martinez (TB)</td><td>0.77</td><td class="g">3.70</td><td>Avg</td><td>DTD → 3/30</td></tr>
+<tr><td class="nm">Eflin (BAL)</td><td>0.81</td><td>4.27</td><td class="g">Elite</td><td>Tue 3/31</td></tr>
+<tr><td class="nm">Martinez (TB)</td><td>0.77</td><td class="g">3.70</td><td>Avg</td><td>DTD → Mon 3/30</td></tr>
 <tr><td class="nm">Boyle (TB)</td><td class="g">1.10</td><td>4.05</td><td>Avg</td><td>Hold rotation</td></tr>
 <tr><td class="nm">Holmes (ATL)</td><td class="g">1.06</td><td>4.21</td><td class="g">Elite</td><td>Strong starts</td></tr>
 </table>
-<div class="section">Minors (callup only)</div>
-<div class="card"><span style="opacity:.6">Garrett (MIA) · <span class="pill pill-r">MINORS</span> · 1.01 K/IP, 1.18 WHIP, 4.6 K/BB</span></div>
+<div class="sec">Minors — callup only</div>
+<div class="cd" style="font-size:11px;opacity:.7">Garrett (MIA) <span class="pl pl-r">MINORS</span> — 1.01 K/IP, 1.18 WHIP, 4.6 K/BB. Watch for callup.</div>
 </div>
-
-<div id="emergency" class="panel">
-<div class="section">Position depth</div>
+<!-- DEPTH -->
+<div id="t5" class="pn">
+<div class="sec">Position depth</div>
 <table>
-<tr><th>Pos</th><th>Starter</th><th>Backup</th><th></th></tr>
-<tr><td>C</td><td>Goodman</td><td>Hicks (CB)</td><td><span class="pill pill-r">thin</span></td></tr>
-<tr><td>1B</td><td>Busch</td><td>Smith, Hicks</td><td><span class="pill pill-g">OK</span></td></tr>
-<tr><td>2B</td><td>Jazz</td><td>Castro</td><td><span class="pill pill-a">thin</span></td></tr>
-<tr><td>3B</td><td>Suarez</td><td>Jazz,Smith,Castro</td><td><span class="pill pill-g">OK</span></td></tr>
-<tr><td>SS</td><td>Turner</td><td>Betts,Smith</td><td><span class="pill pill-g">OK</span></td></tr>
-<tr><td>OF</td><td>Soto/Nimmo/Ward</td><td>Happ,Garcia,Castro</td><td><span class="pill pill-g">deep</span></td></tr>
+<tr><th>Pos</th><th>Starter</th><th>Backup(s)</th><th></th></tr>
+<tr><td>C</td><td>Goodman</td><td>Hicks (CB)</td><td><span class="pl pl-r">1 deep</span></td></tr>
+<tr><td>1B</td><td>Busch</td><td>Smith, Hicks</td><td><span class="pl pl-g">OK</span></td></tr>
+<tr><td>2B</td><td>Jazz</td><td>Castro</td><td><span class="pl pl-a">thin</span></td></tr>
+<tr><td>3B</td><td>Suarez</td><td>Jazz, Smith, Castro</td><td><span class="pl pl-g">OK</span></td></tr>
+<tr><td>SS</td><td>Turner</td><td>Betts, Smith</td><td><span class="pl pl-g">OK</span></td></tr>
+<tr><td>OF</td><td>Soto/Nimmo/Ward</td><td>Happ, Garcia, Castro</td><td><span class="pl pl-g">deep</span></td></tr>
 </table>
-<div class="section">C backup chain (if Hicks dropped + Goodman down)</div>
+<div class="sec">C backup chain (if Hicks dropped)</div>
+<div class="cd" style="font-size:11px;line-height:1.5">Slot opens immediately — waiver is on Hicks, not the slot.</div>
 <table>
-<tr><th>Priority</th><th>Player</th><th>Team</th><th>Own%</th><th>G/AB</th><th>OPS</th></tr>
-<tr><td>1</td><td class="nm">Moreno</td><td>ARI</td><td>35%</td><td>108G/384AB</td><td>.764</td></tr>
-<tr><td>2</td><td class="nm">Dingler</td><td>DET</td><td>13%</td><td>123G/418AB</td><td>.759</td></tr>
-<tr><td>3</td><td class="nm">Teel</td><td>CHW</td><td>12%</td><td>109G/385AB</td><td>.754</td></tr>
+<tr><th>#</th><th>Player</th><th>Team</th><th>Own%</th><th>G</th><th>OPS</th></tr>
+<tr><td>1</td><td class="nm">Moreno</td><td>ARI</td><td>35%</td><td>108</td><td>.764</td></tr>
+<tr><td>2</td><td class="nm">Dingler</td><td>DET</td><td>13%</td><td>123</td><td>.759</td></tr>
+<tr><td>3</td><td class="nm">Teel</td><td>CHW</td><td>12%</td><td>109</td><td>.754</td></tr>
 <tr><td>4</td><td class="nm">Jeffers</td><td>MIN</td><td>8%</td><td>—</td><td>.754</td></tr>
 </table>
-<div class="section">Other emergency FA targets</div>
+<div class="sec">Other emergency FA targets</div>
 <table>
-<tr><th>Pos</th><th>Player</th><th>Team</th><th>Own%</th><th>OPS</th></tr>
-<tr><td>2B</td><td class="nm">Garcia Jr.</td><td>WSH</td><td>31%</td><td>.730</td></tr>
-<tr><td>2B</td><td class="nm">India</td><td>KC</td><td>22%</td><td>.727</td></tr>
-<tr><td>1B</td><td class="nm">Steer</td><td>CIN</td><td>11%</td><td>.745</td></tr>
-<tr><td>OF</td><td class="nm">Cowser</td><td>BAL</td><td>7%</td><td>.720</td></tr>
-<tr><td>UTIL</td><td class="nm">Ozuna</td><td>PIT</td><td>18%</td><td>.800</td></tr>
+<tr><th>Pos</th><th>Player</th><th>Team</th><th>%</th><th>OPS</th><th>Key</th></tr>
+<tr><td>2B</td><td class="nm">Garcia Jr.</td><td>WSH</td><td>31</td><td>.730</td><td>16HR 16SB</td></tr>
+<tr><td>2B</td><td class="nm">India</td><td>KC</td><td>22</td><td>.727</td><td>Multi 2B/3B/LF</td></tr>
+<tr><td>1B</td><td class="nm">Steer</td><td>CIN</td><td>11</td><td>.745</td><td>Multi 1B/3B/LF</td></tr>
+<tr><td>OF</td><td class="nm">Cowser</td><td>BAL</td><td>7</td><td>.720</td><td>22HR 23SB</td></tr>
+<tr><td>DH</td><td class="nm">Ozuna</td><td>PIT</td><td>18</td><td>.800</td><td>Best bat in FA</td></tr>
 </table>
+</div>
+<!-- MATCHUP -->
+<div id="t6" class="pn">
+<div class="sec">Category prediction vs Wedgie Jackson</div>
+<table>
+<tr><th>Cat</th><th>Edge</th><th>Why</th></tr>
+<tr><td class="nm">R</td><td class="a">Even</td><td style="font-size:10px">His Ohtani 131R but we're deeper</td></tr>
+<tr><td class="nm">HR</td><td class="g">Us</td><td style="font-size:10px">5 guys proj 30+ HR</td></tr>
+<tr><td class="nm">RBI</td><td class="a">Even</td><td style="font-size:10px">Suarez 119 leads both rosters</td></tr>
+<tr><td class="nm">SB</td><td class="r">Him</td><td style="font-size:10px">Marsee 41, Scott 39 SB</td></tr>
+<tr><td class="nm">AVG</td><td class="r">Him</td><td style="font-size:10px">Wilson .302, Alvarez .296, Ohtani .287</td></tr>
+<tr><td class="nm">OPS</td><td class="r">Him</td><td style="font-size:10px">Ohtani .998 + Alvarez .933</td></tr>
+<tr><td class="nm">K</td><td class="g">Us ★</td><td style="font-size:10px">5 of his SPs on IL. 2x his starts.</td></tr>
+<tr><td class="nm">W</td><td class="g">Us</td><td style="font-size:10px">Volume + strong team environments</td></tr>
+<tr><td class="nm">L↓</td><td class="a">Even</td><td style="font-size:10px">Volume = more L risk too</td></tr>
+<tr><td class="nm">SV↓</td><td class="r">Him</td><td style="font-size:10px">We punt. He has Iglesias (31 SV)</td></tr>
+<tr><td class="nm">ERA↓</td><td class="g">Us</td><td style="font-size:10px">His healthy SPs all 4.00+ ERA</td></tr>
+<tr><td class="nm">WHIP↓</td><td class="g">Us</td><td style="font-size:10px">Wheeler (1.03) on IL. Active arms 1.28+</td></tr>
+</table>
+<div class="cd" style="margin-top:8px;font-size:12px;line-height:1.6">
+<strong>Projected: 7-5 or 8-4 win.</strong> We take HR, K, W, ERA, WHIP + R or RBI. He takes SV, AVG, OPS, SB. His pitching is decimated — volume streaming is the correct mode.
+</div>
+<div class="sec">His IL damage (5 pitchers down)</div>
+<div class="cd" style="font-size:11px;line-height:1.5;color:var(--dim)">
+Wheeler (PHI) 15-day · Pepiot (TB) 15-day · Lodolo (CIN) 15-day · Berrios (TOR) 15-day · Steele (CHC) 60-day<br>
+Active arms: Mize, Javier, Keller, Peterson + Bibee (DTD)
+</div>
 </div>
 
 <script>
-function showTab(id){
-document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-document.querySelector('[onclick="showTab(\''+id+'\')"]').classList.add('active');
+function go(id){
+document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('on',t.getAttribute('onclick')==="go('"+id+"')"));
+document.querySelectorAll('.pn').forEach(p=>p.classList.toggle('on',p.id===id));
 }
 </script>
 </body></html>
