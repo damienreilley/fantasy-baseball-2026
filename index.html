@@ -53,10 +53,12 @@ td{padding:4px 5px;border-bottom:1px solid #eee}
 <div class="tabs">
 <div class="tab on" onclick="go('t1')">Schedule</div>
 <div class="tab" onclick="go('t2')">Roster</div>
+<div class="tab" onclick="go('t7')">Batters</div>
 <div class="tab" onclick="go('t3')">Stream</div>
 <div class="tab" onclick="go('t4')">Watch</div>
 <div class="tab" onclick="go('t5')">Depth</div>
 <div class="tab" onclick="go('t6')">Matchup</div>
+<div class="tab" onclick="go('t8')">Live</div>
 </div>
 <!-- SCHEDULE -->
 <div id="t1" class="pn on">
@@ -222,10 +224,92 @@ Active arms: Mize, Javier, Keller, Peterson + Bibee (DTD)
 </div>
 </div>
 
+<!-- BATTERS -->
+<div id="t7" class="pn">
+<div class="sec">Today's lineup matchups (SAT 3/28)</div>
+<table>
+<tr><th>Slot</th><th>Hitter</th><th>Opp pitcher</th><th>Platoon</th><th>Park</th><th>Note</th></tr>
+<tr><td>C</td><td class="nm">Goodman (R)</td><td>Perez RHP (MIA)</td><td>R vs R</td><td>1.058</td><td>Neutral</td></tr>
+<tr><td>1B</td><td class="nm">Busch (L)</td><td>Mikolas RHP (WSH)</td><td class="g">L vs R</td><td>0.918</td><td class="g">Wrigley pitcher-friendly</td></tr>
+<tr><td>2B</td><td class="nm">Jazz (L)</td><td>Mahle RHP (SF)</td><td class="g">L vs R</td><td>0.912</td><td>Oracle suppresses runs</td></tr>
+<tr><td>3B</td><td class="nm">Suarez (R)</td><td>Gray RHP (BOS)</td><td>R vs R</td><td>1.039</td><td>GABP hitter-friendly</td></tr>
+<tr><td>SS</td><td class="nm">Turner (R)</td><td>Latz LHP (TEX)</td><td class="g">R vs L</td><td>1.039</td><td class="g">Good matchup + park</td></tr>
+<tr><td>OF</td><td class="nm">Soto (L)</td><td>Keller RHP (PIT)</td><td class="g">L vs R</td><td>0.964</td><td>Citi neutral</td></tr>
+<tr><td>OF</td><td class="nm">Nimmo (L)</td><td>Nola RHP (PHI)</td><td class="g">L vs R</td><td>1.039</td><td>CBP hitter-friendly</td></tr>
+<tr><td>OF</td><td class="nm">Ward (R)</td><td>Bradley RHP (MIN)</td><td>R vs R</td><td>0.963</td><td>Camden pitcher-lean</td></tr>
+<tr><td>UTIL</td><td class="nm">Betts (R)</td><td>E.Rod LHP (ARI)</td><td class="g">R vs L</td><td>0.975</td><td class="g">Dodger Stadium + platoon</td></tr>
+<tr><td>UTIL</td><td class="nm">Garcia (R)</td><td>Latz LHP (TEX)</td><td class="g">R vs L</td><td>1.039</td><td class="g">R vs L in hitter park</td></tr>
+</table>
+<div class="cd" style="font-size:11px;line-height:1.6;margin-top:8px">
+<strong>Start/sit:</strong> No changes today. All starters have games. Garcia R vs Latz L is a favorable platoon — keep him in. Ward is the weakest matchup (R vs R in pitcher park) but bench options aren't better.
+</div>
+<div class="sec">Bench hitters</div>
+<table>
+<tr><th>Player</th><th>Pos</th><th>Opp</th><th>Platoon</th><th>When to start</th></tr>
+<tr><td class="nm">Happ (L)</td><td>CHC OF</td><td>vs Mikolas R</td><td class="g">L vs R</td><td>Start over Ward or Garcia when they face RHP in pitcher parks</td></tr>
+<tr><td class="nm">Castro (S)</td><td>COL OF/2B/3B</td><td>@MIA Perez R</td><td>—</td><td>Switch-hitter flex. Use for multi-pos coverage.</td></tr>
+<tr><td class="nm">Smith (L)</td><td>TEX SS/1B/3B</td><td>@PHI Nola R</td><td class="g">L vs R</td><td>Start if Turner/Suarez sit or vs tough RHP</td></tr>
+<tr><td class="nm">Hicks (R)<span class="cb">CB</span></td><td>MIA C/1B/DH</td><td>vs COL</td><td>—</td><td>Not playing. CB — drop when needed.</td></tr>
+</table>
+<div class="sec">Light-day hitter streaming (Mon/Thu)</div>
+<div class="cd" style="font-size:11px;line-height:1.6">
+<strong>MON 3/30</strong> — 15 games, 4:10 PM cutoff. Full schedule, no streaming needed.<br>
+<strong>THU 4/2</strong> — Only 4 games. If any starters are off, consider:<br>
+- Drop Hicks → add a hitter with a game that day → drop next day for SP stream<br>
+- Or use the day to make a non-streaming roster move<br>
+Target hitter streamers by checking who plays Thu and has favorable matchups (TBD as probables fill in).
+</div>
+</div>
+
+<!-- LIVE STATUS -->
+<div id="t8" class="pn">
+<div class="sec">Live game status</div>
+<div id="live-games" class="cd" style="font-size:12px">Loading live data...</div>
+<div style="font-size:10px;color:var(--dim);margin-top:6px">Auto-refreshes from MLB Stats API. No auth needed. Shows our players' games only.</div>
+</div>
+
 <script>
 function go(id){
 document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('on',t.getAttribute('onclick')==="go('"+id+"')"));
 document.querySelectorAll('.pn').forEach(p=>p.classList.toggle('on',p.id===id));
 }
+async function loadLive(){
+const our={
+'Goodman':'Colorado Rockies','Busch':'Chicago Cubs','Chisholm':'New York Yankees',
+'Suarez':'Cincinnati Reds','Turner':'Philadelphia Phillies','Soto':'New York Mets',
+'Nimmo':'Texas Rangers','Ward':'Baltimore Orioles','Betts':'Los Angeles Dodgers',
+'Garcia':'Philadelphia Phillies','Happ':'Chicago Cubs','Castro':'Colorado Rockies',
+'Smith':'Texas Rangers','Peralta':'New York Mets','Luzardo':'Philadelphia Phillies',
+'King':'San Diego Padres','Ray':'San Francisco Giants','Sheehan':'Los Angeles Dodgers',
+'Kikuchi':'Los Angeles Angels','Lugo':'Kansas City Royals','Cameron':'Kansas City Royals',
+'Cabrera':'Chicago Cubs'
+};
+try{
+const today=new Date().toISOString().split('T')[0];
+const r=await fetch(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=${today}&hydrate=linescore`);
+const d=await r.json();
+const el=document.getElementById('live-games');
+if(!d.dates||!d.dates.length){el.innerHTML='No games today.';return;}
+let html='';
+const games=d.dates[0].games;
+for(const g of games){
+const away=g.teams.away.team.name;
+const home=g.teams.home.team.name;
+const ourPlayers=Object.entries(our).filter(([n,t])=>t===away||t===home).map(([n])=>n);
+if(!ourPlayers.length)continue;
+const status=g.status.detailedState;
+const ls=g.linescore||{};
+const inning=ls.currentInningOrdinal||'';
+const aScore=g.teams.away.score||0;
+const hScore=g.teams.home.score||0;
+const isLive=status==='In Progress';
+const isDone=status==='Final';
+const dot=isLive?'<span style="color:var(--green);font-weight:700">LIVE</span>':isDone?'<span style="color:var(--dim)">Final</span>':'<span style="color:var(--amber)">'+status+'</span>';
+html+=`<div class="rw"><span>${dot} ${away} ${aScore} @ ${home} ${hScore} ${inning}</span><span style="color:var(--accent)">${ourPlayers.join(', ')}</span></div>`;
+}
+el.innerHTML=html||'No games with our players right now.';
+}catch(e){document.getElementById('live-games').innerHTML='Could not load live data.';}
+}
+loadLive();setInterval(loadLive,60000);
 </script>
 </body></html>
