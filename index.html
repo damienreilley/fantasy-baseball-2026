@@ -4,312 +4,392 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Money Balls 2026</title>
+<meta name="description" content="Money Balls Fantasy Baseball Dashboard - Hard Balls League">
 <style>
-:root{--bg:#f5f5f0;--card:#fff;--border:#ddd;--text:#1a1a1a;--dim:#777;--accent:#2563eb;--green:#16a34a;--red:#dc2626;--amber:#d97706;--teal:#0d9488}
+:root{--bg:#f5f5f0;--card:#fff;--border:#e0dfda;--text:#1a1a1a;--dim:#888;--sub:#666;--accent:#2563eb;--green:#16a34a;--red:#dc2626;--amber:#d97706;--teal:#0d9488;--live:#16a34a}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);max-width:1200px;margin:0 auto;padding:12px 24px}
-@media(min-width:768px){.grid{grid-template-columns:repeat(4,1fr)!important} .tabs{gap:6px} .tab{padding:8px 20px;font-size:13px} .cd{padding:14px 18px} table{font-size:12px} th,td{padding:6px 8px}}
-h1{font-size:20px;font-weight:700}
-.sub{font-size:12px;color:var(--dim);margin:2px 0 12px}
-.ts{font-size:10px;color:var(--dim);text-align:right;margin-bottom:10px}
-</style>
-<style>
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-.m{background:var(--card);border-radius:10px;padding:10px 12px;border:1px solid var(--border)}
-.ml{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.4px}
-.mv{font-size:22px;font-weight:700;margin-top:2px}
-.g{color:var(--green)}.r{color:var(--red)}.a{color:var(--amber)}.b{color:var(--accent)}.t{color:var(--teal)}
-.cut{background:var(--card);border-radius:8px;padding:8px 12px;margin-bottom:12px;border:1px solid var(--border);display:flex;justify-content:space-between;font-size:12px}
-.tabs{display:flex;gap:4px;margin-bottom:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.tabs::-webkit-scrollbar{display:none}
-.tab{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:500;background:var(--card);border:1px solid var(--border);color:var(--dim);cursor:pointer;white-space:nowrap;transition:all .15s}
-.tab.on{background:var(--accent);color:#fff;border-color:var(--accent)}
-.pn{display:none}.pn.on{display:block}
-.sec{font-size:13px;font-weight:600;margin:14px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--border)}
-.cd{background:var(--card);border-radius:10px;padding:10px 12px;margin-bottom:8px;border:1px solid var(--border)}
-.rw{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:12px}
-.rw+.rw{border-top:1px solid #eee}
-table{width:100%;border-collapse:collapse;font-size:11px}
-th{text-align:left;padding:4px 5px;color:var(--dim);font-weight:500;font-size:10px;border-bottom:1px solid var(--border)}
-td{padding:4px 5px;border-bottom:1px solid #eee}
-.nm{font-weight:600}
-.cb{background:var(--red);color:#fff;font-size:9px;padding:1px 5px;border-radius:6px;font-weight:600;margin-left:3px}
-.wt{background:var(--amber);color:#fff;font-size:9px;padding:1px 5px;border-radius:6px;font-weight:600;margin-left:3px}
-.pl{display:inline-block;padding:1px 7px;border-radius:8px;font-size:10px;font-weight:600}
-.pl-g{background:#dcfce7;color:var(--green)}.pl-r{background:#fee2e2;color:var(--red)}.pl-a{background:#fef3c7;color:var(--amber)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:1100px;margin:0 auto;padding:10px 16px}
+@media(min-width:768px){.wrap{padding:16px 24px}}
 </style>
 </head>
 <body>
-<h1>Money Balls 2026</h1>
-<p class="sub">Hard Balls · ESPN · Matchup 1 vs Wedgie Jackson</p>
-<p class="ts">Updated: Mar 28, 2026</p>
-<div class="cut"><span>Today's cutoff</span><span style="font-weight:700;color:var(--red)">2:15 PM ET (SAT 3/28)</span></div>
-<div class="grid">
-<div class="m"><div class="ml">Score</div><div class="mv g">8-2-2</div></div>
-<div class="m"><div class="ml">Adds left</div><div class="mv">11/12</div></div>
-<div class="m"><div class="ml">P CB</div><div class="mv a" style="font-size:14px">Kikuchi → 4/1</div></div>
-<div class="m"><div class="ml">H CB</div><div class="mv" style="font-size:14px;color:var(--dim)">Hicks</div></div>
+<div class="wrap">
+<style>
+header{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+h1{font-size:20px;font-weight:700;letter-spacing:-.3px}
+.meta{font-size:11px;color:var(--dim)}
+.top-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 14px;flex:1;min-width:100px}
+.kpi-label{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.4px}
+.kpi-val{font-size:20px;font-weight:700;margin-top:1px}
+.g{color:var(--green)}.r{color:var(--red)}.a{color:var(--amber)}.b{color:var(--accent)}
+.cutoff-pill{background:var(--red);color:#fff;font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;white-space:nowrap}
+.nav{display:flex;gap:4px;margin-bottom:14px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.nav::-webkit-scrollbar{display:none}
+.nav-btn{padding:7px 16px;border-radius:8px;font-size:12px;font-weight:500;background:var(--card);border:1px solid var(--border);color:var(--dim);cursor:pointer;white-space:nowrap;transition:all .15s}
+.nav-btn.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.pane{display:none}.pane.on{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:10px}
+.section-title{font-size:13px;font-weight:600;margin:16px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:12px}
+.row+.row{border-top:1px solid #eee}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;padding:5px 6px;color:var(--dim);font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.3px;border-bottom:1.5px solid var(--border)}
+td{padding:5px 6px;border-bottom:1px solid #eee;vertical-align:top}
+.nm{font-weight:600}
+.tag{display:inline-block;padding:1px 6px;border-radius:6px;font-size:9px;font-weight:600;margin-left:3px}
+.tag-cb{background:var(--red);color:#fff}
+.tag-w{background:var(--amber);color:#fff}
+.tag-live{background:var(--green);color:#fff}
+.tag-off{background:#eee;color:#999}
+.tag-sp{background:#e0e7ff;color:var(--accent)}
+.pill{display:inline-block;padding:2px 8px;border-radius:8px;font-size:10px;font-weight:600}
+.pill-g{background:#dcfce7;color:var(--green)}
+.pill-r{background:#fee2e2;color:var(--red)}
+.pill-a{background:#fef3c7;color:var(--amber)}
+.pill-b{background:#dbeafe;color:var(--accent)}
+.dim{color:var(--dim)}
+.off-row{opacity:.45}
+.alert{background:#fef3c7;border:1px solid #fde68a;border-radius:8px;padding:8px 12px;font-size:12px;margin-bottom:10px;color:#92400e}
+@media(min-width:768px){.top-bar{flex-wrap:nowrap} table{font-size:13px} th,td{padding:6px 8px}}
+</style>
+<header>
+<div><h1>Money Balls 2026</h1><span class="meta">Hard Balls · ESPN · Matchup 1 vs Wedgie Jackson</span></div>
+<div><span class="cutoff-pill" id="cutoff-display">Loading cutoff...</span> <span class="meta" id="update-ts"></span></div>
+</header>
+<div class="top-bar">
+<div class="kpi"><div class="kpi-label">Score</div><div class="kpi-val g">8-2-2</div></div>
+<div class="kpi"><div class="kpi-label">Adds left</div><div class="kpi-val">11 / 12</div></div>
+<div class="kpi"><div class="kpi-label">Pitcher CB</div><div class="kpi-val a" style="font-size:13px">Kikuchi → 4/1</div></div>
+<div class="kpi"><div class="kpi-label">Hitter CB</div><div class="kpi-val dim" style="font-size:13px">Hicks</div></div>
 </div>
-<div class="tabs">
-<div class="tab on" onclick="go('t1')">Schedule</div>
-<div class="tab" onclick="go('t2')">Roster</div>
-<div class="tab" onclick="go('t7')">Batters</div>
-<div class="tab" onclick="go('t3')">Stream</div>
-<div class="tab" onclick="go('t4')">Watch</div>
-<div class="tab" onclick="go('t5')">Depth</div>
-<div class="tab" onclick="go('t6')">Matchup</div>
-<div class="tab" onclick="go('t8')">Live</div>
+<div class="nav">
+<div class="nav-btn on" onclick="tab('today')">Today</div>
+<div class="nav-btn" onclick="tab('week')">Week</div>
+<div class="nav-btn" onclick="tab('stream')">Stream</div>
+<div class="nav-btn" onclick="tab('matchup')">Matchup</div>
+<div class="nav-btn" onclick="tab('depth')">Depth</div>
+<div class="nav-btn" onclick="tab('alerts')">Alerts</div>
 </div>
-<!-- SCHEDULE -->
-<div id="t1" class="pn on">
-<div class="sec">SP starts remaining</div>
-<div class="cd">
-<div class="rw"><span class="b">SUN 3/29 · 1:35</span><span>Luzardo vs TEX · Lugo @ATL</span></div>
-<div class="rw"><span class="b">MON 3/30 · 4:10</span><span>Cabrera vs LAA</span></div>
-<div class="rw"><span class="r">WED 4/1 · 12:15</span><span>Peralta @STL · Cameron vs MIN · Kikuchi @CHC<span class="cb">CB</span></span></div>
-<div class="rw"><span class="b">THU 4/2 · 2:10</span><span>Ray vs NYM</span></div>
-<div class="rw"><span class="b">FRI 4/3 · 1:05</span><span>Sheehan @WSH · King @BOS</span></div>
-</div>
-<div class="sec">Daily cutoffs (ET)</div>
-<div class="cd">
-<div class="rw"><span>SAT 3/28</span><span class="r">2:15 PM</span></div>
-<div class="rw"><span>SUN 3/29</span><span>1:35 PM</span></div>
-<div class="rw"><span>MON 3/30</span><span class="g">4:10 PM late</span></div>
-<div class="rw"><span>TUE 3/31</span><span class="g">6:35 PM v.late</span></div>
-<div class="rw"><span>WED 4/1</span><span class="r">12:15 PM EARLY!</span></div>
-<div class="rw"><span>THU 4/2</span><span>2:10 PM (4 games)</span></div>
-<div class="rw"><span>FRI 4/3</span><span>1:05 PM</span></div>
-<div class="rw"><span>SAT 4/4</span><span>1:10 PM</span></div>
-<div class="rw"><span>SUN 4/5</span><span>1:35 PM end</span></div>
-</div>
-</div>
-<!-- ROSTER -->
-<div id="t2" class="pn">
-<div class="sec">Starters</div>
+<!-- TODAY PANE -->
+<div id="today" class="pane on">
+<div id="today-alerts"></div>
+<div class="section-title">Lineup — <span id="today-date"></span></div>
+<div class="card" id="today-roster">
 <table>
-<tr><th>Slot</th><th>Player</th><th>Team</th><th>Early line</th></tr>
-<tr><td>C</td><td class="nm">Goodman</td><td>COL</td><td>2/4 .500</td></tr>
-<tr><td>1B</td><td class="nm">Busch</td><td>CHC</td><td class="g">3/4 .750 HR</td></tr>
-<tr><td>2B</td><td class="nm">Jazz</td><td>NYY</td><td>2/7 .286 SB</td></tr>
-<tr><td>3B</td><td class="nm">Suarez</td><td>CIN</td><td class="r">0/4 .000</td></tr>
-<tr><td>SS</td><td class="nm">Turner</td><td>PHI</td><td class="g">2/4 .500</td></tr>
-<tr><td>OF</td><td class="nm">Soto</td><td>NYM</td><td>2/4 .500</td></tr>
-<tr><td>OF</td><td class="nm">Nimmo</td><td>TEX</td><td>0/3 .250</td></tr>
-<tr><td>OF</td><td class="nm">Ward</td><td>BAL</td><td class="r">0/4 .000</td></tr>
-<tr><td>UTIL</td><td class="nm">Betts</td><td>LAD</td><td class="g">2/8 4RBI</td></tr>
-<tr><td>UTIL</td><td class="nm">Garcia</td><td>PHI</td><td class="r">0/4 .000</td></tr>
-</table>
-<div class="sec">Bench</div>
-<table>
-<tr><td class="nm">Happ</td><td>CHC OF</td><td>1/5 .200</td></tr>
-<tr><td class="nm">Castro</td><td>COL OF/2B/3B</td><td>0/4</td></tr>
-<tr><td class="nm">Hicks<span class="cb">CB</span></td><td>MIA C/1B/DH</td><td>--</td></tr>
-<tr><td class="nm">Smith</td><td>TEX SS/1B/3B</td><td>0/3</td></tr>
-</table>
-<div class="sec">Pitchers</div>
-<table>
-<tr><th>Arm</th><th>First start</th><th></th></tr>
-<tr><td class="nm">King (SD)</td><td>5IP 1H 0ER 6K 4BB</td><td class="g">A</td></tr>
-<tr><td class="nm">Ray (SF)</td><td>5.1IP 5H 2ER 4K 0BB</td><td class="b">B</td></tr>
-<tr><td class="nm">Peralta (NYM)</td><td>5IP 6H 4ER 7K 0BB W</td><td class="b">B</td></tr>
-<tr><td class="nm">Sheehan (LAD)</td><td>3.1IP 5H 4ER 6K</td><td class="a">C</td></tr>
-<tr><td class="nm">Kikuchi<span class="cb">CB</span></td><td>4.1IP 8H 2ER 3K</td><td class="r">F</td></tr>
+<thead><tr><th>Slot</th><th>Player</th><th>Game</th><th>Time</th><th>Status</th><th>Today's line</th></tr></thead>
+<tbody id="roster-body"></tbody>
 </table>
 </div>
-<!-- STREAMING -->
-<div id="t3" class="pn">
-<div class="sec">7-day streaming plan (26-man ✓, park+team scored)</div>
-<div style="font-size:10px;color:var(--dim);margin-bottom:6px">All free agents in our league. Park = FantasyPros run factor.</div>
-<div class="cd"><div style="font-size:11px;font-weight:600;margin-bottom:4px">SAT 3/28 <span style="color:var(--red)">cut 2:15p</span></div>
-<div class="rw"><span class="nm">1. Cantillo</span><span>CLE@SEA · K>IP 1.10 · T-Mobile 0.816 · Elite team</span></div>
-<div class="rw"><span class="nm">2. Boyle</span><span>TB@STL · K>IP 1.10 · Busch 0.979 · walks risk</span></div>
-<div class="rw"><span class="nm">3. Patrick</span><span>MIL vs CWS · 0.99 · AmFam 0.968 · CWS worst opp</span></div></div>
-<div class="cd"><div style="font-size:11px;font-weight:600;margin-bottom:4px">SUN 3/29 <span style="color:var(--red)">cut 1:35p</span> <span style="color:var(--accent)">Luzardo+Lugo start</span></div>
-<div class="rw"><span class="nm">1. Holmes</span><span>ATL vs KC · K>IP 1.06 · Truist 0.982 · Elite team</span></div>
-<div class="rw"><span class="nm">2. Cecconi</span><span>CLE@SEA · 0.82 · T-Mobile 0.816 · Elite team</span></div>
-<div class="rw"><span class="nm">3. Sproat</span><span>MIL vs CWS · 0.83 · AmFam 0.968 · CWS weak</span></div></div>
-<div class="cd"><div style="font-size:11px;font-weight:600;margin-bottom:4px">MON 3/30 <span style="color:var(--green)">cut 4:10p late</span> <span style="color:var(--accent)">Cabrera starts</span></div>
-<div class="rw"><span class="nm">1. Bassitt</span><span>BAL vs TEX · 0.90 · Camden 0.963 · Elite team</span></div>
-<div class="rw"><span class="nm">2. Weathers</span><span>NYY@SEA · 0.95 · T-Mobile 0.816 · Elite team</span></div>
-<div class="rw"><span class="nm">3. Sugano</span><span>TOR vs COL · 0.93 · Rogers 0.990 · COL away</span></div></div>
-<div class="cd"><div style="font-size:11px;font-weight:600;margin-bottom:4px">TUE 3/31 <span style="color:var(--green)">cut 6:35p v.late</span> <span style="color:var(--amber)">Eflin watchlist</span></div>
-<div class="rw"><span class="nm">1. Eflin<span class="wt">W</span></span><span>BAL vs TEX · 4.8 K/BB · Camden 0.963 · Elite</span></div>
-<div class="rw"><span class="nm">2. Bello</span><span>BOS@HOU · 0.83 · Daikin 0.976 · Elite team</span></div>
-<div class="rw"><span class="nm">3. Scherzer</span><span>TOR vs COL · 0.95 · Rogers 0.990 · age risk</span></div></div>
-<div class="cd" style="border-left:3px solid var(--red);border-radius:0"><div style="font-size:11px;font-weight:600;margin-bottom:4px">WED 4/1 <span style="color:var(--red)">cut 12:15p EARLY!</span> <span style="color:var(--red)">Kikuchi CB drop day</span></div>
-<div class="rw"><span class="nm">1. Liberatore</span><span>STL vs NYM · 0.78 · Busch 0.979 · 1st add post-CB</span></div>
-<div class="rw"><span class="nm">2. Alcantara</span><span>MIA vs CWS · SP72 · CWS worst opp · MIA bad team</span></div>
-<div class="rw"><span class="nm">3. Severino</span><span>OAK@ATL · 0.76 · Truist 0.982 · OAK bad team</span></div></div>
-<div class="cd"><div style="font-size:11px;font-weight:600;margin-bottom:4px">THU 4/2 <span style="color:var(--dim)">4 games only — hitter stream day?</span></div>
-<div style="font-size:11px;color:var(--dim)">Ray vs NYM is our only start. Very thin streaming. Consider light-day hitter add.</div></div>
-<div class="cd"><div style="font-size:11px;font-weight:600;margin-bottom:4px">FRI 4/3 <span style="color:var(--accent)">Sheehan+King start</span></div>
-<div class="rw"><span class="nm">1. Cantillo</span><span>CLE vs CHC · K>IP 1.10 · Prog 1.009 · 2nd start</span></div>
-<div class="rw"><span class="nm">2. Patrick</span><span>MIL@KC · 0.99 · Kauffman 1.064 · hitter park</span></div>
-<div style="font-size:11px;color:var(--dim)">More probables confirm mid-week.</div></div>
-<div class="cd" style="font-size:11px;line-height:1.6">
-<strong>CB cycle:</strong> Kikuchi starts 4/1 → locks → drop → add streamer → streamer starts → locks → drop → add next → repeat. Budget: 11 of 12 adds left (Matchup 1 extended week — normal weeks are 7). Reserve 1 add for emergency C if Hicks dropped.
-</div>
-</div>
-<!-- WATCHLIST -->
-<div id="t4" class="pn">
-<div class="sec">SP watchlist (26-man ✓)</div>
+<div class="section-title">Pitchers</div>
+<div class="card">
 <table>
-<tr><th>Player</th><th>K>IP</th><th>ERA</th><th>Win</th><th>Next</th></tr>
-<tr><td class="nm">Cantillo (CLE)</td><td class="g">1.10</td><td>3.86</td><td class="g">Elite</td><td>Today 3/28 9:40p</td></tr>
-<tr><td class="nm">Seymour (TB)</td><td class="g">1.03</td><td>3.61</td><td>Avg</td><td>Full roster add</td></tr>
-<tr><td class="nm">Eflin (BAL)</td><td>0.81</td><td>4.27</td><td class="g">Elite</td><td>Tue 3/31</td></tr>
-<tr><td class="nm">Martinez (TB)</td><td>0.77</td><td class="g">3.70</td><td>Avg</td><td>DTD → Mon 3/30</td></tr>
-<tr><td class="nm">Boyle (TB)</td><td class="g">1.10</td><td>4.05</td><td>Avg</td><td>Hold rotation</td></tr>
-<tr><td class="nm">Holmes (ATL)</td><td class="g">1.06</td><td>4.21</td><td class="g">Elite</td><td>Strong starts</td></tr>
+<thead><tr><th>Slot</th><th>Pitcher</th><th>Game</th><th>Time</th><th>Status</th><th>Line</th></tr></thead>
+<tbody id="pitcher-body"></tbody>
 </table>
-<div class="sec">Minors — callup only</div>
-<div class="cd" style="font-size:11px;opacity:.7">Garrett (MIA) <span class="pl pl-r">MINORS</span> — 1.01 K/IP, 1.18 WHIP, 4.6 K/BB. Watch for callup.</div>
 </div>
-<!-- DEPTH -->
-<div id="t5" class="pn">
-<div class="sec">Position depth</div>
-<table>
-<tr><th>Pos</th><th>Starter</th><th>Backup(s)</th><th></th></tr>
-<tr><td>C</td><td>Goodman</td><td>Hicks (CB)</td><td><span class="pl pl-r">1 deep</span></td></tr>
-<tr><td>1B</td><td>Busch</td><td>Smith, Hicks</td><td><span class="pl pl-g">OK</span></td></tr>
-<tr><td>2B</td><td>Jazz</td><td>Castro</td><td><span class="pl pl-a">thin</span></td></tr>
-<tr><td>3B</td><td>Suarez</td><td>Jazz, Smith, Castro</td><td><span class="pl pl-g">OK</span></td></tr>
-<tr><td>SS</td><td>Turner</td><td>Betts, Smith</td><td><span class="pl pl-g">OK</span></td></tr>
-<tr><td>OF</td><td>Soto/Nimmo/Ward</td><td>Happ, Garcia, Castro</td><td><span class="pl pl-g">deep</span></td></tr>
+</div>
+<!-- WEEK PANE -->
+<div id="week" class="pane">
+<div class="section-title">Weekly schedule — Matchup 1 (Mar 28 – Apr 5)</div>
+<div class="card" style="overflow-x:auto">
+<table id="week-grid">
+<thead><tr><th>Player</th><th>Sat 28</th><th>Sun 29</th><th>Mon 30</th><th>Tue 31</th><th>Wed 1</th><th>Thu 2</th><th>Fri 3</th><th>Sat 4</th><th>Sun 5</th></tr></thead>
+<tbody id="week-body"></tbody>
 </table>
-<div class="sec">C backup chain (if Hicks dropped)</div>
-<div class="cd" style="font-size:11px;line-height:1.5">Slot opens immediately — waiver is on Hicks, not the slot.</div>
+</div>
+<div class="card" style="font-size:11px;line-height:1.5;color:var(--sub)">
+<strong>Cutoffs:</strong> Sat 2:15 · Sun 1:35 · Mon 4:10 · Tue 6:35 · <span class="r">Wed 12:15 EARLY</span> · Thu 2:10 (4 games) · Fri 1:05 · Sat 1:10 · Sun 1:35<br>
+<strong>Budget:</strong> 11 of 12 acquisitions remaining (Matchup 1 extended week — normal weeks are 7)
+</div>
+</div>
+<!-- STREAM PANE -->
+<div id="stream" class="pane">
+<div class="section-title">Streaming plan — day by day</div>
+<div class="card" style="font-size:12px;line-height:1.6;margin-bottom:12px">
+<strong>CB cycle:</strong> Kikuchi starts Wed 4/1 → game locks → drop → add best target below → new pitcher starts → locks → drop → add next. Each arm lives one start.
+</div>
+<div id="stream-days">
+<div class="card"><div style="font-size:12px;font-weight:600;margin-bottom:6px">SAT 3/28 <span class="cutoff-pill" style="font-size:9px;padding:2px 8px">cut 2:15p</span> <span class="dim">Our SPs: none</span></div>
+<div class="row"><span><strong>1.</strong> Cantillo CLE @SEA</span><span class="pill pill-g">K>IP 1.10 · T-Mobile 0.816 · Elite team</span></div>
+<div class="row"><span><strong>2.</strong> Boyle TB @STL</span><span class="pill pill-a">K>IP 1.10 · Busch 0.979 · walks risk</span></div>
+<div class="row"><span><strong>3.</strong> Patrick MIL vs CWS</span><span class="pill pill-b">0.99 · AmFam 0.968 · CWS worst opp</span></div></div>
+<div class="card"><div style="font-size:12px;font-weight:600;margin-bottom:6px">SUN 3/29 <span class="cutoff-pill" style="font-size:9px;padding:2px 8px">cut 1:35p</span> <span class="b">Luzardo + Lugo start</span></div>
+<div class="row"><span><strong>1.</strong> Holmes ATL vs KC</span><span class="pill pill-g">K>IP 1.06 · Truist 0.982 · Elite team</span></div>
+<div class="row"><span><strong>2.</strong> Cecconi CLE @SEA</span><span class="pill pill-b">0.82 · T-Mobile 0.816 · Elite team</span></div>
+<div class="row"><span><strong>3.</strong> Sproat MIL vs CWS</span><span class="pill pill-b">0.83 · AmFam 0.968 · CWS weak</span></div></div>
+<div class="card"><div style="font-size:12px;font-weight:600;margin-bottom:6px">MON 3/30 <span style="color:var(--green);font-size:10px;font-weight:600">cut 4:10p late</span> <span class="b">Cabrera starts</span></div>
+<div class="row"><span><strong>1.</strong> Bassitt BAL vs TEX</span><span class="pill pill-g">0.90 · Camden 0.963 · Elite team</span></div>
+<div class="row"><span><strong>2.</strong> Weathers NYY @SEA</span><span class="pill pill-g">0.95 · T-Mobile 0.816 · Elite team</span></div>
+<div class="row"><span><strong>3.</strong> Sugano TOR vs COL</span><span class="pill pill-b">0.93 · Rogers 0.990 · COL away</span></div></div>
+<div class="card"><div style="font-size:12px;font-weight:600;margin-bottom:6px">TUE 3/31 <span style="color:var(--green);font-size:10px;font-weight:600">cut 6:35p v.late</span> <span class="a">Eflin watchlist start</span></div>
+<div class="row"><span><strong>1.</strong> Eflin BAL vs TEX<span class="tag tag-w">W</span></span><span class="pill pill-g">4.8 K/BB · Camden 0.963 · Elite team</span></div>
+<div class="row"><span><strong>2.</strong> Bello BOS @HOU</span><span class="pill pill-b">0.83 · Daikin 0.976 · Elite team</span></div>
+<div class="row"><span><strong>3.</strong> Scherzer TOR vs COL</span><span class="pill pill-a">0.95 · Rogers 0.990 · age risk</span></div></div>
+<div class="card" style="border-left:3px solid var(--red);border-radius:0 10px 10px 0"><div style="font-size:12px;font-weight:600;margin-bottom:6px"><span class="r">WED 4/1 — CB DROP DAY</span> <span class="cutoff-pill" style="font-size:9px;padding:2px 8px">cut 12:15p EARLY</span></div>
+<div style="font-size:11px;margin-bottom:6px;color:var(--sub)">Peralta @STL · Cameron vs MIN · Kikuchi @CHC<span class="tag tag-cb">CB</span> → drop after game locks → add #1 below</div>
+<div class="row"><span><strong>1.</strong> Liberatore STL vs NYM</span><span class="pill pill-g">0.78 · Busch 0.979 · 1st add post-CB</span></div>
+<div class="row"><span><strong>2.</strong> Alcantara MIA vs CWS</span><span class="pill pill-a">SP72 · CWS worst · MIA bad team</span></div>
+<div class="row"><span><strong>3.</strong> Severino OAK @ATL</span><span class="pill pill-a">0.76 · Truist 0.982 · OAK bad team</span></div></div>
+<div class="card"><div style="font-size:12px;font-weight:600;margin-bottom:6px;color:var(--dim)">THU 4/2 — 4 games only <span class="b">Ray vs NYM</span></div>
+<div style="font-size:11px;color:var(--dim)">Thin streaming day. Consider hitter stream. Most roster teams off.</div></div>
+<div class="card"><div style="font-size:12px;font-weight:600;margin-bottom:6px">FRI 4/3 <span class="cutoff-pill" style="font-size:9px;padding:2px 8px">cut 1:05p</span> <span class="b">Sheehan + King start</span></div>
+<div class="row"><span><strong>1.</strong> Cantillo CLE vs CHC</span><span class="pill pill-g">K>IP 1.10 · Prog 1.009 · 2nd start</span></div>
+<div class="row"><span><strong>2.</strong> Patrick MIL @KC</span><span class="pill pill-a">0.99 · Kauffman 1.064 · hitter park</span></div>
+<div style="font-size:11px;color:var(--dim);margin-top:4px">More probables confirm mid-week.</div></div>
+</div>
+</div>
+<!-- MATCHUP PANE -->
+<div id="matchup" class="pane">
+<div class="section-title">Category scoreboard vs Wedgie Jackson</div>
+<div class="card">
 <table>
-<tr><th>#</th><th>Player</th><th>Team</th><th>Own%</th><th>G</th><th>OPS</th></tr>
+<thead><tr><th>Category</th><th style="text-align:center">Us</th><th style="text-align:center">Edge</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td class="nm">R</td><td style="text-align:center">—</td><td style="text-align:center"><span class="pill pill-a">Even</span></td><td class="dim">His Ohtani 131R, our depth is wider</td></tr>
+<tr><td class="nm">HR</td><td style="text-align:center">—</td><td style="text-align:center"><span class="pill pill-g">Us</span></td><td class="dim">5 guys 30+ HR projected</td></tr>
+<tr><td class="nm">RBI</td><td style="text-align:center">—</td><td style="text-align:center"><span class="pill pill-a">Even</span></td><td class="dim">Suarez 119 leads both</td></tr>
+<tr><td class="nm">SB</td><td style="text-align:center">—</td><td style="text-align:center"><span class="pill pill-r">Him</span></td><td class="dim">Marsee 41, Scott 39 SB</td></tr>
+<tr><td class="nm">AVG</td><td style="text-align:center">—</td><td style="text-align:center"><span class="pill pill-r">Him</span></td><td class="dim">Wilson .302, Alvarez .296</td></tr>
+<tr><td class="nm">OPS</td><td style="text-align:center">—</td><td style="text-align:center"><span class="pill pill-r">Him</span></td><td class="dim">Ohtani .998 + Alvarez .933</td></tr>
+<tr style="border-top:2px solid var(--border)"><td class="nm">K</td><td style="text-align:center">—</td><td style="text-align:center"><span class="pill pill-g">Us ++</span></td><td class="dim">5 of his SPs on IL</td></tr>
+<tr><td class="nm">W</td><td style="text-align:center">—</td><td style="text-align:center"><span class="pill pill-g">Us</span></td><td class="dim">Volume + strong teams</td></tr>
+<tr><td class="nm">L</td><td style="text-align:center">—</td><td style="text-align:center"><span class="pill pill-a">Even</span></td><td class="dim">Volume = more L risk</td></tr>
+<tr><td class="nm">SV</td><td style="text-align:center">0</td><td style="text-align:center"><span class="pill pill-r">Him</span></td><td class="dim">We punt. He has Iglesias.</td></tr>
+<tr><td class="nm">ERA</td><td style="text-align:center">—</td><td style="text-align:center"><span class="pill pill-g">Us</span></td><td class="dim">His healthy SPs all 4.00+</td></tr>
+<tr><td class="nm">WHIP</td><td style="text-align:center">—</td><td style="text-align:center"><span class="pill pill-g">Us</span></td><td class="dim">Wheeler (1.03) on IL</td></tr>
+</tbody>
+</table>
+</div>
+<div class="card" style="font-size:12px;line-height:1.5">
+<strong>Projected: 7-5 or 8-4 win.</strong> Volume streaming is the correct mode — his pitching is decimated (5 on IL).
+</div>
+<div class="section-title">His IL damage</div>
+<div class="card dim" style="font-size:11px;line-height:1.6">
+Wheeler (PHI) 15-day · Pepiot (TB) 15-day · Lodolo (CIN) 15-day · Berrios (TOR) 15-day · Steele (CHC) 60-day<br>
+Active: Mize, Javier, Keller, Peterson + Bibee DTD
+</div>
+</div>
+<!-- DEPTH PANE -->
+<div id="depth" class="pane">
+<div class="section-title">Position coverage</div>
+<div class="card">
+<table>
+<thead><tr><th>Pos</th><th>Starter</th><th>Backup(s)</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>C</td><td class="nm">Goodman (COL)</td><td>Hicks<span class="tag tag-cb">CB</span></td><td><span class="pill pill-r">1 deep</span></td></tr>
+<tr><td>1B</td><td class="nm">Busch (CHC)</td><td>Smith, Hicks</td><td><span class="pill pill-g">OK</span></td></tr>
+<tr><td>2B</td><td class="nm">Jazz (NYY)</td><td>Castro</td><td><span class="pill pill-a">thin</span></td></tr>
+<tr><td>3B</td><td class="nm">Suarez (CIN)</td><td>Jazz, Smith, Castro</td><td><span class="pill pill-g">OK</span></td></tr>
+<tr><td>SS</td><td class="nm">Turner (PHI)</td><td>Betts, Smith</td><td><span class="pill pill-g">OK</span></td></tr>
+<tr><td>OF</td><td class="nm">Soto / Nimmo / Ward</td><td>Happ, Garcia, Castro</td><td><span class="pill pill-g">deep</span></td></tr>
+</tbody>
+</table>
+</div>
+<div class="section-title">C backup chain (if Hicks dropped)</div>
+<div class="card" style="font-size:11px;color:var(--sub);margin-bottom:6px">Slot opens immediately — waiver applies to Hicks, not the roster slot.</div>
+<div class="card">
+<table>
+<thead><tr><th>#</th><th>Player</th><th>Team</th><th>Own%</th><th>Games</th><th>OPS</th></tr></thead>
+<tbody>
 <tr><td>1</td><td class="nm">Moreno</td><td>ARI</td><td>35%</td><td>108</td><td>.764</td></tr>
 <tr><td>2</td><td class="nm">Dingler</td><td>DET</td><td>13%</td><td>123</td><td>.759</td></tr>
 <tr><td>3</td><td class="nm">Teel</td><td>CHW</td><td>12%</td><td>109</td><td>.754</td></tr>
 <tr><td>4</td><td class="nm">Jeffers</td><td>MIN</td><td>8%</td><td>—</td><td>.754</td></tr>
+</tbody>
 </table>
-<div class="sec">Other emergency FA targets</div>
+</div>
+<div class="section-title">Other emergency FA targets</div>
+<div class="card">
 <table>
-<tr><th>Pos</th><th>Player</th><th>Team</th><th>%</th><th>OPS</th><th>Key</th></tr>
+<thead><tr><th>Pos</th><th>Player</th><th>Team</th><th>%</th><th>OPS</th><th>Key</th></tr></thead>
+<tbody>
 <tr><td>2B</td><td class="nm">Garcia Jr.</td><td>WSH</td><td>31</td><td>.730</td><td>16HR 16SB</td></tr>
 <tr><td>2B</td><td class="nm">India</td><td>KC</td><td>22</td><td>.727</td><td>Multi 2B/3B/LF</td></tr>
 <tr><td>1B</td><td class="nm">Steer</td><td>CIN</td><td>11</td><td>.745</td><td>Multi 1B/3B/LF</td></tr>
 <tr><td>OF</td><td class="nm">Cowser</td><td>BAL</td><td>7</td><td>.720</td><td>22HR 23SB</td></tr>
 <tr><td>DH</td><td class="nm">Ozuna</td><td>PIT</td><td>18</td><td>.800</td><td>Best bat in FA</td></tr>
+</tbody>
 </table>
 </div>
-<!-- MATCHUP -->
-<div id="t6" class="pn">
-<div class="sec">Category prediction vs Wedgie Jackson</div>
+</div>
+<!-- ALERTS PANE -->
+<div id="alerts" class="pane">
+<div class="section-title">Watchlist updates</div>
+<div class="alert">Cantillo (CLE) pitching TONIGHT 9:40 PM @SEA vs Woo — results pending</div>
+<div class="card">
 <table>
-<tr><th>Cat</th><th>Edge</th><th>Why</th></tr>
-<tr><td class="nm">R</td><td class="a">Even</td><td style="font-size:10px">His Ohtani 131R but we're deeper</td></tr>
-<tr><td class="nm">HR</td><td class="g">Us</td><td style="font-size:10px">5 guys proj 30+ HR</td></tr>
-<tr><td class="nm">RBI</td><td class="a">Even</td><td style="font-size:10px">Suarez 119 leads both rosters</td></tr>
-<tr><td class="nm">SB</td><td class="r">Him</td><td style="font-size:10px">Marsee 41, Scott 39 SB</td></tr>
-<tr><td class="nm">AVG</td><td class="r">Him</td><td style="font-size:10px">Wilson .302, Alvarez .296, Ohtani .287</td></tr>
-<tr><td class="nm">OPS</td><td class="r">Him</td><td style="font-size:10px">Ohtani .998 + Alvarez .933</td></tr>
-<tr><td class="nm">K</td><td class="g">Us ★</td><td style="font-size:10px">5 of his SPs on IL. 2x his starts.</td></tr>
-<tr><td class="nm">W</td><td class="g">Us</td><td style="font-size:10px">Volume + strong team environments</td></tr>
-<tr><td class="nm">L↓</td><td class="a">Even</td><td style="font-size:10px">Volume = more L risk too</td></tr>
-<tr><td class="nm">SV↓</td><td class="r">Him</td><td style="font-size:10px">We punt. He has Iglesias (31 SV)</td></tr>
-<tr><td class="nm">ERA↓</td><td class="g">Us</td><td style="font-size:10px">His healthy SPs all 4.00+ ERA</td></tr>
-<tr><td class="nm">WHIP↓</td><td class="g">Us</td><td style="font-size:10px">Wheeler (1.03) on IL. Active arms 1.28+</td></tr>
+<thead><tr><th>Player</th><th>What we're watching</th><th>Last update</th></tr></thead>
+<tbody>
+<tr><td class="nm">Cantillo (CLE)</td><td>Tonight's start @SEA. K>IP 1.10, Sept '25 breakout. Walk rate is the concern.</td><td class="g">Starting tonight</td></tr>
+<tr><td class="nm">Eflin (BAL)</td><td>Health, command quality. 4.8 K/BB best in FA pool. Start Tue 3/31 vs TEX.</td><td>Healthy, in rotation</td></tr>
+<tr><td class="nm">Martinez (TB)</td><td>DTD hamstring. If healthy, start Mon 3/30. Monitor before adding.</td><td class="a">DTD</td></tr>
+<tr><td class="nm">Boyle (TB)</td><td>Rotation hold. K>IP 1.10 but walks (2.1 K/BB). Today @STL.</td><td>Starting today</td></tr>
+<tr><td class="nm">Seymour (TB)</td><td>Potential full roster add (not just stream). 1.03 K>IP, 3.61 ERA.</td><td>Monitoring</td></tr>
+<tr><td class="nm">Holmes (ATL)</td><td>K>IP 1.06 on elite team. Sun 3/29 vs KC.</td><td>Monitoring</td></tr>
+<tr><td class="nm">Garrett (MIA)</td><td class="r">NOT on 26-man. Minors. Add only on callup.</td><td><span class="pill pill-r">Minors</span></td></tr>
+</tbody>
 </table>
-<div class="cd" style="margin-top:8px;font-size:12px;line-height:1.6">
-<strong>Projected: 7-5 or 8-4 win.</strong> We take HR, K, W, ERA, WHIP + R or RBI. He takes SV, AVG, OPS, SB. His pitching is decimated — volume streaming is the correct mode.
 </div>
-<div class="sec">His IL damage (5 pitchers down)</div>
-<div class="cd" style="font-size:11px;line-height:1.5;color:var(--dim)">
-Wheeler (PHI) 15-day · Pepiot (TB) 15-day · Lodolo (CIN) 15-day · Berrios (TOR) 15-day · Steele (CHC) 60-day<br>
-Active arms: Mize, Javier, Keller, Peterson + Bibee (DTD)
+<div class="section-title">Goodman status</div>
+<div class="card" style="font-size:12px;line-height:1.6">
+<strong>Hunter Goodman (COL C)</strong> — Active monitoring. If he's not in a lineup or goes DTD/IL, C backup chain activates immediately. Reserve 1 acquisition for emergency C if Hicks is already dropped.
 </div>
-</div>
-
-<!-- BATTERS -->
-<div id="t7" class="pn">
-<div class="sec">Today's lineup matchups (SAT 3/28)</div>
-<table>
-<tr><th>Slot</th><th>Hitter</th><th>Opp pitcher</th><th>Platoon</th><th>Park</th><th>Note</th></tr>
-<tr><td>C</td><td class="nm">Goodman (R)</td><td>Perez RHP (MIA)</td><td>R vs R</td><td>1.058</td><td>Neutral</td></tr>
-<tr><td>1B</td><td class="nm">Busch (L)</td><td>Mikolas RHP (WSH)</td><td class="g">L vs R</td><td>0.918</td><td class="g">Wrigley pitcher-friendly</td></tr>
-<tr><td>2B</td><td class="nm">Jazz (L)</td><td>Mahle RHP (SF)</td><td class="g">L vs R</td><td>0.912</td><td>Oracle suppresses runs</td></tr>
-<tr><td>3B</td><td class="nm">Suarez (R)</td><td>Gray RHP (BOS)</td><td>R vs R</td><td>1.039</td><td>GABP hitter-friendly</td></tr>
-<tr><td>SS</td><td class="nm">Turner (R)</td><td>Latz LHP (TEX)</td><td class="g">R vs L</td><td>1.039</td><td class="g">Good matchup + park</td></tr>
-<tr><td>OF</td><td class="nm">Soto (L)</td><td>Keller RHP (PIT)</td><td class="g">L vs R</td><td>0.964</td><td>Citi neutral</td></tr>
-<tr><td>OF</td><td class="nm">Nimmo (L)</td><td>Nola RHP (PHI)</td><td class="g">L vs R</td><td>1.039</td><td>CBP hitter-friendly</td></tr>
-<tr><td>OF</td><td class="nm">Ward (R)</td><td>Bradley RHP (MIN)</td><td>R vs R</td><td>0.963</td><td>Camden pitcher-lean</td></tr>
-<tr><td>UTIL</td><td class="nm">Betts (R)</td><td>E.Rod LHP (ARI)</td><td class="g">R vs L</td><td>0.975</td><td class="g">Dodger Stadium + platoon</td></tr>
-<tr><td>UTIL</td><td class="nm">Garcia (R)</td><td>Latz LHP (TEX)</td><td class="g">R vs L</td><td>1.039</td><td class="g">R vs L in hitter park</td></tr>
-</table>
-<div class="cd" style="font-size:11px;line-height:1.6;margin-top:8px">
-<strong>Start/sit:</strong> No changes today. All starters have games. Garcia R vs Latz L is a favorable platoon — keep him in. Ward is the weakest matchup (R vs R in pitcher park) but bench options aren't better.
-</div>
-<div class="sec">Bench hitters</div>
-<table>
-<tr><th>Player</th><th>Pos</th><th>Opp</th><th>Platoon</th><th>When to start</th></tr>
-<tr><td class="nm">Happ (L)</td><td>CHC OF</td><td>vs Mikolas R</td><td class="g">L vs R</td><td>Start over Ward or Garcia when they face RHP in pitcher parks</td></tr>
-<tr><td class="nm">Castro (S)</td><td>COL OF/2B/3B</td><td>@MIA Perez R</td><td>—</td><td>Switch-hitter flex. Use for multi-pos coverage.</td></tr>
-<tr><td class="nm">Smith (L)</td><td>TEX SS/1B/3B</td><td>@PHI Nola R</td><td class="g">L vs R</td><td>Start if Turner/Suarez sit or vs tough RHP</td></tr>
-<tr><td class="nm">Hicks (R)<span class="cb">CB</span></td><td>MIA C/1B/DH</td><td>vs COL</td><td>—</td><td>Not playing. CB — drop when needed.</td></tr>
-</table>
-<div class="sec">Light-day hitter streaming (Mon/Thu)</div>
-<div class="cd" style="font-size:11px;line-height:1.6">
-<strong>MON 3/30</strong> — 15 games, 4:10 PM cutoff. Full schedule, no streaming needed.<br>
-<strong>THU 4/2</strong> — Only 4 games. If any starters are off, consider:<br>
-- Drop Hicks → add a hitter with a game that day → drop next day for SP stream<br>
-- Or use the day to make a non-streaming roster move<br>
-Target hitter streamers by checking who plays Thu and has favorable matchups (TBD as probables fill in).
+<div class="section-title">Recent moves</div>
+<div class="card">
+<div class="row"><span>Mar 26</span><span>Dropped Sproat (MIL SP) → Added Josh Smith (TEX SS/1B/3B)</span></div>
 </div>
 </div>
-
-<!-- LIVE STATUS -->
-<div id="t8" class="pn">
-<div class="sec">Live game status</div>
-<div id="live-games" class="cd" style="font-size:12px">Loading live data...</div>
-<div style="font-size:10px;color:var(--dim);margin-top:6px">Auto-refreshes from MLB Stats API. No auth needed. Shows our players' games only.</div>
-</div>
-
+</div><!-- end .wrap -->
 <script>
-function go(id){
-document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('on',t.getAttribute('onclick')==="go('"+id+"')"));
-document.querySelectorAll('.pn').forEach(p=>p.classList.toggle('on',p.id===id));
+function tab(id){
+document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('on',b.getAttribute('onclick')==="tab('"+id+"')"));
+document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on',p.id===id));
 }
-async function loadLive(){
-const our={
-'Goodman':'Colorado Rockies','Busch':'Chicago Cubs','Chisholm':'New York Yankees',
-'Suarez':'Cincinnati Reds','Turner':'Philadelphia Phillies','Soto':'New York Mets',
-'Nimmo':'Texas Rangers','Ward':'Baltimore Orioles','Betts':'Los Angeles Dodgers',
-'Garcia':'Philadelphia Phillies','Happ':'Chicago Cubs','Castro':'Colorado Rockies',
-'Smith':'Texas Rangers','Peralta':'New York Mets','Luzardo':'Philadelphia Phillies',
-'King':'San Diego Padres','Ray':'San Francisco Giants','Sheehan':'Los Angeles Dodgers',
-'Kikuchi':'Los Angeles Angels','Lugo':'Kansas City Royals','Cameron':'Kansas City Royals',
-'Cabrera':'Chicago Cubs'
+
+const ROSTER=[
+{slot:'C',name:'Goodman',team:'Colorado Rockies',abbr:'COL',pos:'C',bench:false},
+{slot:'1B',name:'Busch',team:'Chicago Cubs',abbr:'CHC',pos:'1B',bench:false},
+{slot:'2B',name:'Jazz',team:'New York Yankees',abbr:'NYY',pos:'2B',bench:false},
+{slot:'3B',name:'Suarez',team:'Cincinnati Reds',abbr:'CIN',pos:'3B',bench:false},
+{slot:'SS',name:'Turner',team:'Philadelphia Phillies',abbr:'PHI',pos:'SS',bench:false},
+{slot:'OF',name:'Soto',team:'New York Mets',abbr:'NYM',pos:'OF',bench:false},
+{slot:'OF',name:'Nimmo',team:'Texas Rangers',abbr:'TEX',pos:'OF',bench:false},
+{slot:'OF',name:'Ward',team:'Baltimore Orioles',abbr:'BAL',pos:'OF',bench:false},
+{slot:'UTIL',name:'Betts',team:'Los Angeles Dodgers',abbr:'LAD',pos:'UTIL',bench:false},
+{slot:'UTIL',name:'Garcia',team:'Philadelphia Phillies',abbr:'PHI',pos:'UTIL',bench:false},
+{slot:'BE',name:'Happ',team:'Chicago Cubs',abbr:'CHC',pos:'OF',bench:true},
+{slot:'BE',name:'Castro',team:'Colorado Rockies',abbr:'COL',pos:'OF/2B/3B',bench:true},
+{slot:'BE',name:'Hicks',team:'Miami Marlins',abbr:'MIA',pos:'C/1B/DH',bench:true,cb:true},
+{slot:'BE',name:'Smith',team:'Texas Rangers',abbr:'TEX',pos:'SS/1B/3B',bench:true}
+];
+const PITCHERS=[
+{slot:'P',name:'King',team:'San Diego Padres',abbr:'SD',role:'SP'},
+{slot:'P',name:'Ray',team:'San Francisco Giants',abbr:'SF',role:'SP'},
+{slot:'P',name:'Peralta',team:'New York Mets',abbr:'NYM',role:'SP'},
+{slot:'P',name:'Sheehan',team:'Los Angeles Dodgers',abbr:'LAD',role:'SP'},
+{slot:'P',name:'Luzardo',team:'Philadelphia Phillies',abbr:'PHI',role:'SP'},
+{slot:'P',name:'Lugo',team:'Kansas City Royals',abbr:'KC',role:'SP'},
+{slot:'BE',name:'Kikuchi',team:'Los Angeles Angels',abbr:'LAA',role:'SP',cb:true},
+{slot:'BE',name:'Cabrera',team:'Chicago Cubs',abbr:'CHC',role:'SP'},
+{slot:'BE',name:'Cameron',team:'Kansas City Royals',abbr:'KC',role:'SP'},
+{slot:'IL',name:'Yesavage',team:'Toronto Blue Jays',abbr:'TOR',role:'SP'},
+{slot:'IL',name:'Greene',team:'Cincinnati Reds',abbr:'CIN',role:'SP'}
+];
+const CUTOFFS={
+'2026-03-28':'2:15 PM','2026-03-29':'1:35 PM','2026-03-30':'4:10 PM',
+'2026-03-31':'6:35 PM','2026-04-01':'12:15 PM','2026-04-02':'2:10 PM',
+'2026-04-03':'1:05 PM','2026-04-04':'1:10 PM','2026-04-05':'1:35 PM'
 };
+const WEEK_DATES=['2026-03-28','2026-03-29','2026-03-30','2026-03-31','2026-04-01','2026-04-02','2026-04-03','2026-04-04','2026-04-05'];
+
+function todayStr(){return new Date().toLocaleDateString('en-CA');}
+function fmt(d){return new Date(d).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});}
+
+async function loadToday(){
+const today=todayStr();
+document.getElementById('today-date').textContent=fmt(today);
+const cut=CUTOFFS[today];
+document.getElementById('cutoff-display').textContent=cut?'Cutoff '+cut+' ET':'No cutoff data';
+document.getElementById('update-ts').textContent='Updated: '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
 try{
-const today=new Date().toISOString().split('T')[0];
-const r=await fetch(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=${today}&hydrate=linescore`);
+const r=await fetch(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=${today}&hydrate=linescore,probablePitcher`);
 const d=await r.json();
-const el=document.getElementById('live-games');
-if(!d.dates||!d.dates.length){el.innerHTML='No games today.';return;}
-let html='';
-const games=d.dates[0].games;
-for(const g of games){
-const away=g.teams.away.team.name;
-const home=g.teams.home.team.name;
-const ourPlayers=Object.entries(our).filter(([n,t])=>t===away||t===home).map(([n])=>n);
-if(!ourPlayers.length)continue;
+const games=d.dates&&d.dates[0]?d.dates[0].games:[];
+const gmap={};
+games.forEach(g=>{
+const away=g.teams.away.team.name,home=g.teams.home.team.name;
+const gt=new Date(g.gameDate);
+const et=gt.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZone:'America/New_York'});
 const status=g.status.detailedState;
 const ls=g.linescore||{};
-const inning=ls.currentInningOrdinal||'';
-const aScore=g.teams.away.score||0;
-const hScore=g.teams.home.score||0;
+const inn=ls.currentInningOrdinal||'';
+const aS=g.teams.away.score??'';
+const hS=g.teams.home.score??'';
 const isLive=status==='In Progress';
 const isDone=status==='Final';
-const dot=isLive?'<span style="color:var(--green);font-weight:700">LIVE</span>':isDone?'<span style="color:var(--dim)">Final</span>':'<span style="color:var(--amber)">'+status+'</span>';
-html+=`<div class="rw"><span>${dot} ${away} ${aScore} @ ${home} ${hScore} ${inning}</span><span style="color:var(--accent)">${ourPlayers.join(', ')}</span></div>`;
+let stLabel=isLive?'<span class="tag tag-live">LIVE '+inn+'</span>':isDone?'<span class="dim">Final</span>':'<span class="pill pill-b">'+et+'</span>';
+let score=isDone||isLive?aS+'-'+hS:'—';
+[away,home].forEach(t=>{
+gmap[t]={opp:t===home?away:home,home:t===home,time:et,status,stLabel,score,isLive,isDone,
+awayPP:g.teams.away.probablePitcher?.fullName||'TBD',
+homePP:g.teams.home.probablePitcher?.fullName||'TBD'};
+});
+});
+// Populate hitters
+let hhtml='';
+ROSTER.forEach(p=>{
+const g=gmap[p.team];
+const off=!g;
+const cls=off?'off-row':'';
+const opp=g?(g.home?'vs '+g.opp.split(' ').pop():'@ '+g.opp.split(' ').pop()):'OFF DAY';
+const oppP=g?(g.home?g.awayPP:g.homePP):'—';
+const tm=g?g.stLabel:'<span class="tag tag-off">OFF</span>';
+const cbTag=p.cb?'<span class="tag tag-cb">CB</span>':'';
+const beTag=p.bench?'<span class="dim"> (BE)</span>':'';
+hhtml+=`<tr class="${cls}"><td>${p.slot}</td><td class="nm">${p.name}${cbTag}${beTag}</td><td>${opp}<br><span class="dim" style="font-size:10px">vs ${oppP}</span></td><td>${tm}</td><td>${g?(g.isDone||g.isLive?g.score:'—'):'—'}</td><td>—</td></tr>`;
+});
+document.getElementById('roster-body').innerHTML=hhtml;
+// Populate pitchers
+let phtml='';
+PITCHERS.forEach(p=>{
+const g=gmap[p.team];
+const off=!g;
+const cls=off?'off-row':'';
+const opp=g?(g.home?'vs '+g.opp.split(' ').pop():'@ '+g.opp.split(' ').pop()):'OFF DAY';
+const tm=g?g.stLabel:'<span class="tag tag-off">OFF</span>';
+const cbTag=p.cb?'<span class="tag tag-cb">CB</span>':'';
+const ilTag=p.slot==='IL'?'<span class="tag" style="background:#ddd;color:#666">IL</span>':'';
+phtml+=`<tr class="${cls}"><td>${p.slot}</td><td class="nm">${p.name}${cbTag}${ilTag}</td><td>${opp}</td><td>${tm}</td><td>${g?(g.isDone||g.isLive?g.score:'—'):'—'}</td><td>—</td></tr>`;
+});
+document.getElementById('pitcher-body').innerHTML=phtml;
+// Alerts
+let alerts='';
+ROSTER.concat(PITCHERS).forEach(p=>{
+if(!gmap[p.team]&&!p.bench&&p.slot!=='IL') alerts+=`<div class="alert">${p.name} (${p.abbr}) has no game today — empty ${p.slot} slot</div>`;
+});
+const gm=gmap['Colorado Rockies'];
+if(gm&&(gm.status==='Postponed'||gm.status==='Cancelled')) alerts+=`<div class="alert" style="background:#fee2e2;border-color:#fca5a5;color:#991b1b">Goodman game ${gm.status} — check C backup chain</div>`;
+document.getElementById('today-alerts').innerHTML=alerts;
+}catch(e){
+document.getElementById('roster-body').innerHTML='<tr><td colspan="6">Could not load live data</td></tr>';
 }
-el.innerHTML=html||'No games with our players right now.';
-}catch(e){document.getElementById('live-games').innerHTML='Could not load live data.';}
 }
-loadLive();setInterval(loadLive,60000);
+async function loadWeek(){
+const all=ROSTER.concat(PITCHERS.filter(p=>p.slot!=='IL'));
+const schedCache={};
+// Fetch schedule for entire matchup range
+try{
+const r=await fetch('https://statsapi.mlb.com/api/v1/schedule?sportId=1&startDate=2026-03-28&endDate=2026-04-05&fields=dates,date,games,teams,away,home,team,name');
+const d=await r.json();
+(d.dates||[]).forEach(dt=>{
+schedCache[dt.date]=new Set();
+(dt.games||[]).forEach(g=>{
+schedCache[dt.date].add(g.teams.away.team.name);
+schedCache[dt.date].add(g.teams.home.team.name);
+});
+});
+}catch(e){}
+let html='';
+all.forEach(p=>{
+const cbTag=p.cb?'<span class="tag tag-cb">CB</span>':'';
+const beTag=p.bench||p.slot==='BE'?' <span class="dim">(BE)</span>':'';
+html+=`<tr><td class="nm" style="white-space:nowrap">${p.name}${cbTag}${beTag}<br><span class="dim" style="font-size:10px">${p.abbr}</span></td>`;
+WEEK_DATES.forEach(dt=>{
+const teams=schedCache[dt]||new Set();
+const playing=teams.has(p.team);
+if(playing){
+html+='<td style="text-align:center;background:#f0fdf4">&#9679;</td>';
+}else{
+html+='<td style="text-align:center;background:#fef2f2;color:var(--red);font-size:10px">OFF</td>';
+}
+});
+html+='</tr>';
+});
+document.getElementById('week-body').innerHTML=html;
+}
+loadToday();loadWeek();
+setInterval(loadToday,60000);
 </script>
 </body></html>
