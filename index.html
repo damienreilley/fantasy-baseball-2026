@@ -396,8 +396,9 @@ schedCache[dt.date].add(g.teams.home.team.name);
 });
 }catch(e){}
 let html='';
-function renderGroup(label,players){
-html+=`<tr><td colspan="10" style="font-size:11px;font-weight:600;padding:10px 6px 4px;background:var(--bg);border-bottom:1.5px solid var(--border)">${label}</td></tr>`;
+function renderGroup(label,players,isFirst){
+if(!isFirst) html+=`<tr><td colspan="10" style="height:6px;background:var(--bg);border:none"></td></tr>`;
+html+=`<tr><td colspan="10" style="font-size:11px;font-weight:600;padding:8px 6px 4px;background:var(--bg);border-bottom:1.5px solid var(--border);color:var(--sub)">${label}</td></tr>`;
 players.forEach(p=>{
 const cbTag=p.cb?'<span class="tag tag-cb">CB</span>':'';
 const beTag=p.bench||p.slot==='BE'?' <span class="dim">(BE)</span>':'';
@@ -411,9 +412,9 @@ else{html+='<td style="text-align:center;background:#fef2f2;color:var(--red);fon
 html+='</tr>';
 });
 }
-renderGroup('Batters',ROSTER);
-renderGroup('Pitchers',PITCHERS.filter(p=>p.slot!=='IL'));
-renderGroup('Injured list',PITCHERS.filter(p=>p.slot==='IL'));
+renderGroup('Batters — starters + bench',ROSTER,true);
+renderGroup('Pitchers — active + bench',PITCHERS.filter(p=>p.slot!=='IL'),false);
+renderGroup('Injured list',PITCHERS.filter(p=>p.slot==='IL'),false);
 document.getElementById('week-body').innerHTML=html;
 }
 loadToday();loadWeek();
