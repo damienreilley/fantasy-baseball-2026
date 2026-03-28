@@ -75,10 +75,10 @@ td{padding:5px 6px;border-bottom:1px solid #eee;vertical-align:top}
 <!-- TODAY PANE -->
 <div id="today" class="pane on">
 <div id="today-alerts"></div>
-<div class="section-title">Lineup — <span id="today-date"></span></div>
+<div class="section-title">Batters — <span id="today-date"></span></div>
 <div class="card" id="today-roster">
 <table>
-<thead><tr><th>Slot</th><th>Player</th><th>Game</th><th>Time</th><th>Status</th><th>Today's line</th></tr></thead>
+<thead><tr><th>Slot</th><th>Player</th><th>Game</th><th>Time</th><th>Score</th><th>Today's line</th></tr></thead>
 <tbody id="roster-body"></tbody>
 </table>
 </div>
@@ -317,9 +317,21 @@ awayPP:g.teams.away.probablePitcher?.fullName||'TBD',
 homePP:g.teams.home.probablePitcher?.fullName||'TBD'};
 });
 });
-// Populate hitters
+// Populate hitters — starters first, then bench separator, then bench
 let hhtml='';
-ROSTER.forEach(p=>{
+const starters=ROSTER.filter(p=>!p.bench);
+const bench=ROSTER.filter(p=>p.bench);
+starters.forEach(p=>{
+const g=gmap[p.team];
+const off=!g;
+const cls=off?'off-row':'';
+const opp=g?(g.home?'vs '+g.opp.split(' ').pop():'@ '+g.opp.split(' ').pop()):'OFF DAY';
+const oppP=g?(g.home?g.awayPP:g.homePP):'—';
+const tm=g?g.stLabel:'<span class="tag tag-off">OFF</span>';
+hhtml+=`<tr class="${cls}"><td>${p.slot}</td><td class="nm">${p.name}</td><td>${opp}<br><span class="dim" style="font-size:10px">vs ${oppP}</span></td><td>${tm}</td><td>${g?(g.isDone||g.isLive?g.score:'—'):'—'}</td><td>—</td></tr>`;
+});
+hhtml+='<tr><td colspan="6" style="font-size:10px;font-weight:600;padding:8px 6px 4px;background:var(--bg);color:var(--dim)">BENCH</td></tr>';
+bench.forEach(p=>{
 const g=gmap[p.team];
 const off=!g;
 const cls=off?'off-row':'';
@@ -327,22 +339,34 @@ const opp=g?(g.home?'vs '+g.opp.split(' ').pop():'@ '+g.opp.split(' ').pop()):'O
 const oppP=g?(g.home?g.awayPP:g.homePP):'—';
 const tm=g?g.stLabel:'<span class="tag tag-off">OFF</span>';
 const cbTag=p.cb?'<span class="tag tag-cb">CB</span>':'';
-const beTag=p.bench?'<span class="dim"> (BE)</span>':'';
-hhtml+=`<tr class="${cls}"><td>${p.slot}</td><td class="nm">${p.name}${cbTag}${beTag}</td><td>${opp}<br><span class="dim" style="font-size:10px">vs ${oppP}</span></td><td>${tm}</td><td>${g?(g.isDone||g.isLive?g.score:'—'):'—'}</td><td>—</td></tr>`;
+hhtml+=`<tr class="${cls}"><td>BE</td><td class="nm">${p.name}${cbTag}</td><td>${opp}<br><span class="dim" style="font-size:10px">vs ${oppP}</span></td><td>${tm}</td><td>${g?(g.isDone||g.isLive?g.score:'—'):'—'}</td><td>—</td></tr>`;
 });
 document.getElementById('roster-body').innerHTML=hhtml;
-// Populate pitchers
+// Populate pitchers — active, bench, IL separated
 let phtml='';
-PITCHERS.forEach(p=>{
-const g=gmap[p.team];
-const off=!g;
-const cls=off?'off-row':'';
+const pActive=PITCHERS.filter(p=>p.slot==='P');
+const pBench=PITCHERS.filter(p=>p.slot==='BE');
+const pIL=PITCHERS.filter(p=>p.slot==='IL');
+pActive.forEach(p=>{
+const g=gmap[p.team];const off=!g;const cls=off?'off-row':'';
+const opp=g?(g.home?'vs '+g.opp.split(' ').pop():'@ '+g.opp.split(' ').pop()):'OFF DAY';
+const tm=g?g.stLabel:'<span class="tag tag-off">OFF</span>';
+phtml+=`<tr class="${cls}"><td>P</td><td class="nm">${p.name}</td><td>${opp}</td><td>${tm}</td><td>${g?(g.isDone||g.isLive?g.score:'—'):'—'}</td><td>—</td></tr>`;
+});
+phtml+='<tr><td colspan="6" style="font-size:10px;font-weight:600;padding:8px 6px 4px;background:var(--bg);color:var(--dim)">BENCH SP</td></tr>';
+pBench.forEach(p=>{
+const g=gmap[p.team];const off=!g;const cls=off?'off-row':'';
 const opp=g?(g.home?'vs '+g.opp.split(' ').pop():'@ '+g.opp.split(' ').pop()):'OFF DAY';
 const tm=g?g.stLabel:'<span class="tag tag-off">OFF</span>';
 const cbTag=p.cb?'<span class="tag tag-cb">CB</span>':'';
-const ilTag=p.slot==='IL'?'<span class="tag" style="background:#ddd;color:#666">IL</span>':'';
-phtml+=`<tr class="${cls}"><td>${p.slot}</td><td class="nm">${p.name}${cbTag}${ilTag}</td><td>${opp}</td><td>${tm}</td><td>${g?(g.isDone||g.isLive?g.score:'—'):'—'}</td><td>—</td></tr>`;
+phtml+=`<tr class="${cls}"><td>BE</td><td class="nm">${p.name}${cbTag}</td><td>${opp}</td><td>${tm}</td><td>${g?(g.isDone||g.isLive?g.score:'—'):'—'}</td><td>—</td></tr>`;
 });
+if(pIL.length){
+phtml+='<tr><td colspan="6" style="font-size:10px;font-weight:600;padding:8px 6px 4px;background:var(--bg);color:var(--dim)">INJURED LIST</td></tr>';
+pIL.forEach(p=>{
+phtml+=`<tr class="off-row"><td>IL</td><td class="nm">${p.name}<span class="tag" style="background:#ddd;color:#666">IL</span></td><td>—</td><td>—</td><td>—</td><td>—</td></tr>`;
+});
+}
 document.getElementById('pitcher-body').innerHTML=phtml;
 // Alerts
 let alerts='';
@@ -372,21 +396,24 @@ schedCache[dt.date].add(g.teams.home.team.name);
 });
 }catch(e){}
 let html='';
-all.forEach(p=>{
+function renderGroup(label,players){
+html+=`<tr><td colspan="10" style="font-size:11px;font-weight:600;padding:10px 6px 4px;background:var(--bg);border-bottom:1.5px solid var(--border)">${label}</td></tr>`;
+players.forEach(p=>{
 const cbTag=p.cb?'<span class="tag tag-cb">CB</span>':'';
 const beTag=p.bench||p.slot==='BE'?' <span class="dim">(BE)</span>':'';
 html+=`<tr><td class="nm" style="white-space:nowrap">${p.name}${cbTag}${beTag}<br><span class="dim" style="font-size:10px">${p.abbr}</span></td>`;
 WEEK_DATES.forEach(dt=>{
 const teams=schedCache[dt]||new Set();
 const playing=teams.has(p.team);
-if(playing){
-html+='<td style="text-align:center;background:#f0fdf4">&#9679;</td>';
-}else{
-html+='<td style="text-align:center;background:#fef2f2;color:var(--red);font-size:10px">OFF</td>';
-}
+if(playing){html+='<td style="text-align:center;background:#f0fdf4">&#9679;</td>';}
+else{html+='<td style="text-align:center;background:#fef2f2;color:var(--red);font-size:10px">OFF</td>';}
 });
 html+='</tr>';
 });
+}
+renderGroup('Batters',ROSTER);
+renderGroup('Pitchers',PITCHERS.filter(p=>p.slot!=='IL'));
+renderGroup('Injured list',PITCHERS.filter(p=>p.slot==='IL'));
 document.getElementById('week-body').innerHTML=html;
 }
 loadToday();loadWeek();
