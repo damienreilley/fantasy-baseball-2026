@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Money Balls - Streaming Pitcher Targets</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "Segoe UI", system-ui, sans-serif; margin: 0; padding: 16px; background: #0f1419; color: #e6e6e6; max-width: 1200px; margin-left: auto; margin-right: auto; }
+  h1 { margin: 0 0 4px; font-size: 24px; }
+  h1 .subtitle { font-size: 13px; color: #94a3b8; font-weight: normal; display: block; margin-top: 4px; }
+  h2 { margin: 24px 0 10px; font-size: 17px; color: #7dd3fc; border-bottom: 1px solid #1f2937; padding-bottom: 6px; }
+  h2.gem-header { color: #fbbf24; }
+  h2.near-miss { color: #94a3b8; font-size: 14px; }
+  nav { background: #111827; padding: 10px 14px; border-radius: 6px; margin-bottom: 14px; display: flex; gap: 12px; flex-wrap: wrap; font-size: 13px; }
+  nav a { color: #7dd3fc; text-decoration: none; padding: 4px 10px; border-radius: 4px; }
+  nav a:hover { background: #1e293b; }
+  nav a.active { background: #1e3a8a; color: #fff; }
+  .banner { background: #1e293b; padding: 12px 16px; border-radius: 6px; margin-bottom: 14px; display: flex; gap: 18px; flex-wrap: wrap; align-items: center; font-size: 13px; }
+  .banner .lock { font-weight: 600; }
+  .banner .lock.locked { color: #f87171; }
+  .banner .lock.open { color: #34d399; }
+  .banner .summary { margin-left: auto; color: #cbd5e1; }
+  .banner .summary strong { color: #fbbf24; font-size: 16px; }
+  .controls { background: #111827; padding: 10px 14px; border-radius: 6px; margin-bottom: 12px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: 12px; }
+  .controls input, .controls select { background: #1e293b; color: #e6e6e6; border: 1px solid #334155; padding: 5px 8px; border-radius: 4px; font-size: 12px; }
+  .pitcher-card { background: #111827; padding: 12px 14px; border-radius: 6px; margin-bottom: 8px; border-left: 5px solid #4b5563; cursor: pointer; }
+  .pitcher-card:hover { background: #1a2436; }
+  .pitcher-card.expanded { box-shadow: 0 0 0 2px #fbbf24; }
+  .pitcher-card.gem { background: linear-gradient(90deg, #422006 0%, #111827 30%); border-left-color: #fbbf24; }
+  .pitcher-card.score-elite { border-left-color: #10b981; }
+  .pitcher-card.score-good  { border-left-color: #3b82f6; }
+  .pitcher-card.score-mid   { border-left-color: #eab308; }
+  .pitcher-card.score-low   { border-left-color: #ef4444; }
+  .header-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .rank { font-size: 18px; font-weight: 700; color: #94a3b8; min-width: 38px; }
+  .name { font-size: 15px; font-weight: 600; }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; background: #1e293b; color: #cbd5e1; }
+  .pill-gem { background: #78350f; color: #fbbf24; }
+  .pill-throws-r { background: #1e3a8a; color: #93c5fd; }
+  .pill-throws-l { background: #581c87; color: #d8b4fe; }
+  .pill-hot { background: #064e3b; color: #6ee7b7; }
+  .score-display { margin-left: auto; text-align: right; min-width: 80px; }
+  .score { font-size: 24px; font-weight: 800; line-height: 1; color: #38bdf8; }
+  .score.score-elite { color: #10b981; }
+  .score.score-good  { color: #3b82f6; }
+  .score.score-mid   { color: #eab308; }
+  .score.score-low   { color: #ef4444; }
+  .score-label { font-size: 10px; color: #94a3b8; text-transform: uppercase; }
+  .start-info { font-size: 12px; color: #cbd5e1; margin-top: 5px; }
+  .quick-stats { font-size: 11px; color: #94a3b8; margin-top: 5px; }
+  .quick-stats strong { color: #e6e6e6; }
+  .detail { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid #1f2937; }
+  .pitcher-card.expanded .detail { display: block; }
+  .gem-evidence { background: #1e1b14; border: 1px solid #78350f; padding: 10px 12px; border-radius: 6px; margin: 10px 0; font-size: 12px; }
+  .gem-evidence h4 { margin: 0 0 8px; color: #fbbf24; font-size: 13px; }
+  .gem-evidence ul { margin: 4px 0 4px 18px; padding: 0; }
+  .gem-evidence li { margin: 2px 0; color: #d4d4d8; }
+  .gem-evidence .arch-tag { display: inline-block; background: #78350f; color: #fbbf24; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; margin-bottom: 6px; }
+  .gem-news { background: #0f1f2f; border-left: 3px solid #38bdf8; padding: 8px 12px; margin: 8px 0; font-size: 12px; color: #cbd5e1; }
+  .start-multi { padding: 8px 10px; background: #1e293b; border-radius: 4px; margin-top: 5px; font-size: 11px; }
+  .factor-bar { display: grid; grid-template-columns: 110px 1fr 60px; gap: 8px; align-items: center; margin: 4px 0; font-size: 11px; }
+  .factor-bar .fname { color: #cbd5e1; }
+  .factor-bar .ftrack { display: block; height: 14px; background: #0f1419; border-radius: 3px; overflow: hidden; border: 1px solid #334155; }
+  .factor-bar .ffill { display: block; height: 100%; min-width: 2px; }
+  .factor-bar .ffill.f-elite { background: linear-gradient(90deg, #059669, #34d399); }
+  .factor-bar .ffill.f-good  { background: linear-gradient(90deg, #2563eb, #60a5fa); }
+  .factor-bar .ffill.f-mid   { background: linear-gradient(90deg, #ca8a04, #facc15); }
+  .factor-bar .ffill.f-low   { background: linear-gradient(90deg, #dc2626, #f87171); }
+  .factor-bar .fval { text-align: right; color: #e6e6e6; font-family: monospace; font-weight: 600; }
+  .empty-state { text-align: center; color: #6b7280; padding: 30px 20px; background: #111827; border-radius: 6px; font-size: 13px; }
+  .footer { margin-top: 24px; color: #6b7280; font-size: 11px; text-align: center; }
+  .footer a { color: #7dd3fc; }
+  details { margin: 12px 0; }
+  details summary { cursor: pointer; color: #94a3b8; font-size: 13px; padding: 6px 0; }
+  details[open] summary { color: #cbd5e1; }
+  .criteria-block { background: #111827; padding: 12px 16px; border-radius: 6px; margin-top: 8px; font-size: 12px; color: #cbd5e1; }
+  .criteria-block code { background: #1e293b; padding: 1px 5px; border-radius: 3px; }
+  .near-miss-card { background: #1a1a1a; padding: 8px 12px; border-radius: 4px; margin-bottom: 6px; font-size: 12px; color: #94a3b8; border-left: 3px solid #4b5563; }
+  .near-miss-card strong { color: #cbd5e1; }
+  @media (max-width: 600px) {
+    .header-row { gap: 6px; }
+    .name { font-size: 14px; }
+    .score { font-size: 20px; }
+    .rank { min-width: 30px; font-size: 16px; }
+  }
+</style></head><body>
+
+<nav>
+  <a href="index.html">Draft Cheatsheet</a>
+  <a href="streamers.html" class="active">Streamers</a>
+</nav>
+
+<h1>Streaming Pitcher Targets <span class="subtitle">Hard Balls League 105422 - .The Money Balls</span></h1>
+
+<div class="banner" id="banner"></div>
+
+<div class="controls">
+  <label><input type="checkbox" id="onlyGems"> Qualified gems only</label>
+  <label><input type="checkbox" id="onlyTwoStart"> 2-start only</label>
+  <label>Min score: <input type="number" id="minScore" value="0" step="5" style="width:60px"></label>
+  <label>Hand: <select id="filterHand"><option value="all">All</option><option value="R">RHP</option><option value="L">LHP</option></select></label>
+</div>
+
+<h2 class="gem-header" id="gemsHeader">Qualified Hidden Gems</h2>
+<div id="gemsBlock"></div>
+
+<h2 id="consensusHeader">Consensus Picks (also on FantasyPros)</h2>
+<div id="consensusBlock"></div>
+
+<details>
+  <summary>Show candidates that almost qualified as gems (didn't meet all gates)</summary>
+  <div id="nearMissBlock"></div>
+</details>
+
+<details>
+  <summary>What makes a "hidden gem"? - methodology</summary>
+  <div class="criteria-block" id="criteriaBlock"></div>
+</details>
+
+<div class="footer">
+  Generated <span id="genTime"></span><br>
+  Sources: ESPN Fantasy API, MLB Stats API, Baseball Savant, FantasyPros, MLB Trade Rumors, RotoWire<br>
+  Live at: <a href="https://damienreilley.github.io/fantasy-baseball-2026/streamers.html">damienreilley.github.io/fantasy-baseball-2026/streamers.html</a>
+</div>
+
+<script>
+const DATA = {"generated_at": "2026-05-10T22:51:09 UTC", "date": "2026-05-10", "cutoff": {"generated_at_utc": "2026-05-10T22:51:09Z", "today": "2026-05-10", "today_lock_utc": "2026-05-10T16:15:00Z", "today_lock_et": "12:15 PM ET", "today_status": "LOCKED (passed 12:15 PM ET)", "tomorrow": "2026-05-11", "tomorrow_lock_utc": "2026-05-11T22:10:00Z", "tomorrow_lock_et": "6:10 PM ET", "lock_times_utc": {"2026-05-10": "2026-05-10T16:15:00Z", "2026-05-11": "2026-05-11T22:10:00Z", "2026-05-12": "2026-05-12T22:10:00Z", "2026-05-13": "2026-05-13T17:10:00Z", "2026-05-14": "2026-05-14T16:35:00Z", "2026-05-15": "2026-05-15T22:40:00Z", "2026-05-16": "2026-05-16T17:10:00Z", "2026-05-17": "2026-05-17T16:15:00Z", "2026-05-18": "2026-05-18T22:40:00Z", "2026-05-19": "2026-05-19T20:10:00Z", "2026-05-20": "2026-05-20T17:05:00Z", "2026-05-21": "2026-05-21T17:10:00Z", "2026-05-22": "2026-05-22T18:20:00Z", "2026-05-23": "2026-05-23T17:35:00Z", "2026-05-24": "2026-05-24T16:15:00Z"}, "lookahead_days": 14, "changes_detected": []}, "qualified_gems": [{"name": "Griffin Jax", "team": "Tampa Bay Rays", "n_starts": 1, "is_two_start": false, "percent_owned": 30.16, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 21.518987341772153, "season_era": 5.0, "season_fip": 5.044444444444444, "season_ip": 18.0, "last_30_k_pct": 28.07017543859649, "last_30_era": 3.21, "starts": [{"date": "2026-05-13", "opponent": "Toronto Blue Jays", "is_home": false, "venue": "Rogers Centre", "park_factor": 103, "opp_ops_l14": 0.674, "opp_k_rate_l14": 17.348927875243664, "score": 39.531578947368416, "factors": {"k_rate": 8.71345029239766, "fip": 1.8222222222222229, "opp_offense": 10, "park": 3.8888888888888893}, "confidence": 0.6}], "composite_score": 39.531578947368416, "fp_status": "hidden_gem", "pool_rank": 16, "pool_size": 30, "percentile": 48.3, "gem_qualifies": true, "gem_archetype": "A_reliever_to_starter", "gem_gates_passed": ["L30 K% 28.1 >= league avg 22.1", "L30 K% (28.1) > season K% (21.5) by 6.6", "Last 3 starts ERA 2.17 < season ERA 5.00"], "gem_evidence": {"season_k_pct": 21.518987341772153, "last_30_k_pct": 28.07017543859649, "season_era": 5.0, "percent_owned": 30.16, "recent_appearances_count": 14, "recent_starts_count": 3, "sustainability_signals": ["L30 K% 28.1 >= league avg 22.1", "L30 K% (28.1) > season K% (21.5) by 6.6", "Last 3 starts ERA 2.17 < season ERA 5.00"], "archetype": "A_reliever_to_starter", "archetype_detail": {"type": "reliever_to_starter", "starts_in_window": 3, "relief_in_window": 11, "pitch_count_ramp": [], "max_ip_recent": 4.0}, "ownership_ok": true, "ownership_threshold_used": 40, "news": {"mentioned": true, "sources": [{"source": "MLBTradeRumors", "headline": "Griffin Jax Player Rumors", "count": 1}], "headline": "Griffin Jax Player Rumors"}}}], "consensus": [{"name": "Jack Flaherty", "team": "Detroit Tigers", "n_starts": 1, "is_two_start": false, "percent_owned": 39.26, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 25.925925925925924, "season_era": 5.56, "season_fip": 5.276470588235294, "season_ip": 34.0, "last_30_k_pct": 29.166666666666668, "last_30_era": 5.85, "starts": [{"date": "2026-05-12", "opponent": "New York Mets", "is_home": false, "venue": "Citi Field", "park_factor": 95, "opp_ops_l14": 0.613, "opp_k_rate_l14": 20.240480961923847, "score": 72.79084967320262, "factors": {"k_rate": 9.444444444444445, "fip": 0.8941176470588239, "opp_offense": 10, "park": 8.333333333333334}, "confidence": 1.0}], "composite_score": 72.79084967320262, "fp_status": "on_fp_list", "pool_rank": 1, "pool_size": 30, "percentile": 100.0}, {"name": "Carmen Mlodzinski", "team": "Pittsburgh Pirates", "n_starts": 1, "is_two_start": false, "percent_owned": 4.94, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 23.163841807909606, "season_era": 4.5, "season_fip": 2.825, "season_ip": 40.0, "last_30_k_pct": 20.588235294117645, "last_30_era": 4.65, "starts": [{"date": "2026-05-14", "opponent": "Colorado Rockies", "is_home": true, "venue": "PNC Park", "park_factor": 95, "opp_ops_l14": 0.721, "opp_k_rate_l14": 27.171903881700555, "score": 65.28921568627453, "factors": {"k_rate": 3.72549019607843, "fip": 10, "opp_offense": 5.9000000000000075, "park": 8.333333333333334}, "confidence": 1.0}], "composite_score": 65.28921568627453, "fp_status": "on_fp_list", "pool_rank": 2, "pool_size": 30, "percentile": 96.6}, {"name": "Bailey Ober", "team": "Minnesota Twins", "n_starts": 1, "is_two_start": false, "percent_owned": 21.8, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 17.77777777777778, "season_era": 4.19, "season_fip": 4.309302325581395, "season_ip": 43.0, "last_30_k_pct": 20.66115702479339, "last_30_era": 3.68, "starts": [{"date": "2026-05-12", "opponent": "Miami Marlins", "is_home": true, "venue": "Target Field", "park_factor": 99, "opp_ops_l14": 0.656, "opp_k_rate_l14": 24.708171206225682, "score": 59.28300980203729, "factors": {"k_rate": 3.7741046831955933, "fip": 4.7627906976744185, "opp_offense": 10, "park": 6.111111111111111}, "confidence": 1.0}], "composite_score": 59.28300980203729, "fp_status": "on_fp_list", "pool_rank": 3, "pool_size": 30, "percentile": 93.1}, {"name": "Mike Burrows", "team": "Houston Astros", "n_starts": 1, "is_two_start": false, "percent_owned": 3.88, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 21.649484536082475, "season_era": 5.04, "season_fip": 4.638461538461538, "season_ip": 44.2, "last_30_k_pct": 22.31404958677686, "last_30_era": 4.71, "starts": [{"date": "2026-05-14", "opponent": "Seattle Mariners", "is_home": true, "venue": "Daikin Park", "park_factor": 99, "opp_ops_l14": 0.685, "opp_k_rate_l14": 26.569037656903767, "score": 58.598166984530636, "factors": {"k_rate": 4.876033057851241, "fip": 3.446153846153848, "opp_offense": 9.5, "park": 6.111111111111111}, "confidence": 1.0}], "composite_score": 58.598166984530636, "fp_status": "on_fp_list", "pool_rank": 4, "pool_size": 30, "percentile": 89.7}, {"name": "Lance McCullers Jr.", "team": "Houston Astros", "n_starts": 1, "is_two_start": false, "percent_owned": 4.4, "injury_status": "DAY_TO_DAY", "throws": "R", "season_k_pct": 25.0, "season_era": 7.41, "season_fip": 4.776470588235294, "season_ip": 34.0, "last_30_k_pct": 22.641509433962266, "last_30_era": 9.39, "starts": [{"date": "2026-05-13", "opponent": "Seattle Mariners", "is_home": true, "venue": "Daikin Park", "park_factor": 99, "opp_ops_l14": 0.685, "opp_k_rate_l14": 26.569037656903767, "score": 57.98214946355902, "factors": {"k_rate": 5.0943396226415105, "fip": 2.894117647058824, "opp_offense": 9.5, "park": 6.111111111111111}, "confidence": 1.0}], "composite_score": 57.98214946355902, "fp_status": "on_fp_list", "pool_rank": 5, "pool_size": 30, "percentile": 86.2}, {"name": "Kumar Rocker", "team": "Texas Rangers", "n_starts": 1, "is_two_start": false, "percent_owned": 1.76, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 18.620689655172416, "season_era": 5.01, "season_fip": 4.346105919003115, "season_ip": 32.1, "last_30_k_pct": 19.672131147540984, "last_30_era": 5.27, "starts": [{"date": "2026-05-13", "opponent": "Arizona Diamondbacks", "is_home": true, "venue": "Globe Life Field", "park_factor": 102, "opp_ops_l14": 0.64, "opp_k_rate_l14": 22.81449893390192, "score": 54.10724682089781, "factors": {"k_rate": 3.114754098360656, "fip": 4.61557632398754, "opp_offense": 10, "park": 4.444444444444445}, "confidence": 1.0}], "composite_score": 54.10724682089781, "fp_status": "on_fp_list", "pool_rank": 6, "pool_size": 30, "percentile": 82.8}, {"name": "Jake Irvin", "team": "Washington Nationals", "n_starts": 1, "is_two_start": false, "percent_owned": 1.36, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 23.295454545454543, "season_era": 5.22, "season_fip": 4.273469387755102, "season_ip": 39.2, "last_30_k_pct": 22.388059701492537, "last_30_era": 4.4, "starts": [{"date": "2026-05-13", "opponent": "Cincinnati Reds", "is_home": false, "venue": "Great American Ball Park", "park_factor": 109, "opp_ops_l14": 0.691, "opp_k_rate_l14": 23.643410852713178, "score": 52.587445425931584, "factors": {"k_rate": 4.925373134328358, "fip": 4.906122448979591, "opp_offense": 8.90000000000001, "park": 0.5555555555555554}, "confidence": 1.0}], "composite_score": 52.587445425931584, "fp_status": "on_fp_list", "pool_rank": 7, "pool_size": 30, "percentile": 79.3}, {"name": "Brandon Sproat", "team": "Milwaukee Brewers", "n_starts": 1, "is_two_start": false, "percent_owned": 1.54, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 22.900763358778626, "season_era": 5.87, "season_fip": 6.013907284768212, "season_ip": 30.2, "last_30_k_pct": 23.958333333333336, "last_30_era": 3.38, "starts": [{"date": "2026-05-12", "opponent": "San Diego Padres", "is_home": true, "venue": "American Family Field", "park_factor": 102, "opp_ops_l14": 0.627, "opp_k_rate_l14": 23.34710743801653, "score": 52.56944444444446, "factors": {"k_rate": 5.972222222222224, "fip": 0, "opp_offense": 10, "park": 4.444444444444445}, "confidence": 1.0}], "composite_score": 52.56944444444446, "fp_status": "on_fp_list", "pool_rank": 8, "pool_size": 30, "percentile": 75.9}, {"name": "J.T. Ginn", "team": "Athletics", "n_starts": 1, "is_two_start": false, "percent_owned": 0.92, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 20.666666666666668, "season_era": 3.62, "season_fip": 4.474663072776281, "season_ip": 37.1, "last_30_k_pct": 22.131147540983605, "last_30_era": 3.26, "starts": [{"date": "2026-05-13", "opponent": "St. Louis Cardinals", "is_home": true, "venue": "Sutter Health Park", "park_factor": 105, "opp_ops_l14": 0.703, "opp_k_rate_l14": 22.00772200772201, "score": 50.30938020119896, "factors": {"k_rate": 4.754098360655736, "fip": 4.1013477088948775, "opp_offense": 7.700000000000009, "park": 2.7777777777777777}, "confidence": 1.0}], "composite_score": 50.30938020119896, "fp_status": "on_fp_list", "pool_rank": 9, "pool_size": 30, "percentile": 72.4}, {"name": "Jeffrey Springs", "team": "Athletics", "n_starts": 1, "is_two_start": false, "percent_owned": 25.21, "injury_status": "ACTIVE", "throws": "L", "season_k_pct": 21.54696132596685, "season_era": 3.89, "season_fip": 4.35, "season_ip": 44.0, "last_30_k_pct": 21.238938053097346, "last_30_era": 5.61, "starts": [{"date": "2026-05-12", "opponent": "St. Louis Cardinals", "is_home": true, "venue": "Sutter Health Park", "park_factor": 105, "opp_ops_l14": 0.703, "opp_k_rate_l14": 22.00772200772201, "score": 49.4741887905605, "factors": {"k_rate": 4.159292035398231, "fip": 4.600000000000001, "opp_offense": 7.700000000000009, "park": 2.7777777777777777}, "confidence": 1.0}], "composite_score": 49.4741887905605, "fp_status": "on_fp_list", "pool_rank": 10, "pool_size": 30, "percentile": 69.0}, {"name": "Patrick Corbin", "team": "Toronto Blue Jays", "n_starts": 1, "is_two_start": false, "percent_owned": 1.42, "injury_status": "ACTIVE", "throws": "L", "season_k_pct": 16.93548387096774, "season_era": 3.6, "season_fip": 4.3, "season_ip": 30.0, "last_30_k_pct": 16.93548387096774, "last_30_era": 3.6, "starts": [{"date": "2026-05-12", "opponent": "Tampa Bay Rays", "is_home": true, "venue": "Rogers Centre", "park_factor": 103, "opp_ops_l14": 0.645, "opp_k_rate_l14": 19.078947368421055, "score": 47.3494623655914, "factors": {"k_rate": 1.2903225806451601, "fip": 4.800000000000001, "opp_offense": 10, "park": 3.8888888888888893}, "confidence": 1.0}], "composite_score": 47.3494623655914, "fp_status": "on_fp_list", "pool_rank": 11, "pool_size": 30, "percentile": 65.5}, {"name": "Trevor McDonald", "team": "San Francisco Giants", "n_starts": 1, "is_two_start": false, "percent_owned": 3.95, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 33.33333333333333, "season_era": 1.29, "season_fip": 3.1, "season_ip": 7.0, "last_30_k_pct": 33.33333333333333, "last_30_era": 1.29, "starts": [{"date": "2026-05-11", "opponent": "Los Angeles Dodgers", "is_home": false, "venue": "UNIQLO Field at Dodger Stadium", "park_factor": 99, "opp_ops_l14": 0.673, "opp_k_rate_l14": 19.25465838509317, "score": 46.58333333333333, "factors": {"k_rate": 10, "fip": 9.6, "opp_offense": 10, "park": 6.111111111111111}, "confidence": 0.5}], "composite_score": 46.58333333333333, "fp_status": "on_fp_list", "pool_rank": 12, "pool_size": 30, "percentile": 62.1}, {"name": "Colin Rea", "team": "Chicago Cubs", "n_starts": 1, "is_two_start": false, "percent_owned": 7.82, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 21.084337349397593, "season_era": 4.03, "season_fip": 3.6526315789473687, "season_ip": 38.0, "last_30_k_pct": 21.008403361344538, "last_30_era": 4.39, "starts": [{"date": "2026-05-12", "opponent": "Atlanta Braves", "is_home": false, "venue": "Truist Park", "park_factor": 100, "opp_ops_l14": 0.762, "opp_k_rate_l14": 24.375, "score": 45.32662538699691, "factors": {"k_rate": 4.0056022408963585, "fip": 7.389473684210525, "opp_offense": 1.8000000000000043, "park": 5.555555555555555}, "confidence": 1.0}], "composite_score": 45.32662538699691, "fp_status": "on_fp_list", "pool_rank": 13, "pool_size": 30, "percentile": 58.6}, {"name": "Andrew Painter", "team": "Philadelphia Phillies", "n_starts": 1, "is_two_start": false, "percent_owned": 11.7, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 19.607843137254903, "season_era": 6.89, "season_fip": 4.8701863354037265, "season_ip": 32.2, "last_30_k_pct": 18.91891891891892, "last_30_era": 7.71, "starts": [{"date": "2026-05-13", "opponent": "Boston Red Sox", "is_home": false, "venue": "Fenway Park", "park_factor": 105, "opp_ops_l14": 0.668, "opp_k_rate_l14": 22.19959266802444, "score": 44.60894745677355, "factors": {"k_rate": 2.612612612612613, "fip": 2.519254658385094, "opp_offense": 10, "park": 2.7777777777777777}, "confidence": 1.0}], "composite_score": 44.60894745677355, "fp_status": "on_fp_list", "pool_rank": 14, "pool_size": 30, "percentile": 55.2}, {"name": "Luis Castillo", "team": "Seattle Mariners", "n_starts": 1, "is_two_start": false, "percent_owned": 62.02, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 20.786516853932586, "season_era": 6.57, "season_fip": 4.543569553805774, "season_ip": 38.1, "last_30_k_pct": 18.97810218978102, "last_30_era": 7.85, "starts": [{"date": "2026-05-14", "opponent": "Houston Astros", "is_home": false, "venue": "Daikin Park", "park_factor": 99, "opp_ops_l14": 0.72, "opp_k_rate_l14": 21.50313152400835, "score": 43.01320957143132, "factors": {"k_rate": 2.6520681265206796, "fip": 3.8257217847769027, "opp_offense": 6.000000000000007, "park": 6.111111111111111}, "confidence": 1.0}], "composite_score": 43.01320957143132, "fp_status": "on_fp_list", "pool_rank": 15, "pool_size": 30, "percentile": 51.7}, {"name": "Adrian Houser", "team": "San Francisco Giants", "n_starts": 1, "is_two_start": false, "percent_owned": 0.49, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 11.44578313253012, "season_era": 6.19, "season_fip": 5.565373961218837, "season_ip": 36.1, "last_30_k_pct": 10.619469026548673, "last_30_era": 7.2, "starts": [{"date": "2026-05-12", "opponent": "Los Angeles Dodgers", "is_home": false, "venue": "UNIQLO Field at Dodger Stadium", "park_factor": 99, "opp_ops_l14": 0.673, "opp_k_rate_l14": 19.25465838509317, "score": 34.166666666666664, "factors": {"k_rate": 0, "fip": 0, "opp_offense": 10, "park": 6.111111111111111}, "confidence": 1.0}], "composite_score": 34.166666666666664, "fp_status": "on_fp_list", "pool_rank": 17, "pool_size": 30, "percentile": 44.8}, {"name": "Simeon Woods Richardson", "team": "Minnesota Twins", "n_starts": 1, "is_two_start": false, "percent_owned": 0.54, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 10.614525139664805, "season_era": 6.92, "season_fip": 6.176923076923077, "season_ip": 39.0, "last_30_k_pct": 9.774436090225564, "last_30_era": 8.89, "starts": [{"date": "2026-05-13", "opponent": "Miami Marlins", "is_home": true, "venue": "Target Field", "park_factor": 99, "opp_ops_l14": 0.656, "opp_k_rate_l14": 24.708171206225682, "score": 34.166666666666664, "factors": {"k_rate": 0, "fip": 0, "opp_offense": 10, "park": 6.111111111111111}, "confidence": 1.0}], "composite_score": 34.166666666666664, "fp_status": "on_fp_list", "pool_rank": 18, "pool_size": 30, "percentile": 41.4}, {"name": "Slade Cecconi", "team": "Cleveland Guardians", "n_starts": 1, "is_two_start": false, "percent_owned": 1.22, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 16.577540106951872, "season_era": 6.15, "season_fip": 5.514634146341463, "season_ip": 41.0, "last_30_k_pct": 14.084507042253522, "last_30_era": 6.46, "starts": [{"date": "2026-05-12", "opponent": "Los Angeles Angels", "is_home": true, "venue": "Progressive Field", "park_factor": 97, "opp_ops_l14": 0.695, "opp_k_rate_l14": 24.74012474012474, "score": 32.08333333333336, "factors": {"k_rate": 0, "fip": 0, "opp_offense": 8.50000000000001, "park": 7.222222222222222}, "confidence": 1.0}], "composite_score": 32.08333333333336, "fp_status": "on_fp_list", "pool_rank": 19, "pool_size": 30, "percentile": 37.9}, {"name": "Jacob Lopez", "team": "Athletics", "n_starts": 1, "is_two_start": false, "percent_owned": 0.65, "injury_status": "ACTIVE", "throws": "L", "season_k_pct": 16.766467065868262, "season_era": 6.11, "season_fip": 6.518803418803419, "season_ip": 35.1, "last_30_k_pct": 17.741935483870968, "last_30_era": 6.0, "starts": [{"date": "2026-05-14", "opponent": "St. Louis Cardinals", "is_home": true, "venue": "Sutter Health Park", "park_factor": 105, "opp_ops_l14": 0.703, "opp_k_rate_l14": 22.00772200772201, "score": 29.814516129032278, "factors": {"k_rate": 1.827956989247312, "fip": 0, "opp_offense": 7.700000000000009, "park": 2.7777777777777777}, "confidence": 1.0}], "composite_score": 29.814516129032278, "fp_status": "on_fp_list", "pool_rank": 20, "pool_size": 30, "percentile": 34.5}, {"name": "Andre Pallante", "team": "St. Louis Cardinals", "n_starts": 1, "is_two_start": false, "percent_owned": 2.11, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 17.575757575757574, "season_era": 4.34, "season_fip": 4.8250673854447435, "season_ip": 37.1, "last_30_k_pct": 19.672131147540984, "last_30_era": 5.27, "starts": [{"date": "2026-05-12", "opponent": "Athletics", "is_home": false, "venue": "Sutter Health Park", "park_factor": 105, "opp_ops_l14": 0.764, "opp_k_rate_l14": 20.857699805068226, "score": 25.817632156481533, "factors": {"k_rate": 3.114754098360656, "fip": 2.699730458221026, "opp_offense": 1.6000000000000032, "park": 2.7777777777777777}, "confidence": 1.0}], "composite_score": 25.817632156481533, "fp_status": "on_fp_list", "pool_rank": 21, "pool_size": 30, "percentile": 31.0}, {"name": "Miles Mikolas", "team": "Washington Nationals", "n_starts": 1, "is_two_start": false, "percent_owned": 0.29, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 15.068493150684931, "season_era": 7.44, "season_fip": 6.39192546583851, "season_ip": 32.2, "last_30_k_pct": 13.924050632911392, "last_30_era": 4.43, "starts": [{"date": "2026-05-12", "opponent": "Cincinnati Reds", "is_home": false, "venue": "Great American Ball Park", "park_factor": 109, "opp_ops_l14": 0.691, "opp_k_rate_l14": 23.643410852713178, "score": 23.083333333333357, "factors": {"k_rate": 0, "fip": 0, "opp_offense": 8.90000000000001, "park": 0.5555555555555554}, "confidence": 1.0}], "composite_score": 23.083333333333357, "fp_status": "on_fp_list", "pool_rank": 22, "pool_size": 30, "percentile": 27.6}, {"name": "Brady Singer", "team": "Cincinnati Reds", "n_starts": 1, "is_two_start": false, "percent_owned": 7.22, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 14.606741573033707, "season_era": 5.63, "season_fip": 5.488451443569554, "season_ip": 38.1, "last_30_k_pct": 10.92436974789916, "last_30_era": 4.73, "starts": [{"date": "2026-05-12", "opponent": "Washington Nationals", "is_home": true, "venue": "Great American Ball Park", "park_factor": 109, "opp_ops_l14": 0.7, "opp_k_rate_l14": 22.899159663865547, "score": 20.948818897637814, "factors": {"k_rate": 0, "fip": 0.04619422572178422, "opp_offense": 8.000000000000009, "park": 0.5555555555555554}, "confidence": 1.0}], "composite_score": 20.948818897637814, "fp_status": "on_fp_list", "pool_rank": 23, "pool_size": 30, "percentile": 24.1}, {"name": "Matt Waldron", "team": "San Diego Padres", "n_starts": 1, "is_two_start": false, "percent_owned": 0.19, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 17.441860465116278, "season_era": 7.71, "season_fip": 5.462637362637363, "season_ip": 18.2, "last_30_k_pct": 17.441860465116278, "last_30_era": 7.71, "starts": [{"date": "2026-05-12", "opponent": "Milwaukee Brewers", "is_home": false, "venue": "American Family Field", "park_factor": 102, "opp_ops_l14": 0.703, "opp_k_rate_l14": 17.796610169491526, "score": 19.406033591731276, "factors": {"k_rate": 1.6279069767441854, "fip": 0.14945054945054892, "opp_offense": 7.700000000000009, "park": 4.444444444444445}, "confidence": 0.6066666666666667}], "composite_score": 19.406033591731276, "fp_status": "on_fp_list", "pool_rank": 24, "pool_size": 30, "percentile": 20.7}, {"name": "Michael Lorenzen", "team": "Colorado Rockies", "n_starts": 1, "is_two_start": false, "percent_owned": 0.49, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 13.684210526315791, "season_era": 6.92, "season_fip": 5.253846153846154, "season_ip": 39.0, "last_30_k_pct": 13.445378151260504, "last_30_era": 5.88, "starts": [{"date": "2026-05-12", "opponent": "Pittsburgh Pirates", "is_home": false, "venue": "PNC Park", "park_factor": 95, "opp_ops_l14": 0.768, "opp_k_rate_l14": 23.277467411545626, "score": 17.96153846153847, "factors": {"k_rate": 0, "fip": 0.9846153846153847, "opp_offense": 1.2000000000000028, "park": 8.333333333333334}, "confidence": 1.0}], "composite_score": 17.96153846153847, "fp_status": "on_fp_list", "pool_rank": 25, "pool_size": 30, "percentile": 17.2}, {"name": "Matthew Liberatore", "team": "St. Louis Cardinals", "n_starts": 1, "is_two_start": false, "percent_owned": 4.07, "injury_status": "ACTIVE", "throws": "L", "season_k_pct": 16.201117318435752, "season_era": 4.07, "season_fip": 5.338095238095239, "season_ip": 42.0, "last_30_k_pct": 17.59259259259259, "last_30_era": 4.5, "starts": [{"date": "2026-05-13", "opponent": "Athletics", "is_home": false, "venue": "Sutter Health Park", "park_factor": 105, "opp_ops_l14": 0.764, "opp_k_rate_l14": 20.857699805068226, "score": 15.835097001763668, "factors": {"k_rate": 1.7283950617283945, "fip": 0.6476190476190453, "opp_offense": 1.6000000000000032, "park": 2.7777777777777777}, "confidence": 1.0}], "composite_score": 15.835097001763668, "fp_status": "on_fp_list", "pool_rank": 26, "pool_size": 30, "percentile": 13.8}, {"name": "Jose Quintana", "team": "Colorado Rockies", "n_starts": 1, "is_two_start": false, "percent_owned": 0.58, "injury_status": "ACTIVE", "throws": "L", "season_k_pct": 11.023622047244094, "season_era": 3.9, "season_fip": 5.733333333333333, "season_ip": 30.0, "last_30_k_pct": 11.11111111111111, "last_30_era": 3.86, "starts": [{"date": "2026-05-13", "opponent": "Pittsburgh Pirates", "is_home": false, "venue": "PNC Park", "park_factor": 95, "opp_ops_l14": 0.768, "opp_k_rate_l14": 23.277467411545626, "score": 15.500000000000009, "factors": {"k_rate": 0, "fip": 0, "opp_offense": 1.2000000000000028, "park": 8.333333333333334}, "confidence": 1.0}], "composite_score": 15.500000000000009, "fp_status": "on_fp_list", "pool_rank": 27, "pool_size": 30, "percentile": 10.3}, {"name": "Erick Fedde", "team": "Chicago White Sox", "n_starts": 1, "is_two_start": false, "percent_owned": 1.3, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 15.483870967741936, "season_era": 3.79, "season_fip": 5.757894736842106, "season_ip": 38.0, "last_30_k_pct": 14.285714285714285, "last_30_era": 3.67, "starts": [{"date": "2026-05-12", "opponent": "Kansas City Royals", "is_home": true, "venue": "Rate Field", "park_factor": 102, "opp_ops_l14": 0.758, "opp_k_rate_l14": 21.063394683026583, "score": 12.166666666666679, "factors": {"k_rate": 0, "fip": 0, "opp_offense": 2.2000000000000046, "park": 4.444444444444445}, "confidence": 1.0}], "composite_score": 12.166666666666679, "fp_status": "on_fp_list", "pool_rank": 29, "pool_size": 30, "percentile": 3.4}, {"name": "Brandon Young", "team": "Baltimore Orioles", "n_starts": 1, "is_two_start": false, "percent_owned": 1.36, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 15.053763440860216, "season_era": 4.35, "season_fip": 4.832673267326733, "season_ip": 20.2, "last_30_k_pct": 16.0, "last_30_era": 5.74, "starts": [{"date": "2026-05-11", "opponent": "New York Yankees", "is_home": true, "venue": "Oriole Park at Camden Yards", "park_factor": 102, "opp_ops_l14": 0.795, "opp_k_rate_l14": 21.64750957854406, "score": 10.553333333333331, "factors": {"k_rate": 0.6666666666666666, "fip": 2.669306930693068, "opp_offense": 0, "park": 4.444444444444445}, "confidence": 0.6733333333333333}], "composite_score": 10.553333333333331, "fp_status": "on_fp_list", "pool_rank": 30, "pool_size": 30, "percentile": 0.0}], "near_miss": [{"name": "Stephen Kolek", "team": "Kansas City Royals", "n_starts": 1, "is_two_start": false, "percent_owned": 0.61, "injury_status": "ACTIVE", "throws": "R", "season_k_pct": 13.636363636363635, "season_era": 4.5, "season_fip": 4.266666666666667, "season_ip": 6.0, "last_30_k_pct": 13.636363636363635, "last_30_era": 4.5, "starts": [{"date": "2026-05-12", "opponent": "Chicago White Sox", "is_home": false, "venue": "Rate Field", "park_factor": 102, "opp_ops_l14": 0.736, "opp_k_rate_l14": 25.0, "score": 15.000000000000009, "factors": {"k_rate": 0, "fip": 4.933333333333334, "opp_offense": 4.400000000000006, "park": 4.444444444444445}, "confidence": 0.5}], "composite_score": 15.000000000000009, "fp_status": "hidden_gem", "pool_rank": 28, "pool_size": 30, "percentile": 6.9, "gem_qualifies": false, "gem_archetype": null, "gem_gates_passed": [], "gem_evidence": {"season_k_pct": 13.636363636363635, "last_30_k_pct": 13.636363636363635, "season_era": 4.5, "percent_owned": 0.61, "recent_appearances_count": 1, "recent_starts_count": 1, "sustainability_signals": [], "archetype": null, "archetype_detail": null, "ownership_ok": true, "ownership_threshold_used": 30, "news": {"mentioned": true, "sources": [{"source": "MLBTradeRumors", "headline": "Stephen Kolek Player Rumors", "count": 1}], "headline": "Stephen Kolek Player Rumors"}}}], "criteria": {"archetypes": ["A_reliever_to_starter", "B_returning_from_IL", "C_recent_promotion", "D_pitch_mix_evolution", "E_underlying_outlier_positive"], "sustainability_gates_required": "at least 2 of 3 (K% >= 22.1, recent form up, ratio gap)", "ownership_gate": "<= 30%", "news_gate": "at least one MLB.com mention", "absence_gate": "not on FantasyPros streamer list (already applied by hidden_gems.py)"}};
+document.getElementById('genTime').textContent = DATA.generated_at;
+
+function compositeTier(s) { if (s>=80) return 'score-elite'; if (s>=60) return 'score-good'; if (s>=40) return 'score-mid'; return 'score-low'; }
+function factorTier(v)    { if (v>=7.5) return 'f-elite'; if (v>=5.0) return 'f-good';  if (v>=2.5) return 'f-mid';   return 'f-low'; }
+function pillThrows(t) {
+  if (t === 'R') return '<span class="pill pill-throws-r">RHP</span>';
+  if (t === 'L') return '<span class="pill pill-throws-l">LHP</span>';
+  return '<span class="pill">?</span>';
+}
+function fmt(v, dp) { return (v === null || v === undefined) ? '&mdash;' : v.toFixed(dp); }
+function fmtPct(v) { return (v === null || v === undefined) ? '&mdash;' : v.toFixed(1) + '%'; }
+
+(function renderBanner() {
+  const c = DATA.cutoff || {};
+  const lockClass = c.today_status && c.today_status.startsWith('LOCKED') ? 'locked' : 'open';
+  const lockMsg = c.today_status || 'No cutoff data';
+  const tomorrow = c.tomorrow_lock_et ? ` &middot; Tomorrow locks ${c.tomorrow_lock_et}` : '';
+  document.getElementById('banner').innerHTML = `
+    <div class="lock ${lockClass}">${DATA.date} &middot; ${lockMsg}${tomorrow}</div>
+    <div class="summary">
+      <strong>${DATA.qualified_gems.length}</strong> qualified gem${DATA.qualified_gems.length===1?'':'s'} &middot;
+      <strong>${DATA.consensus.length}</strong> consensus pick${DATA.consensus.length===1?'':'s'}
+    </div>
+  `;
+})();
+
+(function renderCriteria() {
+  const c = DATA.criteria;
+  document.getElementById('criteriaBlock').innerHTML = `
+    <p><strong>Archetypes (must match at least one):</strong></p>
+    <ul>
+      <li><code>A_reliever_to_starter</code> - documented role change, climbing pitch count</li>
+      <li><code>B_returning_from_IL</code> - rehab K-rate matches/exceeds pre-injury</li>
+      <li><code>C_recent_promotion</code> - small MLB sample, strong MiLB indicators</li>
+      <li><code>D_pitch_mix_evolution</code> - new pitch, velo bump, K-rate spike</li>
+      <li><code>E_underlying_outlier_positive</code> - SIERA/xFIP/FIP gap to ERA &ge; 1.50 (positive regression)</li>
+    </ul>
+    <p><strong>Sustainability gates (need 2 of 3):</strong> K% &ge; ${22.1}, recent form trending up, ratio gap.</p>
+    <p><strong>Ownership gate:</strong> &le; 30% (or 40% if archetype A, since reliever-to-starter ownership rises fast).</p>
+    <p><strong>News gate:</strong> at least one mention from MLBTradeRumors or RotoWire (filters noise from random matches).</p>
+    <p><strong>Absence gate:</strong> not on FantasyPros' weekly streamer page (means 11 opponents reading FP won't see them).</p>
+    <p><strong>Expected frequency:</strong> 0-3 per week league-wide. If we find &gt;3, the bar is too low.</p>
+  `;
+})();
+
+function buildCard(r, isGem) {
+  const tier = compositeTier(r.composite_score);
+  const startSummary = r.starts.map(s => {
+    const ha = s.is_home ? 'vs' : '@';
+    return `${s.date} ${ha} ${s.opponent}`;
+  }).join(' &bull; ');
+
+  const factorBlocks = r.starts.map((s, idx) => {
+    const ha = s.is_home ? 'vs' : '@';
+    const f = s.factors || {};
+    const factors = [['K-rate', f.k_rate, 35], ['FIP', f.fip, 25], ['Opp Offense', f.opp_offense, 25], ['Park', f.park, 15]];
+    const fhtml = factors.map(([n,v,w]) => {
+      const pct = (v / 10 * 100).toFixed(0);
+      const ft = factorTier(v);
+      return `<div class="factor-bar">
+        <span class="fname">${n} (${w}%)</span>
+        <span class="ftrack"><span class="ffill ${ft}" style="width:${pct}%"></span></span>
+        <span class="fval">${v.toFixed(1)}/10</span>
+      </div>`;
+    }).join('');
+    return `<div class="start-multi">
+      <strong>Start ${idx+1}: ${s.date} ${ha} ${s.opponent}</strong>
+      <div style="margin:4px 0; color:#94a3b8; font-size:10px">
+        Park ${s.park_factor||'?'} | Opp OPS L14 ${fmt(s.opp_ops_l14, 3)} | Opp K% L14 ${fmtPct(s.opp_k_rate_l14)}
+      </div>
+      ${fhtml}
+    </div>`;
+  }).join('');
+
+  let gemEvidence = '';
+  if (isGem && r.gem_evidence) {
+    const ev = r.gem_evidence;
+    const archetypeLabels = {
+      'A_reliever_to_starter': 'Reliever to Starter conversion',
+      'B_returning_from_IL': 'Returning from IL',
+      'C_recent_promotion': 'Recent promotion',
+      'D_pitch_mix_evolution': 'Pitch-mix evolution',
+      'E_underlying_outlier_positive': 'Positive underlying outlier',
+    };
+    const archDetail = ev.archetype_detail ? `<li>Detail: ${JSON.stringify(ev.archetype_detail)}</li>` : '';
+    const sustList = (ev.sustainability_signals || []).map(s => `<li>${s}</li>`).join('');
+    let newsBlock = '';
+    if (ev.news && ev.news.headline) {
+      const sources = (ev.news.sources || []).map(s => s.source).join(', ');
+      newsBlock = `<div class="gem-news"><strong>News confirmed:</strong> "${ev.news.headline}" <em>(${sources})</em></div>`;
+    }
+    gemEvidence = `
+      <div class="gem-evidence">
+        <h4>Why this qualifies as a hidden gem</h4>
+        <span class="arch-tag">${archetypeLabels[ev.archetype] || ev.archetype}</span>
+        ${archDetail ? '<ul>' + archDetail + '</ul>' : ''}
+        <p style="margin:6px 0 4px"><strong>Sustainability signals (${(ev.sustainability_signals||[]).length}):</strong></p>
+        <ul>${sustList}</ul>
+        <p style="margin:6px 0 4px"><strong>Ownership:</strong> ${ev.percent_owned}% (threshold ${ev.ownership_threshold_used || 30}%)</p>
+        ${newsBlock}
+      </div>
+    `;
+  }
+
+  return `<div class="pitcher-card ${tier} ${isGem ? 'gem' : ''}" onclick="this.classList.toggle('expanded')"
+    data-score="${r.composite_score}" data-twostart="${r.is_two_start}" data-throws="${r.throws}" data-isgem="${isGem ? 1 : 0}">
+    <div class="header-row">
+      <span class="rank">#${r.pool_rank}</span>
+      <span class="name">${r.name}</span>
+      ${pillThrows(r.throws)}
+      <span class="pill">${r.team}</span>
+      ${r.is_two_start ? '<span class="pill pill-hot">2-START</span>' : ''}
+      ${isGem ? '<span class="pill pill-gem">HIDDEN GEM</span>' : ''}
+      <div class="score-display">
+        <div class="score ${tier}">${r.composite_score.toFixed(1)}</div>
+        <div class="score-label">score</div>
+      </div>
+    </div>
+    <div class="start-info">${startSummary}</div>
+    <div class="quick-stats">
+      <strong>Season:</strong> ${fmt(r.season_ip, 1)} IP, ${fmtPct(r.season_k_pct)} K, ${fmt(r.season_era, 2)} ERA
+      &middot; <strong>L30:</strong> ${fmtPct(r.last_30_k_pct)} K
+      &middot; <strong>Owned:</strong> ${fmt(r.percent_owned, 1)}%
+    </div>
+    ${gemEvidence}
+    <div class="detail">${factorBlocks}</div>
+  </div>`;
+}
+
+function renderAll() {
+  const onlyGems = document.getElementById('onlyGems').checked;
+  const onlyTwoStart = document.getElementById('onlyTwoStart').checked;
+  const minScore = +document.getElementById('minScore').value;
+  const handFilter = document.getElementById('filterHand').value;
+
+  function passFilter(r) {
+    if (r.composite_score < minScore) return false;
+    if (onlyTwoStart && !r.is_two_start) return false;
+    if (handFilter !== 'all' && r.throws !== handFilter) return false;
+    return true;
+  }
+
+  const gems = DATA.qualified_gems.filter(passFilter);
+  const consensus = DATA.consensus.filter(passFilter);
+
+  document.getElementById('gemsBlock').innerHTML = gems.length
+    ? gems.map(r => buildCard(r, true)).join('')
+    : '<div class="empty-state">No qualified hidden gems match the current filters.<br>Real gems are rare - 0-3 per week league-wide.</div>';
+
+  if (onlyGems) {
+    document.getElementById('consensusBlock').innerHTML = '';
+    document.getElementById('consensusHeader').style.display = 'none';
+  } else {
+    document.getElementById('consensusHeader').style.display = '';
+    document.getElementById('consensusBlock').innerHTML = consensus.length
+      ? consensus.map(r => buildCard(r, false)).join('')
+      : '<div class="empty-state">No consensus picks match the current filters.</div>';
+  }
+
+  document.getElementById('nearMissBlock').innerHTML = DATA.near_miss.length
+    ? DATA.near_miss.map(r => {
+        const ev = r.gem_evidence || {};
+        const reasons = [];
+        if (!ev.archetype) reasons.push('no archetype match');
+        if (!ev.sustainability_signals || ev.sustainability_signals.length < 2) reasons.push(`only ${(ev.sustainability_signals||[]).length} sustainability signal(s)`);
+        if (!ev.ownership_ok) reasons.push(`owned ${ev.percent_owned}%`);
+        if (ev.news && !ev.news.mentioned) reasons.push('no news mention');
+        return `<div class="near-miss-card"><strong>${r.name}</strong> (${r.team}) - rejected: ${reasons.join(', ')}</div>`;
+      }).join('')
+    : '<div class="empty-state">No near-miss candidates.</div>';
+}
+
+['onlyGems','onlyTwoStart','minScore','filterHand'].forEach(id => {
+  document.getElementById(id).addEventListener('input', renderAll);
+  document.getElementById(id).addEventListener('change', renderAll);
+});
+renderAll();
+</script></body></html>
