@@ -33,6 +33,25 @@ const offlinePath=path.join(dir,'Pack_Room_Offline_All_Four.html');
 check(existsSync(offlinePath)&& (await stat(offlinePath)).size>200000,'standalone offline HTML exists and includes all four checklists');
 const offtext=await readFile(offlinePath,'utf8');
 check(!offtext.includes('<script src=')&&!offtext.includes('<link rel="stylesheet"'),'standalone offline HTML has no external script or CSS');
+// Public, internet-accessible production check, separate from local file tests.
+const production='https://damienreilley.github.io/fantasy-baseball-2026/card-lookup/';
+for(const [asset,textExpected] of [
+ ['','PACK ROOM'],
+ ['packs.html','main.js'],
+ ['config.js','window.PRODUCTS'],
+ ['main.js','showResults'],
+ ['data/chrome25.json','Cal Raleigh'],
+ ['data/pulse26.json','Aidan Miller'],
+ ['data/panini26.json','AJ Elliott'],
+ ['data/logo26.json','Bryce Harper'],
+ ['Pack_Room_Offline_All_Four.html','ALL'],
+]){
+ const res=await fetch(production+asset,{signal:AbortSignal.timeout(25000),headers:{'User-Agent':'Mozilla/5.0 PackRoom QA'}});
+ check(res.status===200,'PUBLIC GitHub Pages '+(asset||'homepage')+' returns HTTP 200');
+ const body=await res.text();
+ check(body.includes(textExpected),'PUBLIC asset '+(asset||'homepage')+' serves expected content');
+}
+
 const server=spawn('python3',['-m','http.server','8765','--bind','127.0.0.1','--directory',dir],{stdio:'ignore'});
 let browser;
 try {
