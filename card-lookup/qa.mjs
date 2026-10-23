@@ -15,12 +15,16 @@ for(const [set,min,code,name] of [
  ['pulse26',500,'BLCL-01','Aidan Miller'],
  ['panini26',1150,'1','AJ Elliott'],
  ['logo26',490,'244','Bryce Harper'],
+ ['series1',1700,'1','Aaron Judge'],
+ ['series2',1850,'351','Dillon Dingler'],
+ ['update26',2050,'US1','Konnor Griffin'],
 ]){
  const d=JSON.parse(await readFile(path.join(dir,'data',set+'.json'),'utf8'));
  check(d.cards.length>=min,set+' checklist has '+d.cards.length+' entries');
  check(d.cards.some(c=>c.code===code&&c.name===name),set+' known lookup '+code+' '+name);
  check(d.cards.every(c=>c.code&&c.name&&c.set&&c.type),set+' all records contain searchable fields');
 }
+for (const key of ['series1','series2','update26']) {const x=JSON.parse(await readFile(path.join(dir,'data',key+'.json'),'utf8'));check(x.cards.filter(c=>c.type==='Base').length===350, key+' official Topps PDF has 350 base cards');}
 const top=JSON.parse(await readFile(path.join(dir,'data','chrome25.json'),'utf8'));
 check(top.cards.filter(x=>x.type==='Base').length===200,'Chrome Update exactly 200 physical base-card entries');
 for(const [code,names] of [['USC45',['Tommy Pham','Cal Raleigh']],['USC80',['Tyler Locklear','Dustin May']]]){
@@ -45,6 +49,13 @@ for(const [asset,textExpected] of [
  ['data/panini26.json','AJ Elliott'],
  ['data/logo26.json','Bryce Harper'],
  ['Pack_Room_Offline_All_Four.html','All 4 Offline Card Lookup Tools'],
+ ['Pack_Room_Offline_All_Seven.html','All 7 Offline Card Lookup Tools'],
+ ['education.html','CHEAT SHEETS + VISUAL PARALLELS'],
+ ['media/update-parallels.png',''],
+ ['media/update-education.pdf',''],
+ ['data/series1.json','Aaron Judge'],
+ ['data/series2.json','Dillon Dingler'],
+ ['data/update26.json','Konnor Griffin'],
 ]){
  const res=await fetch(production+asset,{signal:AbortSignal.timeout(25000),headers:{'User-Agent':'Mozilla/5.0 PackRoom QA'}});
  check(res.status===200,'PUBLIC GitHub Pages '+(asset||'homepage')+' returns HTTP 200');
@@ -62,12 +73,15 @@ try {
  const page=await context.newPage(); const errors=[];
  page.on('pageerror',e=>errors.push('pageerror '+e.message));
  await page.goto(base,{waitUntil:'networkidle'});
- check(await page.locator('a.product').count()===4,'homepage shows four selectable exact products');
+ check(await page.locator('a.product').count()===7,'homepage shows seven selectable exact products');
  const examples=[
   ['chrome25','USC45','Cal Raleigh'],
   ['pulse26','BLCL-01','Aidan Miller'],
   ['panini26','AJ Elliott','AJ Elliott'],
   ['logo26','244','Bryce Harper'],
+  ['series1','1','Aaron Judge'],
+  ['series2','351','Dillon Dingler'],
+  ['update26','US1','Konnor Griffin'],
  ];
  for(const [key,code,name] of examples){
    await page.goto(base+'packs.html?set='+key,{waitUntil:'networkidle'});
@@ -86,6 +100,8 @@ try {
    await page.locator('.tabs button[data-tab=search]').click();
    check(await page.locator('section[data-tab=search]').isVisible(),key+' search tab returns');
  }
+ for (const k of ['series1','series2','update26','logo26','chrome25','pulse26','panini26']) {await page.goto(base+'education.html?set='+k,{waitUntil:'networkidle'});check(await page.locator('#heading').innerText()!=='' ,'education cheat sheet renders for '+k);check(await page.locator('#parallelWarning').innerText()!=='' ,'parallel guidance displays for '+k);}
+ await page.goto(base+'education.html?set=update26',{waitUntil:'networkidle'});check(await page.locator('img.e-visual').count()===1,'Update official parallel image embedded');const pdfResp=await fetch(base+'media/update-education.pdf');check(pdfResp.status===200,'Update printable education PDF accessible');
  const mobile=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:2});
  const m=await mobile.newPage();m.on('pageerror',e=>errors.push('mobile '+e.message));
  await m.goto(base+'packs.html?set=pulse26',{waitUntil:'networkidle'});
@@ -98,6 +114,9 @@ try {
  check((await m.locator('#results').innerText()).includes('Aidan Miller'),'mobile card lookup returns result');
  check(await m.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1),'mobile viewport avoids horizontal overflow');
  const offlineURL=new URL('file://'+offlinePath).href;
+ const off7=new URL('file://'+path.join(dir,'Pack_Room_Offline_All_Seven.html')).href;
+ const seven=await browser.newPage();await seven.goto(off7);await seven.locator('#set').selectOption('update26');await seven.locator('#q').fill('US1');check((await seven.locator('#matches').innerText()).includes('Konnor Griffin'),'standalone 7-product offline file resolves Update rookie');await seven.close();
+
  const filePage=await browser.newPage();
  await filePage.goto(offlineURL);
  await filePage.locator('#set').selectOption('panini26');
