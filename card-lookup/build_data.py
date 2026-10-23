@@ -34,9 +34,9 @@ def panini(text):
   heading=previous.get_text(' ',strip=True) if previous else ''
   label=re.sub(r'\s+\d+\s+cards?$', '', heading,flags=re.I).strip()
   low=label.lower()
-  if low.startswith('base') or 'greats' in low: category='Base'
+  if 'signature' in low or 'autograph' in low:category='Autograph'
   elif 'material' in low:category='Relic'
-  elif 'signature' in low or 'autograph' in low:category='Autograph'
+  elif low.startswith('base') or 'greats' in low: category='Base'
   else:category='Insert'
   for row in table.select('tbody tr'):
    cells=[td.get_text(' ',strip=True) for td in row.find_all('td')]
