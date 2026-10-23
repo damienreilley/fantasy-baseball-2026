@@ -64,7 +64,12 @@ def extra_cards(doc):
    k=(code,name,heading)
    if k in seen:continue
    seen.add(k)
-   cards.append(dict(code=code,name=name,team=team,type=kind,set=heading,rookie=bool(re.search(r"\bRookie\b",rest)),provenance="Official Topps PDF, page "+str(page_n+1)))
+   prefix=code.split("-")[0]
+   KNOWN={"AA":"All Aces","AK":"All Kings","T91":"1991 Topps Baseball","91B2":"1991 Topps Baseball","U91":"1991 Topps Baseball","U91C":"1991 Topps Chrome Baseball","91AS":"1991 Topps All-Stars","HA":"Home Field Advantage","BTP":"Big Ticket Players","SMLB":"Stars of MLB","BSA":"Baseball Stars Autographs","BSA2":"Baseball Stars Autographs","BSAU":"Baseball Stars Autographs"}
+   corrected=KNOWN.get(prefix,heading)
+   if prefix in KNOWN:kind=("Autograph" if "Autograph" in corrected else "Insert")
+   elif corrected=="INSERT":corrected="Insert (subset to confirm)"
+   cards.append(dict(code=code,name=name,team=team,type=kind,set=corrected,rookie=bool(re.search(r"\bRookie\b",rest)),provenance="Official Topps PDF, page "+str(page_n+1),subsetConfidence=("prefix-confirmed" if prefix in KNOWN else "heading-inferred")))
  return cards
 
 def parse(name,pdf):
