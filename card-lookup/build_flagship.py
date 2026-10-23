@@ -20,7 +20,7 @@ def parse_line(v,prefix):
  pattern=(r"^(US\d{1,3})\s+" if prefix else r"^(\d{1,3})\s+")
  m=re.match(pattern,v)
  if not m:return None
- code, rest=m.group(1),m.group(0)[m.end():]
+ code, rest=m.group(1),v[m.end():]
  found=None
  for team in TEAMS:
   match=re.search(r"(?<!\w)"+re.escape(team)+r"(?=\s|$)",rest,re.I)
