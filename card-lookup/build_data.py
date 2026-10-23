@@ -69,6 +69,6 @@ for k,url in SOURCES.items():
   print('RECORDS',k,len(records),'samples',records[:2])
   required={'chrome25':1000,'pulse26':490,'panini26':1000}[k]
   if len(records)<required: raise ValueError(f"{k} too few parsed rows: {len(records)} < {required}")
-  (BASE/f'{k}.json').write_text(json.dumps({'source':url,'count':len(records),'sourceLabel':('Topps checklist + corrected printed numbers' if k=='chrome25' else 'Independent checklist reference'),'cards':records},ensure_ascii=False,separators=(',',':')),encoding='utf-8')
+  (BASE/f'{k}.json').write_text(json.dumps({'source':url,'count':len(records),'sourceLabel':('Independent checklist (Cardboard Checklist); printed numbers cross-checked with TCDB' if k=='chrome25' else 'Independent checklist reference'),'cards':records},ensure_ascii=False,separators=(',',':')),encoding='utf-8')
  except Exception as e:
   print('FAIL',k,type(e).__name__,str(e))
