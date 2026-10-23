@@ -32,18 +32,31 @@ def parse_line(v,prefix):
  if len(name)<2 or len(name)>95:return None
  return dict(code=code,name=name,team=found[2],type="Base",set="Base Cards",rookie=bool(re.search(r"\bRookie\b",tail)),designation=tail)
 def extra_cards(doc):
+ """Index PDF printed subset IDs; treat explicit PDF headings as authoritative.
+ Do not infer a subset from card-prefix alone: AA is BOTH Autumn Ascensions
+ and All Aces in 2026 Topps Update Series.
+ """
  cards=[]
- heading="Insert checklist"
+ heading="Insert (subset to confirm)"
  seen=set()
- ignored={"HOBBY EXCLUSIVE","RETAIL EXCLUSIVE","JUMBO EXCLUSIVE","BASE","BASE SET","HOBBY/HOBBY JUMBO ONLY","SUBJECT TO CHANGE","PARALLELS","CHROME","INSERTS"}
+ ignored={"HOBBY EXCLUSIVE","RETAIL EXCLUSIVE","JUMBO EXCLUSIVE","BASE","BASE SET",
+          "HOBBY/HOBBY JUMBO ONLY","SUBJECT TO CHANGE","PARALLELS","CHROME",
+          "INSERTS","INSERT","AUTOGRAPHS","RELICS","MEMORABILIA","HOBBY",
+          "HOBBY ONLY","HOBBY JUMBO ONLY","RETAIL ONLY"}
  for page_n,page in enumerate(doc):
   for raw in page.get_text("text",sort=True).splitlines():
    line=tidy(raw)
-   if (line and len(line)>5 and len(line)<105 and not re.match(r"^([A-Z0-9]+[-\d])",line)
+   if (line and len(line)>4 and len(line)<145
+       and not re.match(r"^([A-Z0-9]+[-\d])",line)
        and line==line.upper() and sum(x.isalpha() for x in line)>3):
-    if line not in ignored and not line.startswith(("CHECKLISTS PROVIDED","*SUBJECT","PAGE ","HOBBY/")):
-     if any(kw in line for kw in ["AUTOGRAPH","RELIC","MEMORABILIA","MATERIAL","SWATCH","1991 TOPPS","ALL ACES","HOME FIELD","BIG TICKET","HEAVY LUMBER","STARS OF MLB","TITANS OF THE GAME","1952","COVER ATHLETES","INSERT","SIGNATURE","VARIATION","SHORT PRINT","RED","GREATEST HITS","CITY CONNECT","FOIL","FUTURE STARS","DIE CUT","BASEBALL STARS","PLAYER NUMBER"]):
-      heading=line
+    if line not in ignored and not line.startswith((
+        "CHECKLISTS PROVIDED","*SUBJECT","PAGE ","HOBBY/","RETAIL/",
+        "ALL HOBBY","BASE SET","BASE VARIATIONS","HOBBY EXCLUSIVE","SUBJECT TO CHANGE",
+        "AVAILABLE","SUPER BOX","INSERT SETS","INSERTS -","BASEBALL CHECKLIST",
+        "2026 TOPPS","TOPPS UPDATE SERIES")):
+     # True all-caps subset headings such as AUTUMN ASCENSIONS, ALL ACES,
+     # STARS OF MLB, 1991 TOPPS BASEBALL CHROME BASE CARDS AUTOGRAPH PARALLEL.
+     heading=line
     continue
    m=re.match(r"^([A-Z0-9]{2,10}-[A-Z0-9]{1,10})\s+(.+)$",line)
    if not m: continue
@@ -59,18 +72,27 @@ def extra_cards(doc):
    if len(name)<2 or len(name)>88:continue
    tag=heading.upper()
    kind=("Autograph" if ("AUTOGRAPH" in tag or "SIGNATURE" in tag)
-      else ("Relic" if any(w in tag for w in ["RELIC","MEMORABILIA","MATERIAL","SWATCH"])
+      else ("Relic" if any(w in tag for w in ["RELIC","MEMORABILIA","MATERIAL","SWATCH","PATCH"])
       else ("Variation" if "VARIATION" in tag else "Insert")))
-   k=(code,name,heading)
+   # A literal manufacturer heading is preferred to any supposed prefix mapping.
+   corrected=heading if heading else "Insert (subset to confirm)"
+   if corrected in ["INSERT","INSERTS"]:corrected="Insert (subset to confirm)"
+   k=(code,name,corrected)
    if k in seen:continue
    seen.add(k)
-   prefix=code.split("-")[0]
-   KNOWN={"AA":"All Aces","AK":"All Kings","T91":"1991 Topps Baseball","91B2":"1991 Topps Baseball","U91":"1991 Topps Baseball","U91C":"1991 Topps Chrome Baseball","91AS":"1991 Topps All-Stars","HA":"Home Field Advantage","BTP":"Big Ticket Players","SMLB":"Stars of MLB","BSA":"Baseball Stars Autographs","BSA2":"Baseball Stars Autographs","BSAU":"Baseball Stars Autographs"}
-   corrected=KNOWN.get(prefix,heading)
-   if prefix in KNOWN:kind=("Autograph" if "Autograph" in corrected else "Insert")
-   elif corrected=="INSERT":corrected="Insert (subset to confirm)"
-   cards.append(dict(code=code,name=name,team=team,type=kind,set=corrected,rookie=bool(re.search(r"\bRookie\b",rest)),provenance="Official Topps PDF, page "+str(page_n+1),subsetConfidence=("prefix-confirmed" if prefix in KNOWN else "heading-inferred")))
- return cards
+   cards.append(dict(code=code,name=name,team=team,type=kind,set=corrected,rookie=bool(re.search(r"\bRookie\b",rest)),provenance="Official Topps PDF, page "+str(page_n+1),subsetConfidence=("manufacturer-heading" if not corrected.startswith("Insert (") else "unverified")))
+ # Two signers printed on separate rows are ONE dual-signature card,
+ # not separate cards. Repeated autograph checklist appearances remain
+ # separate when official subset headings differ.
+ grouped={}
+ for c in cards:
+  k=(c["code"],c["set"])
+  if k not in grouped:grouped[k]=c.copy()
+  elif c["name"]!=grouped[k]["name"] and c["name"] not in grouped[k]["name"].split(" / "):
+   grouped[k]["name"]+=" / "+c["name"]
+   if c["team"] and c["team"]!=grouped[k]["team"]:
+    grouped[k]["team"]+=" / "+c["team"]
+ return list(grouped.values())
 
 def parse(name,pdf):
  doc=fitz.open(stream=pdf,filetype="pdf")
