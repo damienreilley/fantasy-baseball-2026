@@ -51,13 +51,17 @@ def panini(text):
 for diagnostic_url in [
  "https://cardbreakcalculator.com/sets/2026-panini-stars-and-stripes-prizm-usa-baseball",
  "https://thecollectornation.com/releases/2026-panini-stars-stripes-prizm-usa-baseball",
- "https://gogts.net/2026-panini-usa-stars-stripes-prizm-baseball-cards-checklist/"
+ "https://gogts.net/2026-panini-usa-stars-stripes-prizm-baseball-cards-checklist/",
+ "https://cardsmithsbreaks.com/full-checklist/2026-panini-usa-stars-stripes-prizm-baseball/"
 ]:
  try:
   raw=fetch(diagnostic_url)
   sou=BeautifulSoup(raw,'html.parser')
   print('DIAGNOSTIC',diagnostic_url,'length',len(raw),'tables',len(sou.select('table')),'li',len(sou.select('li')),'h2',[h.get_text(' ',strip=True)[:75] for h in sou.select('h2')[:12]])
+  print('H2-BASE',[(e.name,e.get_text(' ',strip=True)[:120]) for e in sou.select('h2') if e.get_text(' ',strip=True)=='Base'])
+  print('PARENT-BASE',[(e.parent.name,e.parent.get('class'),e.parent.get_text(' ',strip=True)[:600]) for e in sou.select('h2') if e.get_text(' ',strip=True)=='Base'])
   print('TAG-SAMPLES',[(e.name,e.get_text(' ',strip=True)[:130]) for e in sou.select('li, tr')[:12]])
+  print('TABLE-FIRST',[(t.get_text(' ',strip=True)[:250]) for t in sou.select('table')[:2]])
   print('DOWNLOAD LINKS',[(a.get_text(' ',strip=True)[:35],a.get('href','')[:170]) for a in sou.select('a[href]') if any(x in a.get('href','').lower() for x in ['.xlsx','.xls','.csv','download'])][:12])
  except Exception as e:print('DIAGNOSTIC FAILURE',diagnostic_url,type(e).__name__,str(e)[:100])
 
