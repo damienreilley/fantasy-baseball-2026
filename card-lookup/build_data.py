@@ -50,9 +50,25 @@ for k,url in SOURCES.items():
  try:
   page=fetch(url)
   records=panini(page) if k=='panini26' else cardboard(page)
+  if k=='chrome25':
+   # Exact printed-card-number mistakes verified against Topps' 200-card PDF:
+   # Cal Raleigh shares USC45 with Tommy Pham (instead of USC1);
+   # Dustin May shares USC80 with Tyler Locklear (instead of USC167).
+   expanded=[]
+   for row in records:
+    if row['type']=='Base' and row['code']=='USC45' and 'Cal Raleigh' in row['name']:
+     expanded.append({**row,'name':'Tommy Pham','team':'Pittsburgh Pirates'})
+     expanded.append({**row,'name':'Cal Raleigh','team':'Seattle Mariners'})
+    elif row['type']=='Base' and row['code']=='USC80' and 'Dustin May' in row['name']:
+     expanded.append({**row,'name':'Tyler Locklear','team':'Arizona Diamondbacks','rookie':True})
+     expanded.append({**row,'name':'Dustin May','team':'Boston Red Sox'})
+    else:expanded.append(row)
+   records=expanded
+   assert len([x for x in records if x['type']=='Base'])==200,'Expected exactly 200 Chrome Update base cards after misnumbering correction'
+
   print('RECORDS',k,len(records),'samples',records[:2])
   required={'chrome25':1000,'pulse26':490,'panini26':1000}[k]
   if len(records)<required: raise ValueError(f"{k} too few parsed rows: {len(records)} < {required}")
-  (BASE/f'{k}.json').write_text(json.dumps({'source':url,'count':len(records),'cards':records},ensure_ascii=False,separators=(',',':')),encoding='utf-8')
+  (BASE/f'{k}.json').write_text(json.dumps({'source':url,'count':len(records),'sourceLabel':('Topps checklist + corrected printed numbers' if k=='chrome25' else 'Independent checklist reference'),'cards':records},ensure_ascii=False,separators=(',',':')),encoding='utf-8')
  except Exception as e:
   print('FAIL',k,type(e).__name__,str(e))
