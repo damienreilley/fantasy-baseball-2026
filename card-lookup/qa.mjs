@@ -44,7 +44,7 @@ for(const [asset,textExpected] of [
  ['data/pulse26.json','Aidan Miller'],
  ['data/panini26.json','AJ Elliott'],
  ['data/logo26.json','Bryce Harper'],
- ['Pack_Room_Offline_All_Four.html','ALL'],
+ ['Pack_Room_Offline_All_Four.html','All 4 Offline Card Lookup Tools'],
 ]){
  const res=await fetch(production+asset,{signal:AbortSignal.timeout(25000),headers:{'User-Agent':'Mozilla/5.0 PackRoom QA'}});
  check(res.status===200,'PUBLIC GitHub Pages '+(asset||'homepage')+' returns HTTP 200');
