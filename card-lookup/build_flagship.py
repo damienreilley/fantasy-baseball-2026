@@ -28,6 +28,7 @@ def parse_line(v,prefix):
    if found is None or match.start()<found[0]:found=(match.start(),match.end(),team)
  if not found:return None
  name=rest[:found[0]].strip(" –-");tail=rest[found[1]:].strip()
+ if not name and "Team Card" in tail: name=found[2]
  if len(name)<2 or len(name)>95:return None
  return dict(code=code,name=name,team=found[2],type="Base",set="Base Cards",rookie=bool(re.search(r"\bRookie\b",tail)),designation=tail)
 def parse(name,pdf):
@@ -37,7 +38,7 @@ def parse(name,pdf):
  candidates=[]
  seen_headings=[]
  for n,page in enumerate(doc):
-  if n>13:break
+  if (name=="series1" and n>=6) or n>15:break
   lines=page.get_text("text",sort=True).splitlines()
   pp=[]
   for line in lines:
