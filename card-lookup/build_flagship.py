@@ -47,7 +47,7 @@ def extra_cards(doc):
   for raw in page.get_text("text",sort=True).splitlines():
    line=tidy(raw)
    if (line and len(line)>4 and len(line)<145
-       and not re.match(r"^([A-Z0-9]+[-\d])",line)
+       and not re.match(r"^(?:[A-Z0-9]{2,10}-[A-Z0-9]{1,10}|(?:US)?\d{1,3})\s+",line)
        and line==line.upper() and sum(x.isalpha() for x in line)>3):
     if line not in ignored and not line.startswith((
         "CHECKLISTS PROVIDED","*SUBJECT","PAGE ","HOBBY/","RETAIL/",
