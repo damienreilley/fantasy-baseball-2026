@@ -61,6 +61,7 @@ for diagnostic_url in [
   print('H2-BASE',[(e.name,e.get_text(' ',strip=True)[:120]) for e in sou.select('h2') if e.get_text(' ',strip=True)=='Base'])
   print('PARENT-BASE',[(e.parent.name,e.parent.get('class'),e.parent.get_text(' ',strip=True)[:600]) for e in sou.select('h2') if e.get_text(' ',strip=True)=='Base'])
   print('TAG-SAMPLES',[(e.name,e.get_text(' ',strip=True)[:130]) for e in sou.select('li, tr')[:12]])
+  print('ALL-TABLE-DIAG',[(i,[c.get_text(' ',strip=True)[:45] for c in t.select('thead th')[:7]],t.find_previous(['h2','h3','h4']).get_text(' ',strip=True)[:65] if t.find_previous(['h2','h3','h4']) else '',len(t.select('tbody tr')),t.select_one('tbody tr').get_text(' ',strip=True)[:120] if t.select_one('tbody tr') else '') for i,t in enumerate(sou.select('table'))][:25])
   print('TABLE-FIRST',[(t.get_text(' ',strip=True)[:250]) for t in sou.select('table')[:2]])
   print('DOWNLOAD LINKS',[(a.get_text(' ',strip=True)[:35],a.get('href','')[:170]) for a in sou.select('a[href]') if any(x in a.get('href','').lower() for x in ['.xlsx','.xls','.csv','download'])][:12])
  except Exception as e:print('DIAGNOSTIC FAILURE',diagnostic_url,type(e).__name__,str(e)[:100])
