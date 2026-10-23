@@ -120,7 +120,7 @@ try {
    check(await page.locator('section[data-tab=search]').isVisible(),key+' search tab returns');
  }
  for (const k of ['series1','series2','update26','logo26','chrome25','pulse26','panini26']) {await page.goto(base+'education.html?set='+k,{waitUntil:'networkidle'});check(await page.locator('#heading').innerText()!=='' ,'education cheat sheet renders for '+k);check(await page.locator('#parallelWarning').innerText()!=='' ,'parallel guidance displays for '+k);}
- await page.goto(base+'education.html?set=update26',{waitUntil:'networkidle'});check(await page.locator('img.e-visual').count()===1,'Update official parallel image embedded');check(await page.locator('#visualEmbed img').evaluate(el=>el.complete&&el.naturalWidth>500),'Update visual actually rendered and legible at resolution');const pdfResp=await fetch(base+'media/update-education.pdf');check(pdfResp.status===200,'Update printable education PDF accessible');
+ await page.goto(base+'education.html?set=update26',{waitUntil:'networkidle'});check(await page.locator('#visualEmbed img.e-visual').count()===1,'Update official parallel image embedded');check(await page.locator('#visualEmbed img').evaluate(el=>el.complete&&el.naturalWidth>500),'Update visual actually rendered and legible at resolution');const pdfResp=await fetch(base+'media/update-education.pdf');check(pdfResp.status===200,'Update printable education PDF accessible');
  const mobile=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:2});
  const m=await mobile.newPage();m.on('pageerror',e=>errors.push('mobile '+e.message));
  await m.goto(base+'packs.html?set=pulse26',{waitUntil:'networkidle'});
