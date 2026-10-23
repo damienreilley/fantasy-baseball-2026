@@ -36,7 +36,7 @@ def panini(text):
   low=label.lower()
   if 'signature' in low or 'autograph' in low:category='Autograph'
   elif 'material' in low:category='Relic'
-  elif low.startswith('base') or 'greats' in low: category='Base'
+  elif low.startswith('base'): category='Base'
   else:category='Insert'
   for row in table.select('tbody tr'):
    cells=[td.get_text(' ',strip=True) for td in row.find_all('td')]
