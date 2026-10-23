@@ -32,7 +32,7 @@ def panini(text):
   if not ('player' in heads and 'team' in heads):continue
   previous=table.find_previous(['h2','h3','h4'])
   heading=previous.get_text(' ',strip=True) if previous else ''
-  label=re.sub(r'\\s+\\d+\\s+cards?$', '', heading,flags=re.I).strip()
+  label=re.sub(r'\s+\d+\s+cards?$', '', heading,flags=re.I).strip()
   low=label.lower()
   if low.startswith('base') or 'greats' in low: category='Base'
   elif 'material' in low:category='Relic'
@@ -42,7 +42,7 @@ def panini(text):
    cells=[td.get_text(' ',strip=True) for td in row.find_all('td')]
    if len(cells)<3:continue
    code,name,team=cells[:3]
-   if not re.fullmatch(r'\\d{1,3}',code) or not name:continue
+   if not re.fullmatch(r'\d{1,3}',code) or not name:continue
    out.append({'code':code,'name':name,'team':team,'type':category,'rookie':False,'set':label})
  return out
 
