@@ -31,6 +31,42 @@ def parse_line(v,prefix):
  if not name and "Team Card" in tail: name=found[2]
  if len(name)<2 or len(name)>95:return None
  return dict(code=code,name=name,team=found[2],type="Base",set="Base Cards",rookie=bool(re.search(r"\bRookie\b",tail)),designation=tail)
+def extra_cards(doc):
+ cards=[]
+ heading="Insert checklist"
+ seen=set()
+ ignored={"HOBBY EXCLUSIVE","RETAIL EXCLUSIVE","JUMBO EXCLUSIVE","BASE","BASE SET","HOBBY/HOBBY JUMBO ONLY","SUBJECT TO CHANGE","PARALLELS","CHROME","INSERTS"}
+ for page_n,page in enumerate(doc):
+  for raw in page.get_text("text",sort=True).splitlines():
+   line=tidy(raw)
+   if (line and len(line)>5 and len(line)<105 and not re.match(r"^([A-Z0-9]+[-\d])",line)
+       and line==line.upper() and sum(x.isalpha() for x in line)>3):
+    if line not in ignored and not line.startswith(("CHECKLISTS PROVIDED","*SUBJECT","PAGE ","HOBBY/")):
+     if any(kw in line for kw in ["AUTOGRAPH","RELIC","MEMORABILIA","MATERIAL","SWATCH","1991 TOPPS","ALL ACES","HOME FIELD","BIG TICKET","HEAVY LUMBER","STARS OF MLB","TITANS OF THE GAME","1952","COVER ATHLETES","INSERT","SIGNATURE","VARIATION","SHORT PRINT","RED","GREATEST HITS","CITY CONNECT","FOIL","FUTURE STARS","DIE CUT","BASEBALL STARS","PLAYER NUMBER"]):
+      heading=line
+    continue
+   m=re.match(r"^([A-Z0-9]{2,10}-[A-Z0-9]{1,10})\s+(.+)$",line)
+   if not m: continue
+   code,rest=m.groups()
+   if len(rest)>145 or len(rest)<3:continue
+   matches=[]
+   for team in TEAMS:
+    match=re.search(r"(?<!\w)"+re.escape(team)+r"(?=\s|$)",rest,re.I)
+    if match:matches.append((match.start(),match.end(),team))
+   if matches:
+    a,b,team=min(matches,key=lambda x:x[0]);name=rest[:a].strip(" –-")
+   else:name=rest.strip();team=""
+   if len(name)<2 or len(name)>88:continue
+   tag=heading.upper()
+   kind=("Autograph" if ("AUTOGRAPH" in tag or "SIGNATURE" in tag)
+      else ("Relic" if any(w in tag for w in ["RELIC","MEMORABILIA","MATERIAL","SWATCH"])
+      else ("Variation" if "VARIATION" in tag else "Insert")))
+   k=(code,name,heading)
+   if k in seen:continue
+   seen.add(k)
+   cards.append(dict(code=code,name=name,team=team,type=kind,set=heading,rookie=bool(re.search(r"\bRookie\b",rest)),provenance="Official Topps PDF, page "+str(page_n+1)))
+ return cards
+
 def parse(name,pdf):
  doc=fitz.open(stream=pdf,filetype="pdf")
  prefix=name=="update26"
@@ -63,7 +99,10 @@ def parse(name,pdf):
   print(name,"MISSING",missing,"COUNT",len(cards))
   raise RuntimeError("Refusing partial manufacturer checklist: "+name+" "+str(len(cards))+" entries")
  cards.sort(key=lambda x:int(re.sub("[^0-9]","",x["code"])))
- out=dict(source=URLS[name],sourceLabel="Official Topps checklist — base cards manufacturer-verified",coverage="base-only",count=len(cards),manufacturerAudit={"verifiedFields":["base card number","player or team name","team","rookie flag where provided"],"scope":"350 base-card numbers only; inserts/autographs NOT fully indexed", "verified":True},cards=cards)
+ extras=extra_cards(doc)
+ print("EXTRAS",name,len(extras),"samples",extras[:9])
+ allcards=cards+extras
+ out=dict(source=URLS[name],sourceLabel="Official Topps PDF — 350 base cards verified, additional printed insert IDs indexed",coverage="base-verified-extras-pdf",count=len(allcards),manufacturerAudit={"verifiedFields":["base card number","player or team name","team","rookie flag where provided"],"scope":"350 base-card numbers fully validated; supplemental PDF insert/autograph IDs parsed but some subsets may require visual cross-check", "verified":True},cards=allcards)
  p=ROOT/"data"/(name+".json");p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(out,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
  print("SUCCESS",name,len(cards),"rookie",sum(c["rookie"] for c in cards),"samples",cards[:3])
 if __name__=="__main__":
