@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - '.github/workflows/build-pack-lookups.yml'
+      - 'card-lookup/build_data.py'
   workflow_dispatch:
 permissions:
   contents: write
