@@ -25,6 +25,25 @@ for(const [set,min,code,name] of [
  check(d.cards.every(c=>c.code&&c.name&&c.set&&c.type),set+' all records contain searchable fields');
 }
 for (const key of ['series1','series2','update26']) {const x=JSON.parse(await readFile(path.join(dir,'data',key+'.json'),'utf8'));check(x.cards.filter(c=>c.type==='Base').length===350, key+' official Topps PDF has 350 base cards');}
+// Manufacturer-source audit: exact cardinality and card IDs for the three flagship releases.
+for (const [set,start,prefix] of [['series1',1,''],['series2',351,''],['update26',1,'US']]) {
+ const d=JSON.parse(await readFile(path.join(dir,'data',set+'.json'),'utf8'));
+ const baseCards=d.cards.filter(c=>c.type==='Base');
+ check(baseCards.length===350,set+' exact 350 official base entries');
+ const ids=new Set(baseCards.map(c=>c.code));
+ check(Array.from({length:350},(_,i)=>prefix+(i+start)).every(id=>ids.has(id)),set+' complete official base numbering without gaps');
+ const subsetSet=new Set(d.cards.map(c=>c.code+'|'+c.set));
+ check(subsetSet.size===d.cards.length,set+' unique printed code plus manufacturer subset (dual autos merged)');
+ check(d.cards.filter(c=>c.type!=='Base').every(c=>c.provenance?.includes('Official Topps PDF')),set+' supplemental entries carry manufacturer PDF provenance');
+}
+const update=JSON.parse(await readFile(path.join(dir,'data/update26.json'),'utf8'));
+check(update.cards.some(c=>c.code==='AA-21' && c.name==='Trey Yesavage' && c.set==='AUTUMN ASCENSIONS'),'Update AA-21 Autumn Ascensions identified without confusion');
+check(update.cards.some(c=>c.code==='AA-21' && c.name==='Andrew Painter' && c.set==='ALL ACES'),'Update AA-21 All Aces independently identified');
+check(update.cards.some(c=>c.code==='U91C-1' && c.type==='Insert' && c.set==='1991 TOPPS BASEBALL CHROME BASE CARDS'),'Update U91C-1 regular insert recognized');
+check(update.cards.some(c=>c.code==='U91C-1' && c.type==='Autograph' && c.set==='1991 TOPPS BASEBALL CHROME BASE CARDS AUTOGRAPH PARALLEL'),'Update U91C-1 autograph separately recognized');
+const swCode=await readFile(path.join(dir,'sw.js'),'utf8');
+check(swCode.includes("live=await fetch(req") && swCode.includes("cache.match(req"),'offline service worker refreshes newest checklist online and falls back offline');
+
 const top=JSON.parse(await readFile(path.join(dir,'data','chrome25.json'),'utf8'));
 check(top.cards.filter(x=>x.type==='Base').length===200,'Chrome Update exactly 200 physical base-card entries');
 for(const [code,names] of [['USC45',['Tommy Pham','Cal Raleigh']],['USC80',['Tyler Locklear','Dustin May']]]){
@@ -101,7 +120,7 @@ try {
    check(await page.locator('section[data-tab=search]').isVisible(),key+' search tab returns');
  }
  for (const k of ['series1','series2','update26','logo26','chrome25','pulse26','panini26']) {await page.goto(base+'education.html?set='+k,{waitUntil:'networkidle'});check(await page.locator('#heading').innerText()!=='' ,'education cheat sheet renders for '+k);check(await page.locator('#parallelWarning').innerText()!=='' ,'parallel guidance displays for '+k);}
- await page.goto(base+'education.html?set=update26',{waitUntil:'networkidle'});check(await page.locator('img.e-visual').count()===1,'Update official parallel image embedded');const pdfResp=await fetch(base+'media/update-education.pdf');check(pdfResp.status===200,'Update printable education PDF accessible');
+ await page.goto(base+'education.html?set=update26',{waitUntil:'networkidle'});check(await page.locator('img.e-visual').count()===1,'Update official parallel image embedded');check(await page.locator('#visualEmbed img').evaluate(el=>el.complete&&el.naturalWidth>500),'Update visual actually rendered and legible at resolution');const pdfResp=await fetch(base+'media/update-education.pdf');check(pdfResp.status===200,'Update printable education PDF accessible');
  const mobile=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:2});
  const m=await mobile.newPage();m.on('pageerror',e=>errors.push('mobile '+e.message));
  await m.goto(base+'packs.html?set=pulse26',{waitUntil:'networkidle'});
