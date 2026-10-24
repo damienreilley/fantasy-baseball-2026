@@ -1,5 +1,5 @@
-const VERSION='pack-room-2026-v7';
-const STATIC=['./','./index.html','./packs.html','./education.html','./style.css','./config.js','./main.js','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./media/update-parallels.png','./media/update-education.pdf','./media/buyers-chase-terms.jpg','./media/presentation-chase-decoder.jpg','./data/series1.json','./data/series2.json','./data/update26.json','./data/logo26.json','./data/chrome25.json','./data/pulse26.json','./data/panini26.json','./Pack_Room_Offline_All_Seven.html'];
+const VERSION='pack-room-2026-v8';
+const STATIC=['./','./index.html','./packs.html','./education.html','./style.css','./config.js','./main.js','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./media/update-parallels.png','./media/update-education.pdf','./media/buyers-chase-terms.jpg','./media/presentation-chase-decoder.jpg','./data/series1.json','./data/series2.json','./data/asg26.json','./data/update26.json','./data/logo26.json','./data/chrome25.json','./data/pulse26.json','./data/panini26.json','./Pack_Room_Offline_All_Eight.html'];
 self.addEventListener('install',event=>event.waitUntil((async()=>{
  const cache=await caches.open(VERSION);
  await Promise.all(STATIC.map(async url=>{
