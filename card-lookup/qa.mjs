@@ -97,6 +97,26 @@ try {
  page.on('pageerror',e=>errors.push('pageerror '+e.message));
  await page.goto(base,{waitUntil:'networkidle'});
  check(await page.locator('a.product').count()===8,'homepage shows eight selectable exact products');
+ const baseReferences=JSON.parse(await readFile(path.join(dir,'media/base-cards/base-examples.json'),'utf8'));
+ for(const k of ['chrome25','pulse26','panini26','logo26','series1','asg26','series2','update26']){
+   const pic=baseReferences[k];
+   check(Boolean(pic&&pic.label&&pic.status&&pic.source&&pic.image),k+' documented base-card image and attribution');
+   check((await stat(path.join(dir,pic.image))).size>9000,k+' image is a real locally hosted file');
+ }
+ await page.waitForFunction(()=>document.querySelectorAll('.product-base-thumb').length===8,null,{timeout:15000});
+ check(await page.locator('.product-base-thumb').count()===8,'all eight product cards show a base-card thumbnail');
+ for(const k of ['chrome25','pulse26','panini26','logo26','series1','asg26','series2','update26']){
+   await page.goto(base+'packs.html?set='+k,{waitUntil:'networkidle'});
+   await page.locator('#base-example img').waitFor({timeout:12000});
+   const goodImage=await page.locator('#base-example img').evaluate(img=>img.complete&&img.naturalWidth>=150);
+   check(goodImage,k+' lookup displays readable local base-card image');
+   check((await page.locator('#base-example').innerText()).includes(baseReferences[k].label),k+' image is labeled correctly');
+   check((await page.locator('#base-example a[href^="http"]').count())>0,k+' exposes image attribution link');
+   await page.goto(base+'education.html?set='+k,{waitUntil:'networkidle'});
+   await page.locator('#base-education-content img').waitFor({timeout:15000});
+   check((await page.locator('#base-education-content').innerText()).includes(baseReferences[k].label),k+' cheat sheet includes same base-card reference');
+ }
+
  check((await readFile(path.join(dir,'packs.html'),'utf8')).includes('ALL EIGHT PRODUCTS'),'card lookup navigation names eight products accurately');
  check((await readFile('.github/workflows/build-pack-lookups.yml','utf8')).includes('git add card-lookup/data/*.json card-lookup/Pack_Room_Offline_All_Eight.html'),'lookup rebuild publishes current eight-product offline file');
 
