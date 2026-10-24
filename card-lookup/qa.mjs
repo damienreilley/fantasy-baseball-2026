@@ -11,6 +11,7 @@ const base='http://127.0.0.1:8765/';
 let passes=0;
 function check(value,message){assert.ok(value,message); console.log('PASS',message); passes++}
 for(const [set,min,code,name] of [
+ ['stadium25',630,'65','Matt Shaw'],
  ['chrome25',1200,'USC45','Cal Raleigh'],
  ['pulse26',500,'BLCL-01','Aidan Miller'],
  ['panini26',1150,'1','AJ Elliott'],
@@ -46,6 +47,7 @@ const swCode=await readFile(path.join(dir,'sw.js'),'utf8');
 check(swCode.includes("live=await fetch(req") && swCode.includes("cache.match(req"),'offline service worker refreshes newest checklist online and falls back offline');
 
 const asg=JSON.parse(await readFile(path.join(dir,'data/asg26.json'),'utf8'));check(asg.asgMega===true,'All-Star Game Mega is distinct product');check(asg.cards.filter(c=>c.asgParallelFamily==='2026 All-Star Game Base Foil').length===350,'All-Star exclusive foil base checklist contains 350 eligible entries');check(asg.cards.filter(c=>c.asgParallelFamily==='1991 Topps Baseball All-Star Game Foil').length===50,'All-Star 1991 Topps Baseball foil has 50 eligible entries');check(asg.cards.filter(c=>c.asgParallelFamily==='1991 Topps All-Star Game Foil').length===50,'All-Star 1991 Topps All-Star foil has 50 eligible entries');check(asg.cards.filter(c=>c.code==='91B2-3'&&c.name==='Trea Turner'&&c.asgParallelFamily),'Trea Turner 1991 ASG variant found');check(asg.cards.filter(c=>c.code==='91AS-3'&&c.name==='Kyle Schwarber'&&c.asgParallelFamily),'Kyle Schwarber 1991 ASG variant found');
+const stadium=JSON.parse(await readFile(path.join(dir,'data/stadium25.json'),'utf8'));check(stadium.cards.filter(x=>x.type==='Base').length===200,'Stadium Club has exactly 200 base cards');check(Array.from({length:200},(_,i)=>String(i+1)).every(n=>stadium.cards.some(c=>c.type==='Base'&&c.code===n)),'Stadium Club base numbers #1-200 complete');
 const top=JSON.parse(await readFile(path.join(dir,'data','chrome25.json'),'utf8'));
 check(top.cards.filter(x=>x.type==='Base').length===200,'Chrome Update exactly 200 physical base-card entries');
 for(const [code,names] of [['USC45',['Tommy Pham','Cal Raleigh']],['USC80',['Tyler Locklear','Dustin May']]]){
@@ -65,13 +67,15 @@ for(const [asset,textExpected] of [
  ['packs.html','main.js'],
  ['config.js','window.PRODUCTS'],
  ['main.js','showResults'],
+ ['data/stadium25.json','Matt Shaw'],
+ ['media/base-cards/stadium25.jpg',''],
  ['data/chrome25.json','Cal Raleigh'],
  ['data/pulse26.json','Aidan Miller'],
  ['data/panini26.json','AJ Elliott'],
  ['data/logo26.json','Bryce Harper'],
  ['Pack_Room_Offline_All_Four.html','All 4 Offline Card Lookup Tools'],
  ['Pack_Room_Offline_All_Seven.html','All 7 Offline Card Lookup Tools'],
- ['Pack_Room_Offline_All_Eight.html','All 8 Offline Card Lookup Tools'],
+ ['Pack_Room_Offline_All_Nine.html','All 9 Offline Card Lookup Tools'],
  ['data/asg26.json','Dillon Dingler'],
  ['education.html','CHEAT SHEETS + VISUAL PARALLELS'],
  ['media/update-parallels.png',''],
@@ -96,25 +100,26 @@ try {
  const page=await context.newPage(); const errors=[];
  page.on('pageerror',e=>errors.push('pageerror '+e.message));
  await page.goto(base,{waitUntil:'networkidle'});
- check(await page.locator('a.product').count()===8,'homepage shows eight selectable exact products');
+ check(await page.locator('a.product').count()===9,'homepage shows nine selectable exact products');
  const baseReferences=JSON.parse(await readFile(path.join(dir,'media/base-cards/base-examples.json'),'utf8'));
- for(const k of ['chrome25','pulse26','panini26','logo26','series1','asg26','series2','update26']){
+ for(const k of ['stadium25','chrome25','pulse26','panini26','logo26','series1','asg26','series2','update26']){
    const pic=baseReferences[k];
    check(Boolean(pic&&pic.label&&pic.status&&pic.source&&pic.image),k+' documented base-card image and attribution');
    check((await stat(path.join(dir,pic.image))).size>9000,k+' image is a real locally hosted file');
  }
- await page.waitForFunction(()=>document.querySelectorAll('.product-base-thumb').length===8,null,{timeout:15000});
- check(await page.locator('.product-base-thumb').count()===8,'all eight product cards show a base-card thumbnail');
+ await page.waitForFunction(()=>document.querySelectorAll('.product-base-thumb').length===9,null,{timeout:15000});
+ check(await page.locator('.product-base-thumb').count()===9,'all nine product cards show a base-card thumbnail');
  await page.goto(base+'base-gallery.html',{waitUntil:'networkidle'});
- await page.waitForFunction(()=>document.querySelectorAll('.ref').length===8,null,{timeout:15000});
- check(await page.locator('.ref').count()===8,'base-card comparison gallery shows eight products');
- check((await page.locator('.ref img').count())===8,'all eight gallery entries have an actual image');
- for(const key of ['series1','series2','update26','logo26','pulse26','panini26','chrome25','asg26']){
+ await page.waitForFunction(()=>document.querySelectorAll('.ref').length===9,null,{timeout:15000});
+ check(await page.locator('.ref').count()===9,'base-card comparison gallery shows nine products');
+ check((await page.locator('.ref img').count())===9,'all nine gallery entries have an actual image');
+ await page.waitForFunction(()=>Array.from(document.querySelectorAll('.ref img')).every(i=>i.complete&&i.naturalWidth>100),null,{timeout:15000});check(true,'all nine gallery images load and decode');
+ for(const key of ['stadium25','series1','series2','update26','logo26','pulse26','panini26','chrome25','asg26']){
    const ref=baseReferences[key];
    check((await page.locator('.ref').allTextContents()).some(s=>s.includes(ref.label)),'comparison gallery identifies '+key);
  }
 
- for(const k of ['chrome25','pulse26','panini26','logo26','series1','asg26','series2','update26']){
+ for(const k of ['stadium25','chrome25','pulse26','panini26','logo26','series1','asg26','series2','update26']){
    await page.goto(base+'packs.html?set='+k,{waitUntil:'networkidle'});
    await page.locator('#base-example img').waitFor({timeout:12000});
    const goodImage=await page.locator('#base-example img').evaluate(img=>img.complete&&img.naturalWidth>=150);
@@ -126,10 +131,11 @@ try {
    check((await page.locator('#base-education-content').innerText()).includes(baseReferences[k].label),k+' cheat sheet includes same base-card reference');
  }
 
- check((await readFile(path.join(dir,'packs.html'),'utf8')).includes('ALL EIGHT PRODUCTS'),'card lookup navigation names eight products accurately');
- check((await readFile('.github/workflows/build-pack-lookups.yml','utf8')).includes('git add card-lookup/data/*.json card-lookup/Pack_Room_Offline_All_Eight.html'),'lookup rebuild publishes current eight-product offline file');
+ check((await readFile(path.join(dir,'packs.html'),'utf8')).includes('ALL NINE PRODUCTS'),'card lookup navigation names nine products accurately');
+ check((await readFile('.github/workflows/build-pack-lookups.yml','utf8')).includes('git add card-lookup/data/*.json card-lookup/Pack_Room_Offline_All_Nine.html'),'lookup rebuild publishes current nine-product offline file');
 
  const examples=[
+  ['stadium25','65','Matt Shaw'],
   ['chrome25','USC45','Cal Raleigh'],
   ['pulse26','BLCL-01','Aidan Miller'],
   ['panini26','AJ Elliott','AJ Elliott'],
@@ -156,7 +162,7 @@ try {
    await page.locator('.tabs button[data-tab=search]').click();
    check(await page.locator('section[data-tab=search]').isVisible(),key+' search tab returns');
  }
- for (const k of ['series1','series2','asg26','update26','logo26','chrome25','pulse26','panini26']) {await page.goto(base+'education.html?set='+k,{waitUntil:'networkidle'});check(await page.locator('#heading').innerText()!=='' ,'education cheat sheet renders for '+k);check(await page.locator('#parallelWarning').innerText()!=='' ,'parallel guidance displays for '+k);}
+ for (const k of ['stadium25','series1','series2','asg26','update26','logo26','chrome25','pulse26','panini26']) {await page.goto(base+'education.html?set='+k,{waitUntil:'networkidle'});check(await page.locator('#heading').innerText()!=='' ,'education cheat sheet renders for '+k);check(await page.locator('#parallelWarning').innerText()!=='' ,'parallel guidance displays for '+k);}
  await page.goto(base+'education.html?set=update26',{waitUntil:'networkidle'});check(await page.locator('#visualEmbed img.e-visual').count()===1,'Update official parallel image embedded');check(await page.locator('#visualEmbed img').evaluate(el=>el.complete&&el.naturalWidth>500),'Update visual actually rendered and legible at resolution');const pdfResp=await fetch(base+'media/update-education.pdf');check(pdfResp.status===200,'Update printable education PDF accessible');
  await page.goto(base+'packs.html?set=asg26',{waitUntil:'networkidle'});await page.waitForFunction(()=>document.querySelector('#load-status')?.textContent?.includes('✅'));await page.locator('#lookup').fill('372');check((await page.locator('#results').innerText()).includes('All-Star foil version exists'),'ASG card lookup explicitly explains possible ASG variant versus regular Series 2');await page.goto(base+'education.html?set=asg26',{waitUntil:'domcontentloaded'});check((await page.locator('#parallelGrid').innerText()).includes('Platinum ASG'),'ASG parallel visual lists Platinum 1/1');check((await page.locator('#parallelGrid').innerText()).includes('1991'),'ASG insert parallel ladder is separate from base');
  const mobile=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:2});
@@ -174,7 +180,7 @@ try {
  const off7=new URL('file://'+path.join(dir,'Pack_Room_Offline_All_Seven.html')).href;
  const seven=await browser.newPage();await seven.goto(off7);await seven.locator('#set').selectOption('update26');await seven.locator('#q').fill('US1');check((await seven.locator('#matches').innerText()).includes('Konnor Griffin'),'standalone 7-product offline file resolves Update rookie');await seven.close();
 
- const eight=await browser.newPage();await eight.goto(new URL('file://'+path.join(dir,'Pack_Room_Offline_All_Eight.html')).href);await eight.locator('#set').selectOption('asg26');await eight.locator('#q').fill('91B2-3');check((await eight.locator('#matches').innerText()).includes('Trea Turner'),'All-Star Mega lookup works in self-contained eight-product offline file');await eight.close();
+ const nine=await browser.newPage();await nine.goto(new URL('file://'+path.join(dir,'Pack_Room_Offline_All_Nine.html')).href);await nine.locator('#set').selectOption('asg26');await nine.locator('#q').fill('91B2-3');check((await nine.locator('#matches').innerText()).includes('Trea Turner'),'All-Star Mega lookup works in self-contained nine-product offline file');await nine.close();
  const filePage=await browser.newPage();
  await filePage.goto(offlineURL);
  await filePage.locator('#set').selectOption('panini26');
