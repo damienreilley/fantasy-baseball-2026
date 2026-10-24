@@ -3,6 +3,8 @@ on:
   push:
     paths:
       - 'card-lookup/build_flagship.py'
+      - 'card-lookup/build_offline.py'
+      - 'card-lookup/data/asg26.json'
       - '.github/workflows/build-flagship.yml'
   workflow_dispatch:
 permissions:
@@ -21,13 +23,13 @@ jobs:
       - run: pip install pymupdf
       - name: Parse three official Topps PDF base checklists and validate 350 each
         run: python card-lookup/build_flagship.py
-      - name: Generate standalone offline seven-product lookup
+      - name: Generate standalone offline eight-product lookup
         run: python card-lookup/build_offline.py
       - name: Publish 2026 official checklist data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add card-lookup/data/series1.json card-lookup/data/series2.json card-lookup/data/update26.json card-lookup/Pack_Room_Offline_All_Seven.html
+          git add card-lookup/data/series1.json card-lookup/data/series2.json card-lookup/data/update26.json card-lookup/Pack_Room_Offline_All_Eight.html
           if ! git diff --cached --quiet; then
             git commit -m "Add official Topps 2026 Series 1, Series 2 and Update 350-card indexes"
             for attempt in 1 2 3; do
