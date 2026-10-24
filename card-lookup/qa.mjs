@@ -17,6 +17,7 @@ for(const [set,min,code,name] of [
  ['logo26',490,'244','Bryce Harper'],
  ['series1',1700,'1','Aaron Judge'],
  ['series2',1850,'351','Dillon Dingler'],
+ ['asg26',1850,'351','Dillon Dingler'],
  ['update26',2050,'US1','Konnor Griffin'],
 ]){
  const d=JSON.parse(await readFile(path.join(dir,'data',set+'.json'),'utf8'));
@@ -44,6 +45,7 @@ check(update.cards.some(c=>c.code==='U91C-1' && c.type==='Autograph' && c.set===
 const swCode=await readFile(path.join(dir,'sw.js'),'utf8');
 check(swCode.includes("live=await fetch(req") && swCode.includes("cache.match(req"),'offline service worker refreshes newest checklist online and falls back offline');
 
+const asg=JSON.parse(await readFile(path.join(dir,'data/asg26.json'),'utf8'));check(asg.asgMega===true,'All-Star Game Mega is distinct product');check(asg.cards.filter(c=>c.asgParallelFamily==='2026 All-Star Game Base Foil').length===350,'All-Star exclusive foil base checklist contains 350 eligible entries');check(asg.cards.filter(c=>c.asgParallelFamily==='1991 Topps Baseball All-Star Game Foil').length===50,'All-Star 1991 Topps Baseball foil has 50 eligible entries');check(asg.cards.filter(c=>c.asgParallelFamily==='1991 Topps All-Star Game Foil').length===50,'All-Star 1991 Topps All-Star foil has 50 eligible entries');check(asg.cards.filter(c=>c.code==='91B2-3'&&c.name==='Trea Turner'&&c.asgParallelFamily),'Trea Turner 1991 ASG variant found');check(asg.cards.filter(c=>c.code==='91AS-3'&&c.name==='Kyle Schwarber'&&c.asgParallelFamily),'Kyle Schwarber 1991 ASG variant found');
 const top=JSON.parse(await readFile(path.join(dir,'data','chrome25.json'),'utf8'));
 check(top.cards.filter(x=>x.type==='Base').length===200,'Chrome Update exactly 200 physical base-card entries');
 for(const [code,names] of [['USC45',['Tommy Pham','Cal Raleigh']],['USC80',['Tyler Locklear','Dustin May']]]){
@@ -69,6 +71,8 @@ for(const [asset,textExpected] of [
  ['data/logo26.json','Bryce Harper'],
  ['Pack_Room_Offline_All_Four.html','All 4 Offline Card Lookup Tools'],
  ['Pack_Room_Offline_All_Seven.html','All 7 Offline Card Lookup Tools'],
+ ['Pack_Room_Offline_All_Eight.html','All 8 Offline Card Lookup Tools'],
+ ['data/asg26.json','Dillon Dingler'],
  ['education.html','CHEAT SHEETS + VISUAL PARALLELS'],
  ['media/update-parallels.png',''],
  ['media/update-education.pdf',''],
@@ -92,9 +96,9 @@ try {
  const page=await context.newPage(); const errors=[];
  page.on('pageerror',e=>errors.push('pageerror '+e.message));
  await page.goto(base,{waitUntil:'networkidle'});
- check(await page.locator('a.product').count()===7,'homepage shows seven selectable exact products');
- check((await readFile(path.join(dir,'packs.html'),'utf8')).includes('ALL SEVEN PRODUCTS'),'card lookup navigation names seven products accurately');
- check((await readFile('.github/workflows/build-pack-lookups.yml','utf8')).includes('git add card-lookup/data/*.json card-lookup/Pack_Room_Offline_All_Seven.html'),'lookup rebuild publishes current seven-product offline file');
+ check(await page.locator('a.product').count()===8,'homepage shows eight selectable exact products');
+ check((await readFile(path.join(dir,'packs.html'),'utf8')).includes('ALL EIGHT PRODUCTS'),'card lookup navigation names eight products accurately');
+ check((await readFile('.github/workflows/build-pack-lookups.yml','utf8')).includes('git add card-lookup/data/*.json card-lookup/Pack_Room_Offline_All_Eight.html'),'lookup rebuild publishes current eight-product offline file');
 
  const examples=[
   ['chrome25','USC45','Cal Raleigh'],
@@ -103,6 +107,7 @@ try {
   ['logo26','244','Bryce Harper'],
   ['series1','1','Aaron Judge'],
   ['series2','351','Dillon Dingler'],
+  ['asg26','91B2-3','Trea Turner'],
   ['update26','US1','Konnor Griffin'],
  ];
  for(const [key,code,name] of examples){
@@ -122,8 +127,9 @@ try {
    await page.locator('.tabs button[data-tab=search]').click();
    check(await page.locator('section[data-tab=search]').isVisible(),key+' search tab returns');
  }
- for (const k of ['series1','series2','update26','logo26','chrome25','pulse26','panini26']) {await page.goto(base+'education.html?set='+k,{waitUntil:'networkidle'});check(await page.locator('#heading').innerText()!=='' ,'education cheat sheet renders for '+k);check(await page.locator('#parallelWarning').innerText()!=='' ,'parallel guidance displays for '+k);}
+ for (const k of ['series1','series2','asg26','update26','logo26','chrome25','pulse26','panini26']) {await page.goto(base+'education.html?set='+k,{waitUntil:'networkidle'});check(await page.locator('#heading').innerText()!=='' ,'education cheat sheet renders for '+k);check(await page.locator('#parallelWarning').innerText()!=='' ,'parallel guidance displays for '+k);}
  await page.goto(base+'education.html?set=update26',{waitUntil:'networkidle'});check(await page.locator('#visualEmbed img.e-visual').count()===1,'Update official parallel image embedded');check(await page.locator('#visualEmbed img').evaluate(el=>el.complete&&el.naturalWidth>500),'Update visual actually rendered and legible at resolution');const pdfResp=await fetch(base+'media/update-education.pdf');check(pdfResp.status===200,'Update printable education PDF accessible');
+ await page.goto(base+'packs.html?set=asg26',{waitUntil:'networkidle'});await page.waitForFunction(()=>document.querySelector('#load-status')?.textContent?.includes('✅'));await page.locator('#lookup').fill('372');check((await page.locator('#results').innerText()).includes('All-Star foil version exists'),'ASG card lookup explicitly explains possible ASG variant versus regular Series 2');await page.goto(base+'education.html?set=asg26',{waitUntil:'domcontentloaded'});check((await page.locator('#parallelGrid').innerText()).includes('Platinum ASG'),'ASG parallel visual lists Platinum 1/1');check((await page.locator('#parallelGrid').innerText()).includes('1991'),'ASG insert parallel ladder is separate from base');
  const mobile=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:2});
  const m=await mobile.newPage();m.on('pageerror',e=>errors.push('mobile '+e.message));
  await m.goto(base+'packs.html?set=pulse26',{waitUntil:'networkidle'});
@@ -139,6 +145,7 @@ try {
  const off7=new URL('file://'+path.join(dir,'Pack_Room_Offline_All_Seven.html')).href;
  const seven=await browser.newPage();await seven.goto(off7);await seven.locator('#set').selectOption('update26');await seven.locator('#q').fill('US1');check((await seven.locator('#matches').innerText()).includes('Konnor Griffin'),'standalone 7-product offline file resolves Update rookie');await seven.close();
 
+ const eight=await browser.newPage();await eight.goto(new URL('file://'+path.join(dir,'Pack_Room_Offline_All_Eight.html')).href);await eight.locator('#set').selectOption('asg26');await eight.locator('#q').fill('91B2-3');check((await eight.locator('#matches').innerText()).includes('Trea Turner'),'All-Star Mega lookup works in self-contained eight-product offline file');await eight.close();
  const filePage=await browser.newPage();
  await filePage.goto(offlineURL);
  await filePage.locator('#set').selectOption('panini26');
