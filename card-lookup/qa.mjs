@@ -93,6 +93,9 @@ try {
  page.on('pageerror',e=>errors.push('pageerror '+e.message));
  await page.goto(base,{waitUntil:'networkidle'});
  check(await page.locator('a.product').count()===7,'homepage shows seven selectable exact products');
+ check((await readFile(path.join(dir,'packs.html'),'utf8')).includes('ALL SEVEN PRODUCTS'),'card lookup navigation names seven products accurately');
+ check((await readFile('.github/workflows/build-pack-lookups.yml','utf8')).includes('git add card-lookup/data/*.json card-lookup/Pack_Room_Offline_All_Seven.html'),'lookup rebuild publishes current seven-product offline file');
+
  const examples=[
   ['chrome25','USC45','Cal Raleigh'],
   ['pulse26','BLCL-01','Aidan Miller'],
