@@ -97,11 +97,11 @@ function solve(){const box=$('identified');const s=serial(),f=$('format').value,
 let active=picked?picked.key:($('catalogset').value||'series1');
 const is91=!!(picked&&/^91(B2|AS)-/i.test(picked.c.code)&&active==='series2'&&f==='ASG');
 if(f==='ASG'&&active==='series2')active='asg26';
-let poss=R.filter(v=>v.sets.includes(active)&&(!f||v.formats.includes(f)));
+let poss=R.filter(v=>((active==='asg26'&&v.sets.includes('series2')&&v.formats.includes('Mega'))||v.sets.includes(active))&&(!f||v.formats.includes(f)||(f==='ASG'&&active==='asg26'&&v.sets.includes('series2')&&v.formats.includes('Mega'))));
 if(picked&&picked.c.type!=='Base'){
 if(!(is91&&active==='asg26')){box.innerHTML='<b>'+safe(picked.c.type)+' → '+safe(picked.c.set)+'</b><p>Identified the checklist family, but the exact variant needs that specific <b>insert / autograph / relic</b> checklist and physical inspection. The base parallel table does not apply.</p><a href="'+safe(SOURCE[picked.key])+'" target="_blank" rel="noopener">Check the official '+safe(L[picked.key])+' checklist ↗</a>';return;}
 poss=poss.filter(v=>v.kind==='asg91');
-}else if(active==='asg26')poss=poss.filter(v=>v.kind==='asg');
+}else if(active==='asg26'&&finish==='asg')poss=poss.filter(v=>v.kind==='asg');else if(active==='asg26'&&finish!=='asg')poss=poss.filter(v=>v.kind!=='asg91');
 if(s.shown)poss=poss.filter(v=>v.n===s.n);else if(nos)poss=poss.filter(v=>v.n===null);
 if(finish){poss=poss.filter(v=>v.kind===finish||(finish==='texture'&&['sand'].includes(v.kind))||(finish==='asg'&&v.kind==='asg91'));}
 if(!s.shown&&!nos&&!finish){box.innerHTML='<b>Ready when you are.</b><p>Tap a visual finish, enter a stamp, or choose the box type. Matches update instantly.</p>';return}
