@@ -10,20 +10,24 @@
     "height": 1500
   },
   "series2": {
-    "label": "Bo Bichette",
-    "status": "Topps official base-design promotional image",
-    "source": "https://www.topps.com/pages/series-2",
+    "label": "Leo Rivas #649",
+    "status": "Photograph of 2026 Topps Series 2 standard base card",
+    "source": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-series-2/leo-rivas-649",
     "note": "Same 2026 flagship design as Series 1; teams and photographs vary.",
-    "image": "",
-    "originImageUrl": "https://images.topps.com/v3/assets/bltc7206971cb4b2bfc/blt811a9648f5dae38d/69f8c6997890646dc08132e6/26TBB2_1756_FR.jpg"
+    "image": "media/base-cards/series2.jpg",
+    "originImageUrl": "https://storage.googleapis.com/images.pricecharting.com/3y46dywpvgpi3cte/1600.jpg",
+    "width": 720,
+    "height": 1000
   },
   "update26": {
     "label": "Walker Buehler",
     "status": "Topps official base-design promotional image",
-    "source": "https://www.topps.com/pages/topps-updates-baseball",
+    "source": "https://thealleycc.com/products/2026-topps-update-series-baseball-hobby-box",
     "note": "Update keeps the 2026 flagship visual design but uses separate US-numbered cards.",
-    "image": "",
-    "originImageUrl": "https://images.topps.com/v3/assets/bltc7206971cb4b2bfc/blt998dd2858702c4c2/6a904aa3e32d3c07f7e35341/26TBUS_1153_FR-cs.jpg"
+    "image": "media/base-cards/update26.jpg",
+    "originImageUrl": "https://thealleycc.com/cdn/shop/files/2026-topps-update-series-baseball-card-preview-1_73d2a8b5-8c03-4de3-a1fd-a842413b61c1.jpg?v=1792020281",
+    "width": 875,
+    "height": 1225
   },
   "chrome25": {
     "label": "Nick Kurtz #USC178",
@@ -37,15 +41,17 @@
   },
   "logo26": {
     "label": "Shohei Ohtani",
-    "status": "Topps official standard MLB LogoFractor example",
-    "source": "https://www.topps.com/pages/topps-chrome-baseball-logofractor-edition",
+    "status": "Promotional mock-up of standard LogoFractor design",
+    "source": "https://www.checklistcenter.com/2026-topps-chrome-logofractor-baseball-card-checklist/",
     "note": "Look for repeating MLB logos. Not every card inside a LogoFractor pack is a LogoFractor.",
-    "image": "",
-    "originImageUrl": "https://images.topps.com/v3/assets/bltc7206971cb4b2bfc/blt5a7fdcea3730595f/6a724160ef5bef4f264f756c/26TCBB_1045_FR_MLB_Logofractor.jpg"
+    "image": "media/base-cards/logo26.jpg",
+    "originImageUrl": "https://www.checklistcenter.com/wp-content/uploads/2026/08/2026-Topps-Chrome-LogoFractor-Baseball-Base-LogoFractor-Shohei-Ohtani-MOCK-UP.jpeg",
+    "width": 300,
+    "height": 420
   },
   "pulse26": {
     "label": "Roman Anthony (promotional image)",
-    "status": "Publisher promotional card illustration — exact base status not confirmed",
+    "status": "Retailer promotional illustration — base designation unverified",
     "source": "https://cartessportivesrivesud.com/products/2026-pulse-big-league-chew-baseball-hobby-box-pre-order",
     "note": "Product contains several distinct designs. Do not treat this promotional graphic as proof every BLCL base card looks identical.",
     "image": "media/base-cards/pulse26.jpg",
@@ -64,8 +70,8 @@
     "height": 900
   },
   "asg26": {
-    "image": "",
-    "label": "Bo Bichette (ordinary Series 2 base)",
+    "image": "media/base-cards/series2.jpg",
+    "label": "Leo Rivas #649 (ordinary Series 2 base)",
     "status": "Ordinary Series 2 base; All-Star Mega also includes exclusive logo-foil PARALLELS",
     "source": "https://www.beckett.com/news/2026-topps-all-star-game-mega-box-baseball-cards/",
     "note": "This box shares the regular Series 2 base design. Special ASG parallels have repeating Philadelphia 2026 All-Star logos. See the separate verified source for images.",
