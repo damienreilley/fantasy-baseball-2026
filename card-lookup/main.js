@@ -8,7 +8,9 @@ const ids=Object.keys(ITEMS);
 const p=new URLSearchParams(location.search),chosen=p.get('set'),item=ITEMS[chosen];
 if('serviceWorker' in navigator && location.protocol.startsWith('http')) window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 const holder=$('products');
-if(holder){holder.innerHTML=ids.map(id=>{let x=ITEMS[id];return `<a class="product" href="packs.html?set=${id}"><div class="p-top"><div class="prodicon">${x.emoji}</div><span class="mini-tag">${esc(x.tag)}</span></div><div><div class="sub">${esc(x.sub)}</div><h2>${esc(x.name)}</h2></div><div class="detail">${esc(x.packs)} · ${esc(x.base)}</div><div class="go">OPEN IDENTIFIER →</div></a>`}).join('');return;}
+if(holder){holder.innerHTML=ids.map(id=>{let x=ITEMS[id];return `<a class="product" href="packs.html?set=${id}"><div class="p-top"><div class="prodicon">${x.emoji}</div><span class="mini-tag">${esc(x.tag)}</span></div><div><div class="sub">${esc(x.sub)}</div><h2>${esc(x.name)}</h2></div><div class="detail">${esc(x.packs)} · ${esc(x.base)}</div><div class="go">OPEN IDENTIFIER →</div></a>`}).join('');
+fetch('media/base-cards/base-examples.json').then(r=>{if(!r.ok)throw Error('Base images unavailable');return r.json()}).then(photos=>{holder.querySelectorAll('a.product').forEach((card,i)=>{let record=photos[ids[i]];if(!record?.image)return;let img=document.createElement('img');img.className='product-base-thumb';img.src=record.image;img.loading='lazy';img.alt='Example of '+ITEMS[ids[i]].name+' base card';img.onerror=()=>img.remove();let detail=card.querySelector('.detail');if(detail)detail.before(img)})}).catch(()=>{});
+return;}
 if(!$('app'))return;
 if(!item){$('app').innerHTML='<section class="hero"><h1>Choose a product</h1><a class="btn" href="./">Open all product tools</a></section>';return;}
 document.title=`${item.name} — Card Lookup`;document.documentElement.style.setProperty('--product',item.color);
@@ -21,6 +23,24 @@ ${chosen==='series2'?'<div class="strip" style="background:#e0f5fb;border:2px so
 <section class="section" data-tab="guide" hidden><h2>⚡ Spot the important cards</h2><div class="tiplist">${item.guide.map(([h,t])=>`<div class="tip"><b>${esc(h)}</b><p>${esc(t)}</p></div>`).join('')}</div><div class="callout">${esc(item.special)}</div><div class="actions"><button class="btn alt" type="button" id="print">🖨 Print this guide</button><button class="btn alt" type="button" id="to-lookup">🔎 Find a card</button></div></section>
 <section class="section" data-tab="saved" hidden><h2>📋 My opened cards</h2><div class="quiet">Only on this device unless you export. Nothing is uploaded or shared.</div><div id="saved"></div><div class="actions"><button id="export" class="btn alt">⬇ Export CSV backup</button><button id="clear-saved" class="btn alt">Clear this product's list</button></div></section>
 <section class="section" data-tab="sources" hidden><h2>📚 Product & checklist sources</h2><div class="quiet">Use the source links when a card looks different from the checklist. The lookup identifies a checklist entry; it never guesses a physical parallel or price.</div>${item.sources.map(([name,url])=>`<div class="source-row"><a href="${esc(url)}" target="_blank" rel="noopener">${esc(name)} ↗</a></div>`).join('')}<div class="callout">${esc(item.special)}</div><a class="btn alt" href="./">← All product tools</a></section><div class="bottom-spacer"></div>`;
+// Real card images are saved in the GitHub Pages media directory; do not use hotlinked placeholders.
+const basePanel=document.createElement('section');
+basePanel.id='base-example';
+basePanel.className='base-photo-card';
+basePanel.setAttribute('aria-label','Base card visual example');
+basePanel.innerHTML='<div class="base-photo-loading">📷 Loading base-card example…</div>';
+const hero=$('app').querySelector('.hero');
+if(hero)hero.insertAdjacentElement('afterend',basePanel);
+fetch('media/base-cards/base-examples.json').then(r=>{if(!r.ok)throw Error('Reference images unavailable');return r.json()}).then(all=>{
+ const ref=all[chosen];if(!ref)throw Error('No image entry for product');
+ const image=ref.image?'<a href="'+esc(ref.image)+'" target="_blank" rel="noopener" title="See the complete base card image"><img src="'+esc(ref.image)+'" alt="'+esc(ref.label)+' example card" loading="eager" class="base-photo-actual"></a>':'<div class="base-photo-unavailable">Image not yet verified</div>';
+ const source=ref.source?'<a href="'+esc(ref.source)+'" target="_blank" rel="noopener">Photo source ↗</a>':'';
+ const zoom=ref.image?'<a href="'+esc(ref.image)+'" target="_blank" rel="noopener">🔍 Larger image ↗</a>':'';
+ const extra=chosen==='asg26'?'<p class="base-photo-alert">⭐ The ordinary BASE card is the same as 2026 Series 2. Exclusive All-Star logo-foil cards look different.</p>':'';
+ basePanel.innerHTML='<div class="base-photo-image">'+image+'</div><div class="base-photo-copy"><div class="base-photo-eyebrow">👀 VISUAL REFERENCE · BASE CARD</div><strong class="base-photo-title">'+esc(ref.label||'Example card')+'</strong><div class="base-photo-status">'+esc(ref.status||'Example image')+'</div><p>'+esc(ref.note||'Compare the layout; color accents can differ by team.')+'</p>'+extra+'<div class="base-photo-links">'+zoom+source+'</div></div>';
+ const pic=basePanel.querySelector('.base-photo-actual');if(pic)pic.onerror=()=>{basePanel.innerHTML='<div class="base-photo-loading">Reference photo did not load. <a href="'+esc(ref.source)+'" target="_blank" rel="noopener">View original source ↗</a></div>'};
+}).catch(()=>{basePanel.innerHTML='<div class="base-photo-loading">Card photo reference unavailable right now. Card search remains available.</div>'});
+
 const storageKey='pack-room-pulls-'+chosen;
 const readSaved=()=>{try{return JSON.parse(localStorage.getItem(storageKey)||'[]')}catch{return []}};
 let cards=[],loaded=false;
