@@ -60,4 +60,17 @@ out['asg26']={'image':out.get('series2',{}).get('image',''),
  'note':'This box shares the regular Series 2 base design. Special ASG parallels have repeating Philadelphia 2026 All-Star logos. See the separate verified source for images.',
  'reference':'https://www.beckett.com/news/2026-topps-all-star-game-mega-box-baseball-cards/'}
 (D/'base-examples.json').write_text(json.dumps(out,indent=2,ensure_ascii=False),encoding='utf-8')
+from zipfile import ZipFile, ZIP_DEFLATED
+zipfile=D/'Pack_Room_Base_Card_Reference_Photos.zip'
+with ZipFile(zipfile,'w',compression=ZIP_DEFLATED,compresslevel=6) as z:
+ z.write(D/'base-examples.json','base-examples.json')
+ notes=['PACK ROOM BASE CARD PHOTO REFERENCE','Sourced and cached reference images for 2025–26 baseball card products.','','These are not guarantees that every card shares the precise appearance; team accents, insert styles, parallels and special editions can differ.','']
+ for name,meta in out.items():
+  if meta.get('image'):
+   p=Path(meta['image'])
+   if p.is_file():z.write(p,p.name)
+  notes.extend([name+': '+meta.get('label',''), 'Status: '+meta.get('status',''), 'Source: '+meta.get('source',''), 'Note: '+meta.get('note',''), ''])
+ z.writestr('SOURCE_NOTES.txt','\\n'.join(notes))
+print('BUNDLED',zipfile.name,zipfile.stat().st_size)
+
 print('AVAILABLE',sum(bool(x.get('image')) for x in out.values()),'OF',len(out))
