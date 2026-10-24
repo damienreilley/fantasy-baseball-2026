@@ -105,6 +105,15 @@ try {
  }
  await page.waitForFunction(()=>document.querySelectorAll('.product-base-thumb').length===8,null,{timeout:15000});
  check(await page.locator('.product-base-thumb').count()===8,'all eight product cards show a base-card thumbnail');
+ await page.goto(base+'base-gallery.html',{waitUntil:'networkidle'});
+ await page.waitForFunction(()=>document.querySelectorAll('.ref').length===8,null,{timeout:15000});
+ check(await page.locator('.ref').count()===8,'base-card comparison gallery shows eight products');
+ check((await page.locator('.ref img').count())===8,'all eight gallery entries have an actual image');
+ for(const key of ['series1','series2','update26','logo26','pulse26','panini26','chrome25','asg26']){
+   const ref=baseReferences[key];
+   check((await page.locator('.ref').allTextContents()).some(s=>s.includes(ref.label)),'comparison gallery identifies '+key);
+ }
+
  for(const k of ['chrome25','pulse26','panini26','logo26','series1','asg26','series2','update26']){
    await page.goto(base+'packs.html?set='+k,{waitUntil:'networkidle'});
    await page.locator('#base-example img').waitFor({timeout:12000});
