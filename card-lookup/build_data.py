@@ -6,6 +6,7 @@ SOURCES={
  "chrome25":"https://www.cardboardchecklist.com/checklist/2025-topps-chrome-update-series-baseball",
  "pulse26":"https://www.cardboardchecklist.com/checklist/2026-pulse-x-big-league-chew-baseball",
  "panini26":"https://cardsmithsbreaks.com/full-checklist/2026-panini-usa-stars-stripes-prizm-baseball/",
+ "stadium25":"https://www.cardboardchecklist.com/checklist/2025-topps-stadium-club-baseball",
 }
 def fetch(url):
  req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0 (compatible; CardChecklistResearch/1.0)'})
@@ -67,8 +68,13 @@ for k,url in SOURCES.items():
    assert len([x for x in records if x['type']=='Base'])==200,'Expected exactly 200 Chrome Update base cards after misnumbering correction'
 
   print('RECORDS',k,len(records),'samples',records[:2])
-  required={'chrome25':1000,'pulse26':490,'panini26':1000}[k]
+  required={'chrome25':1000,'pulse26':490,'panini26':1000,'stadium25':600}[k]
   if len(records)<required: raise ValueError(f"{k} too few parsed rows: {len(records)} < {required}")
+  if k=='stadium25':
+   base=[x for x in records if x['type']=='Base']
+   numbers=[int(x['code']) for x in base if x['code'].isdigit()]
+   if len(base)!=200 or sorted(numbers)!=list(range(1,201)):raise ValueError("2025 Stadium Club base checklist fails exact 1-200 continuity check")
+   print('STADIUM2025', '200/200 base numbers, total indexed',len(records), 'sample',base[:3])
   (BASE/f'{k}.json').write_text(json.dumps({'source':url,'count':len(records),'sourceLabel':('Independent checklist (Cardboard Checklist); printed numbers cross-checked with TCDB' if k=='chrome25' else 'Independent checklist reference'),'cards':records},ensure_ascii=False,separators=(',',':')),encoding='utf-8')
  except Exception as e:
   print('FAIL',k,type(e).__name__,str(e))
