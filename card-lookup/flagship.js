@@ -7,7 +7,8 @@ const data={}, refs={}, keys=['series1','series2','update26'];
 let selected=null, matches=[];
 const V=[];
 function add(name,n,finish,sets,color,clue){V.push({name,n,finish,sets:sets||'*',color:color||'',clue:clue||''});}
-function colRun(color,num){return color+' /'+num;}
+add('Regular base',null,'plain','*','','Plain flagship design; no serial number or special finish (compare with the base photograph).');
+add('First Card',1,'plain','*','','Special 1/1 First Card issue: check the exact printed designation, not just the card design.');
 add('Gold',2026,'plain','*','Gold','Gold-colored border; the front is not a full rainbow/holo foil finish.');
 add('Independence Day',76,'texture','*','','American flag/patriotic pattern around the border.');
 add('75 Years of Topps',75,'texture','*','','A special 75th-anniversary design; compare the actual border.');
@@ -81,7 +82,7 @@ const m=raw.match(/^\s*(\d+)\s*\/\s*(\d+)\s*$/);
 if(m){const a=+m[1],d=+m[2];return {n:d,raw,invalid:!d||a>d||a===0};}
 if(/^\d+$/.test(raw)){const n=+raw;return {n,raw,invalid:n===0||n>3000};}
 return {n:null,raw,invalid:true};}
-function colorValid(v,obs){if(!obs)return true;return v.color===obs||(!v.color && false);}
+function colorValid(v,obs){if(!obs)return true;return v.color===obs||v.name==='Team Color Border Variation';}
 function cardAllowsASG(){if(!selected||selected.release!=='series2')return false;return selected.c.type==='Base'||/^91(B2|AS)-/i.test(selected.c.code);}
 function diagnose(){const area=$('diagnosis');if(!selected){area.innerHTML='';return;}const item=selected,c=item.c,serial=readDenom(),unknown=$('checked').checked,finish=$('finish').value,color=$('color').value;
 if(serial.invalid){area.innerHTML='<h3>⚠️ Check that stamp</h3><p>Enter <strong>09/25</strong>, or just <strong>25</strong> if you only know the denominator. The first number cannot exceed the second.</p>';return;}
