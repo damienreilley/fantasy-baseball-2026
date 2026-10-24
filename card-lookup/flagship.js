@@ -69,7 +69,7 @@ $('serial').value='';$('checked').checked=false;$('finish').value='';$('color').
 function resultBadge(c){return c.type==='Base'?'base':(c.type==='Insert'?'insert':'hit')}
 function searching(){const q=norm($('cardsearch').value).replace(/^#/,'');const ed=$('edition').value;const out=$('searchresults');if(!q){hideIdentify();out.innerHTML='<div class="empty">Start by typing a number. You can also try the example below.</div>';return;}
 matches=[];for(const k of keys){if(ed!=='auto'&&ed!==k)continue;const d=data[k];if(!d)continue;for(const c of d.cards){const code=norm(c.code).replace(/^#/,'');const exact=code===q;const found=exact||norm(c.name).includes(q);if(found)matches.push({c,release:k,exact});}}
-matches.sort((a,b)=>Number(b.exact)-Number(a.exact)||(a.c.type==='Base'?-1:1)-(b.c.type==='Base'?-1));
+matches.sort((a,b)=>Number(b.exact)-Number(a.exact)||(a.c.type==='Base'?-1:1)-(b.c.type==='Base'?-1:1));
 const shown=matches.slice(0,25);let str='<p class="helper"><strong>'+matches.length+' checklist match'+(matches.length===1?'':'es')+'</strong>'+(matches.length>25?' · first 25 shown; type more to narrow':'')+'.</p>';
 if(!matches.length)str+='<div class="notice">No card found in the indexed checklists. Double-check the printed number or try the player name. An unlisted card may still be valuable.</div>';
 shown.forEach((it,i)=>{const c=it.c;str+='<div class="matchrow"><div><b>'+h(c.name)+'</b> <span class="badge '+resultBadge(c)+'">'+h(c.type)+'</span>'+(c.rookie?'<span class="badge hit">RC</span>':'')+'<p>#'+h(c.code)+' · '+h(seriesFor(it))+' · '+h(c.set)+'</p></div><button type="button" class="pick" data-pick="'+i+'">Identify →</button></div>';});
