@@ -78,13 +78,13 @@
     "reference": "https://www.beckett.com/news/2026-topps-all-star-game-mega-box-baseball-cards/"
   },
   "stadium25": {
-    "label": "Jackson Holliday — official base card example",
-    "status": "Official Topps 2025 Stadium Club standard base design",
-    "source": "https://www.topps.com/pages/topps-stadium-club-baseball",
+    "label": "Matt Shaw #65",
+    "status": "Actual 2025 Stadium Club base-card photograph (seller-supplied)",
+    "source": "https://www.sportscardinvestor.com/cards/matt-shaw-baseball/2025-topps-stadium-club-base-65",
     "note": "Photo fills the card; small gold Stadium Club logo at upper right, player name/position at bottom. The photo and nameplate style are consistent, but images, color accents and variants differ.",
-    "image": "https://images.topps.com/v3/assets/bltc7206971cb4b2bfc/blt5fb9da6221ab05a8/696a63785d36f60008726218/25SCBB_1832_FR.jpg",
-    "originImageUrl": "https://images.topps.com/v3/assets/bltc7206971cb4b2bfc/blt5fb9da6221ab05a8/696a63785d36f60008726218/25SCBB_1832_FR.jpg",
-    "width": 714,
-    "height": 1000
+    "image": "media/base-cards/stadium25.jpg",
+    "originImageUrl": "https://i.ebayimg.com/images/g/r4cAAeSw9ZFpljWe/s-l1600.jpg",
+    "width": 1000,
+    "height": 1333
   }
 }
