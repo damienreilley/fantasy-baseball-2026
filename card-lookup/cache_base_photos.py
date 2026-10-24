@@ -67,10 +67,12 @@ with ZipFile(zipfile,'w',compression=ZIP_DEFLATED,compresslevel=6) as z:
  notes=['PACK ROOM BASE CARD PHOTO REFERENCE','Sourced and cached reference images for 2025–26 baseball card products.','','These are not guarantees that every card shares the precise appearance; team accents, insert styles, parallels and special editions can differ.','']
  for name,meta in out.items():
   if meta.get('image'):
-   p=Path(meta['image'])
-   if p.is_file():z.write(p,p.name)
+   p=D/Path(meta['image']).name
+   if not p.is_file(): raise RuntimeError('Missing reference image '+str(p))
+   z.write(p,p.name)
   notes.extend([name+': '+meta.get('label',''), 'Status: '+meta.get('status',''), 'Source: '+meta.get('source',''), 'Note: '+meta.get('note',''), ''])
  z.writestr('SOURCE_NOTES.txt','\\n'.join(notes))
 print('BUNDLED',zipfile.name,zipfile.stat().st_size)
+if zipfile.stat().st_size<500000: raise RuntimeError('Image archive unexpectedly small — abort publication')
 
 print('AVAILABLE',sum(bool(x.get('image')) for x in out.values()),'OF',len(out))
