@@ -673,3 +673,247 @@ At the start of a relevant new assistant/Codex/Work conversation:
 | 2 | 2026-11-26 | Expanded entire recoverable history, source register, formal photo spec, education question bank, product-specific requirements, six profile examples, governance, QA, conflicts, dates and download expectations into **this single Markdown file** |
 
 **End of consolidated master.** No assistant should claim this file proves an exhaustive export of every chat or perfect verification of every source. It documents every specific, recoverable requirement represented in the evidence reviewed above, and explicitly names unverifiable cases so they are not silently invented.
+
+
+---
+
+# PART III — DIRECT USER FEEDBACK, ITERATION HISTORY, PRODUCT BACKLOG & AGILE DELIVERY RULES
+**Version 3 evidence expansion — November 26, 2026.** This is the previously missing *voice of the user* and *iteration traceability* layer, not merely a second generic set of feature headings. These sections explicitly document rejected deliverables, positive reactions, iterative requests, alternative product shapes, implementation obligations, acceptance tests, and what the historical records do **not** prove.
+
+## 30. Literal feedback and experience record — chronological, attributable
+Where quotation marks appear, the phrase was recovered from an original user message or reproduced verbatim in historical conversation context; otherwise the description is **close paraphrase**. Times come from recoverable prior conversation timestamps, and timezones may be those of the source record. Past user criticisms are recorded because they materially determine definition of done—not as personality assessments.
+
+| Date / time (2026) | User feedback or direct request | Why this matters | Requirement / issue ID | Disposition based on inspected evidence |
+|---|---|---|---|---|
+| Oct 16, ~9:23 AM | Wanted a deeper School of Topps Knocks course, potentially expert-level understanding of modern releases and card concepts | The school is **more than a glossary**; build lessons progressively, with real product references | EDU-01 | Curriculum exists in notes; not a fully finished multimedia course |
+| Oct 22, ~5:45 PM | Accepted education starting with **2026 Topps flagship Series 1 → Series 2 → Update** and expanding to parallels, inserts, checklist and odds; needs sell sheets | Teach from products they know, then generalize | EDU-02 | Two-page basic cheat sheet exists; comprehensive lessons pending |
+| Oct 23, ~9:05 AM | Requested **Checklist, Odds Sheet and Education Sheet** together | All three have different jobs; UI must expose all three per release | EDU-03 | Some education/source links exist; per-release completeness not fully audited |
+| Oct 23, ~9:15 AM | Called the cheat-sheet section **“very helpful”** and requested the **same parallel chart for every base set** | **Positive design evidence**: repeat a good visual pattern throughout, not a one-off pilot | VIS-01 | Education parallels exist but not uniformly manufacturer-complete |
+| Oct 23, ~9:30 AM | **“Fix this”** after the PDF did not open | A deliverable is not complete until real download/open works | QA-01 | New doc route does not prove prior PDF fixed |
+| Oct 23, ~7:17 PM | Wants clean, **quick-glance and printer-friendly** tools; explicitly no walls of text, clutter, irrelevant content or repeated approval questions | The *master specification* can be long; the *nephews' UI* must be short and focused | UX-01 | Not yet formally user-tested |
+| Oct 23, ~7:19 PM | Rejected existing organization and demanded faster, easier **product-line-specific** tools | Select product, find card; no meandering educational introduction | UX-02 | Current site has product-specific pages; need live QA |
+| Oct 23, ~7:37 PM | Rejected black Canva background, demanded **white, print-friendly** layout; tools and PDF must be usable away from the computer | Print stylesheet, accessible contrast, real export tests | UX-03 | Print and PDF QA still necessary |
+| Oct 23, ~8:10 PM | **“I am not reviewing / approving Canva”**; stop asking for reviews; save and finish | User expects execution and verification without endless approval loops | PM-01 | Permanent working rule; do not seek repeated confirmations |
+| Oct 23, ~8:26 PM | Canva result **“CANNOT READ”** and PDF **“will not open”**; evaluate **GitHub, not Vercel** | Wrong platform and unreadable artifacts were material delivery failures | QA-02 | GitHub selected for public tool; PDFs still need actual test |
+| Oct 23, ~9:14 PM | **“Everything needed” must be live online** without coming back to ChatGPT/desktop, **“not all on a single page - design it well”** | A mobile multi-page site is the product; not a single gigantic PDF or one inaccessible prototype | ARCH-01 | GitHub Pack Room exists; usability test pending |
+| Oct 23, ~9:32 PM | Wants tools for **2025 Chrome Update Mega, 2026 Pulse Big League Chew Blaster, 2026 Panini USA Stars & Stripes Prizm Mega**, and **LogoFractor pilot** | Scope is all owned product releases, not one pilot | PROD-01 | These keys appear in source; product-specific QA needed |
+| Oct 23, ~11:13 PM | Add **2026 Series 1, Series 2, Update**, visual parallels, cheat-sheet links, and OneDrive educational source material | First site release needed more complete flagship and visual context | PROD-02 | In source; source links need audit |
+| Oct 23, ~11:37 PM | **“nice job. looks good so far”**, followed by request to verify completeness | Positive intermediate acceptance, **not** acceptance of untested final version | PM-02 | Treat as milestone acknowledgment only |
+| Oct 24, ~4:04 PM | Direct representative **base-card image for every tracked set**; add missing **2025 Stadium Club Mega** as **high priority** with all product features | Missing card design and product coverage were concrete failures | VIS-02 / PROD-03 | Stadium Club code/image now present; **live visual/lookup test still outstanding** |
+| Oct 24, ~4:22 PM | Asked for a simple dedicated 2026 flagship finder: identify **base vs parallel, color and special variations** in actual pack-opening flow | Search alone is insufficient: must assist **physical classification** | ID-01 | Flagship-v2 manual page exists; full parallel determination not established |
+| Oct 24, ~4:39 PM | Rejected earlier flagship output as **“fucking shit”**, saying it fulfilled almost none of the prior requirements | Do not treat shipping a page as completing a user story | QA-03 | Unaccepted past iteration; new verified acceptance gate required |
+| Oct 24, ~4:49 PM | **“I don't care where you save these or have a repository ... just make them accessible from the public site.”** | Public direct visible images, not infrastructure/storage explanations | VIS-03 | Source contains image panels; test deployment visually |
+| Oct 24, ~5:12 PM | Asked **whether everything worked correctly** | User explicitly requested functional verification, not commit existence | QA-04 | Full deployed browser verification has not been established |
+| Oct 25, ~1:30 AM | Said **2026 Pulse Big League Chew tool “is trash. Absolutely none of it works”**; demanded proper checking before handoff | Severe usability/functional defect; build and **retest specialist route** | QA-05 | A \`pulse.html\` route exists, but never substitute this for verified fixes |
+| Oct 25, ~7:35 AM | Asked for **front/back photo scan**, full card detail, parallel/color/rarity/serial/errors, saved inventory, binders, own/missing and checklist completion; **grading not priority** | This is a **larger product vision**, not just a manual text search | ROAD-01 | Photo prototype spec only; binders/inventory beyond current local save |
+| Oct 29, ~5 PM | Wants one HQ to consolidate card chats, workbooks, learning, purchases and site without losing prior work | Knowledge continuity and versioned decision log is essential | GOV-01 | Master created, expanded in three passes |
+| Oct 31, ~2 PM | Private phone photo-first identifier; requested **specification, functions and mockups first**, no public publishing without approval | User approved design-first milestone *for private scan feature*, not broad public site migration | PHOTO-01 | Nine-page specification and five mockups created; service unbuilt |
+| Nov 13, ~5:46–5:59 PM | Requested consistent fields across all three buying tables; rejected unreadable screenshot/table: **“impossible to understand”**; preserve all fields and readability | Data density and visual clarity must coexist; don't drop important facts to declutter | UX-04 | Applies to HQ research tables, inspires collector-profile design |
+| Nov 18, Pro Debut chat | Asked for **Checklist IDs** tab with **every unique official card ID**, including dual and triple autographs listing **all players**; retain Player Master / Player × Subset | Card finder must model **cards and players separately**, not assume one ID = one player | DATA-01 | Workbook v8 later reported saved; site integration not verified |
+| Nov 21–22, collector-card profile iterations | Said **“oh this is cool. we can build on this”**; requested improved groupings, visible year/brand/set/line/type/number/parallel/insert/relic/auto, attractive collector design | Strong positive direction: continue iterating **existing v2→v6 design**, do not discard it | PROFILE-01 | Six-page v6 PDF was read; live site profile implementation open |
+| Nov 21–22, collector-card profile iterations | Wants **“somewhere in text to copy too google the card and return the exact card”**, e.g. **Roki Sasaki — 2026 Topps Chrome #199, Gold X-Fractor /50** | Must produce a truly copyable, exact card descriptor, not ungrounded generic phrase | PROFILE-02 | Demonstrated in v6 PDF, not fully in live finder |
+| Nov 21–22 | **“use topps terms where you can”** with Topps Ripped glossary link; must know how to find card in **checklist and odds** | Terminology and source specificity are first-class UI functionality | PROFILE-03 | Spec/source docs capture; exact deep linking open |
+| Nov 26, morning | Wants **all relevant chats**, every decision, requirement, feature, direct feedback, quality sources, pain point and source of truth in one hub | Requires genuine feedback traceability and version history | GOV-02 | v1/v2 omissions addressed by this direct-feedback appendix |
+| Nov 26, evening | Previous Markdown raw link **“does not work FIX IT”** when browser displayed plaintext | Download must be actual file retrieval UX, not mislabeled raw link | QA-06 | Same-origin HTML download route exists; browser-specific actual test pending |
+| Nov 26, evening | Asked **“does that contain EVERYTHING I ASKED FOR????”** and rejected claim of completion after assistant admitted gaps | Never call partial research complete; do the recoverable audit rather than deferring | GOV-03 | Extra retrieval and source mapping performed; inaccessible full transcripts still flagged |
+| Nov 26, latest | Specifically said direct **feedback, functions, iterations, agile** missing and requested full completed master | A true product-history document requires feedback-to-story-to-test traceability | GOV-04 | This Part III now records user voice, iteration map, backlog, requirements and QA |
+
+**Source-quality note for this table:** some exact phrases are recoverable user text; other timestamps/descriptions came from prior-conversation summaries, not a word-for-word transcript. Every row is a source locator for the underlying conversation, and \`GitHub present\` is **not** a claim the user accepted the revised page.
+
+## 31. Iteration / agile release-history ledger — what evolved, why, and whether accepted
+
+| Iteration / rough date | Trigger & user need | Proposed or produced scope | Feedback / failure | New acceptance condition / outcome |
+|---|---|---|---|---|
+| **I0 — Education baseline (Oct 16–22)** | Need expert practical understanding, especially rare hits when ripping packs | School of Topps Knocks, word cloud, glossary, checklist/odds/education and flagship lesson progression | User wanted practical *identification*, not just theoretical exposition | Lessons use actual named cards/sets and useful “what did we pull?” workflow |
+| **I1 — LogoFractor single-set pilot (Oct 21–23)** | Initial quick cheat, interactive lookup, printable/offline PDF for a specific five-card pack | LogoFractor checklist, regular Chrome vs repeating logos, colored finish chart | User valued cheat sheet and requested parallel chart **for every base set**; broken PDF and clutter criticized | Reuse working pilot patterns, test print/download, generalize source-backed charts; do not duplicate pilot in a competing chat |
+| **I2 — Canva to public GitHub (Oct 23)** | User wants reliable remote use on nephew opening day | Canva / PDF tools, then existing GitHub Pack Room multi-page app | Black/unreadable Canva, PDF wouldn't open, approval loops; user explicitly said GitHub not Vercel | Public URL with clean layout, printer-friendly pages, source links, true offline, no approval-loop interruptions |
+| **I3 — Multi-release expansion (Oct 23–24)** | Chrome Update, Pulse, Panini, LogoFractor, then flagship | Nine-product product navigation, individual checklists, guides, sources and saved pulls | User praised **intermediate** work but asked for complete end-to-end verification | Product-by-product smoke tests before describing complete |
+| **I4 — Flagship simplification (Oct 24)** | Quickly distinguish Series 1/2/Update & Philadelphia ASG base/parallel/variations | Simplified 2026 flagship manual lookup, later \`flagship-v2.html\` | First attempt strongly rejected as not meeting earlier requirements | Show physical base reference then visually narrow exact parallel; exact format/odds; test actual set card cases |
+| **I5 — Base photo + Stadium Club (Oct 24)** | “What does the normal card even look like?” for every product; Stadium Club absent | Source photo index, nine card images, gallery, page panel, Stadium Club data | User insisted public **same-page display**, not discussions of where assets saved | Real image visible/enlargeable in each deployed lookup; source/mockup honest; Stadium checklist/format correct |
+| **I6 — Pulse specialized repair (Oct 25)** | Pulse interface broken or unusable in user's experience | Specialized Pulse lookup with visual card references | Explicit “none of it works” feedback | Hard QA of every Pulse path before claiming functional; compare actual phone experience |
+| **I7 — Complete scan/collection vision (Oct 25)** | Want all cards recognized, organized and counted | Photo/front+back capture, auto-identification, saved photos and quantities, digital binders, owned/missing checklist completion | No evidence these features were delivered by the manual Pack Room | Differentiate desired future full collector product vs local Save pull existing |
+| **I8 — HQ governance (Oct 29–30)** | Lots of chats, multiple working masters, lost history | One Trading Card Headquarters, OneDrive originals, public GitHub finder, decisions register | Repeated confusion between drafts, completed deliverables and current files | Controlled changes, provenance, dates, no overwrite, source parity and end-of-session checkpoint |
+| **I9 — Private vision spec (Oct 31)** | Need actual AI camera recognition | Nine-page spec with five mockups, field statuses, data/personal privacy rules | Spec not functioning recognition service | Design accepted as **artifact only**; don't promise live scanning |
+| **I10 — Collector-grade card profile (Nov 18–22)** | Checklist rows are inadequate to describe rare/physical variants | Card profile v2→v6 with visuals, identity grid, rainbow, pack odds, checklist, copy-to-search | Multiple layout and term refinements; user positively endorsed direction | Exact Google phrase, inspectable image/variant, Topps terminology and source-backed odds |
+| **I11 — Missing data / purchased releases (Nov 18–26)** | Need meaningful lookup for Pro Debut, Onyx; distinguish multiple autograph subjects and surprise inscriptions | Pro Debut 227-player master/Checklist IDs, Onyx research notes and proposed finder | Still missing from inspected nine-product public menu | Deliver actual searchable product finder with correct checklist and special reference guidance |
+| **I12 — Documentation consolidation (Nov 26)** | Need all chats, decisions, features and feedback in one place | v1 13 sections → v2 29 sections → v3 direct user feedback and story tracing | User explicitly rejected v1 and v2 as incomplete | Maintain **one complete canonical Markdown**, source traceability; don't claim untouched transcripts were reviewed |
+
+**Do not confuse iteration acceptance and deployment:** an assistant might have said “done,” “good job,” “committed” or “live” during I3–I5. That is **not** equivalent to a verified, user-accepted release. Each iteration keeps its original acceptance state and failures visible.
+
+## 32. Agile product backlog: epics, user stories, acceptance criteria, dependencies, status
+The following converts **recovered user needs** into implementation-sized work. “Agile” is a requested organizing method as of November 26, **not a claim that historic sprints or agile tickets already existed**.
+
+### Epic A — Fast accurate public identification (Core MVP)
+**A-01 — Pick a release and see normal base card.**  
+*As an uncle/nephew opening packs*, I can choose year/product/format, instantly see one authenticated representative base design and expand it without leaving the site.
+- Acceptance: choose each tracked product; correct ordinary base visual is on-page; load/enlarge on phone; images are not mislabeled mockups; no bad links; ASG is distinguished.
+- Depends: image provenance/rights and public deployment.
+- State: code exists for nine; live QA incomplete.
+
+**A-02 — Search exact printed number/name, including anomalies.**
+- Acceptance: case-insensitive card numbers, letters/zeroes preserved; player and team results accurate; code collisions show all legitimate names, never silently pick first; return subset and explicit source.
+- Test: USC45, USC80, US1, #557, Stadium #65, Pro Debut dual/triple IDs once added.
+- Depends: official and independent checklist reconciliation.
+- State: partial current; collision source audit open.
+
+**A-03 — Tell base/parallel/insert apart honestly.**
+- Acceptance: distinguish checklist identity versus physical variant; user can match pattern/photo/color/stamp; don't label numbered /25 as Golden Mirror or ASG without pattern evidence; unresolved state visible.
+- State: partial guides, exact variant resolver open.
+
+**A-04 — Read manufacturer official sources.**
+- Acceptance: one tap to exact official checklist, exact format's odds and education/sell sheet; identify source date, subset and odds row; no misleading numerical odds.
+- State: some source links exist, end-to-end parity open.
+
+**A-05 — Add missing owned releases.**
+- Acceptance: 2025 Onyx Extended and 2026 Pro Debut appear in menu, have authoritative card IDs and base visuals, actual usable search, appropriate special/auto/relic and formatted source data; test directly in deployed page.
+- State: pending in existing nine-product menu; **P0**, no camera dependency.
+
+### Epic B — Collector result and visual learning
+**B-01 — One glance collector card profile.**
+- Acceptance: first screen visually groups player, card identity, printed ID, base/insert/parallel, physical tell, observed serial and special signals; lower-level details expandable; no clutter.
+- Source: v6 six-profile PDF; UI direction from Nov 21–22.
+
+**B-02 — “Copy this to search” and Google lookup.**
+- Acceptance: copy exact validated text; opening a search locates correct year/set/player/card number/variant; if uncertain, do **not** append an unsupported rare-variant name.
+- Source: direct user request, Roki example.
+
+**B-03 — Rainbow and compare base vs special.**
+- Acceptance: show base reference and release/format-specific parallel ladder with accurate colors and print tiers, not an invented generic rainbow; distinguish all non-base insert variants.
+- Source: Oct 23 parallel-chart praise, Nov 22 profile redesign.
+
+**B-04 — Four-move learning loop.**
+- Acceptance: Read → Match → Inspect → Check odds, with clear student language; specific quick answers to common special cards; Topps glossary terms.
+- Source: October educational cheat sheet, user reactions.
+
+**B-05 — Download and print functionality.**
+- Acceptance: PDFs/HTML/Markdown actually download or open in browser; printable white backgrounds, readable at zoom; no dependency on Canva approval.
+- State: previous failures recorded, requires device QA.
+
+### Epic C — Multi-product catalog and source accuracy
+**C-01 — Single card ID supports multiple players.**
+- Acceptance: dual/triple auto shares exact checklist ID, lists all names, findable by any subject; one physical card not duplicated as three cards.
+- State: Pro Debut spreadsheet design documented; integration open.
+
+**C-02 — Separate card identity from product format.**
+- Acceptance: Series 2 vs ASG special variant, Chrome vs LogoFractor, base checklist vs Mega-only parallels, release vs retailer format; odds never cross-inherited.
+- State: partial metadata; validate visually and in search.
+
+**C-03 — Manufacturer-led data audit.**
+- Acceptance: compare entire source PDF checklist, every section/card ID, code collision and count; capture source date/version and documented exceptions; independent site not sole truth.
+- State: significant work open.
+
+**C-04 — Specialty card uncertainty and reported discoveries.**
+- Acceptance: Onyx unannounced inscriptions and claims of /12 from secondary markets flagged as **reported, unconfirmed** until actual evidence; exact published serial tiers remain separate.
+- State: pending.
+
+### Epic D — Photo-based recognition (separate private prototype)
+**D-01 — Photo and optional back upload** with no required selection, privacy guardrails, HEIC testing, replace/cancel, multi-card error.
+**D-02 — Evidence-backed recognition** parsing identity and visual treatment separately; user correction, uncertain status, confidence not fabricated, exact source links.
+**D-03 — Side-by-side comparison / next card** with a source photo and optional single targeted follow-up; accessible touch targets.
+**D-04 — Real validation and permissions**: private auth, no public photos; test 20 confirmed/10 edge cases including Chrome vs LogoFractor and collisions.  
+All **DESIGNED, NOT DEPLOYED** based on evidence reviewed; the public text finder must not be delayed for D epics.
+
+### Epic E — Inventory and digital binder (future broader vision)
+**E-01 — Save more than checklist identity:** exact confirmed finish, photo front/back, quantity, condition notes, owner/collection and source.
+**E-02 — Digital binder:** flexible categories, separate nephew collections, sort/filter/set grouping and duplicate handling.
+**E-03 — Checklist completion:** owned/missing status, progress by set, accurate counts, isolate unverified cards.
+**E-04 — Backup and synchronization:** export/import and private cross-device storage; permissions, portability, no leaking minors' private possessions.
+**E-05 — Pack-opening session:** identify next card, preserve unconfirmed observations, handle duplicates without retyping.
+**E-06 — Scope:** grading, live pricing, selling and trading are **NOT priority** and should not displace scanning/collecting.  
+User expressed full vision Oct 25; Oct 31 first-private-scanner spec **intentionally deferred** binders/persistent saving to a later phase. **Do not erase the long-term vision just because it is out of scope of a first milestone.**
+
+### Epic F — Governance, accessibility and real delivery
+**F-01 — Preserve existing repository, assets and source data.** No competing rewrite without sound cause.
+**F-02 — Source every displayed fact and show unknowns;** no hallucinated prices/odds/variants.
+**F-03 — Automated/real QA:** desktop and phone, public URL, all product cards, source links, image rendering, saves, exports, offline.
+**F-04 — Accessible UI:** minimum 18px main type and 48px targets for proposed scan design, readable white print mode, contrast, labels, reduced motion, zoom, full keyboard.
+**F-05 — Continuous decision log:** log direct feedback and exact change instead of hiding past rejection; do not call work complete based solely on GitHub SHA.
+**F-06 — Downloadable master:** Markdown served with actual browser download UX; the master itself is versioned and locally savable, not a raw-text link marketed as automatic download.
+**F-07 — Compact status reporting:** completed/verified/unresolved and direct links, not long excuses or approval loops.
+
+## 33. Story-to-test traceability — test cases user feedback requires
+| Test | Source feedback / story | Fixture / action | Expected result | Proven state |
+|---|---|---|---|---|
+| QA-PUBLIC-001 | Oct 23 everything accessible online | Open public site on phone without ChatGPT | All key tools usable | Not reverified |
+| QA-PRINT-002 | Oct 23 unreadable Canva/PDF | Print educational page and open PDF from phone | Readable white background, correct actual file | Not reverified |
+| QA-IMAGE-003 | Oct 24 all base photos | Open each of nine product lookups | Correct base photo physically visible and enlargeable | Image files/code present, public QA open |
+| QA-STADIUM-004 | Oct 24 missing Stadium | Open \`packs.html?set=stadium25\`, search Matt Shaw #65, check Mega | Exact product/number/photo/variant cautions | Repo contains entry, not end-to-end verified |
+| QA-FLAGSHIP-005 | Oct 24 rejected first flagship | Open flagship v2, compare regular Series 2 and special ASG | Normal base and actual foil treatment not conflated | Not reverified |
+| QA-PULSE-006 | Oct 25 “none works” | Open \`pulse.html\` on phone, search BLCL ID, save and compare image | Completely working lookup, no broken controls | Must test; prior rejection remains |
+| QA-COLLISION-007 | Printed errors | Search USC45 and USC80 | Both possible names, clear warning/source | Not independently manufacturer-audited |
+| QA-SERIAL-008 | Card #557 example | Type Kyle Higashioka #557, 09/25 | Does **not** automatically call Golden Mirror; physical/ASG cues | Partial docs, live decision test open |
+| QA-LOGO-009 | LogoFractor pilot | Inspect ordinary Chrome and MLB-logo finish | Explain both in five-card pack; no automatic LogoFractor label | Needs photo/case test |
+| QA-PROFILE-010 | Nov 22 exact Google text | Open sample known Roki parallel, click copy | Exact title and checklist/odds sources present | PDF design only |
+| QA-ONYX-011 | Onyx unusual autos | Search signer, inspect colored auto + unannounced ink claim | Official tier vs reported variation clearly different | Finder not in nine |
+| QA-PRODEBUT-012 | Checklist IDs | Search dual/triple card ID or either player | One shared card ID with all participants and subsets | Workbook design exists; site not yet integrated |
+| QA-EXPORT-013 | Saved pulls | Save same card and export CSV | Correct rows, no false full parallel claim, accurate scope | Code exists; not user-tested |
+| QA-OFFLINE-014 | Anywhere use | Open page, disconnect internet, revisit cached set | Useful offline lookup or clear fallback | SW code exists; not fully tested |
+| QA-SCAN-015 | Oct 25 scan vision | Upload new card front/back privately | Checklist-verified identity+uncertainties, no public storage | **Unbuilt** |
+| QA-BINDER-016 | Oct 25 inventory vision | Save duplicate and mark checklist progress | Exact count, private organization, owned/missing updates | **Unbuilt** |
+| QA-DOWNLOAD-017 | Nov 26 Markdown complaint | Open dedicated download route on Chrome and choose save | Actual \`.md\` downloaded; not raw webpage display | HTML route exists, actual Chrome QA not witnessed |
+
+The last column intentionally does **not** substitute “assistant said it works” for actual test evidence.
+
+## 34. Prioritized iterative release plan with demonstrable acceptance gates
+This is a **proposed agile execution structure**, not a retroactive claim of sprints performed. Keep scope fixed to what the user requested and adapt according to feedback, rather than shipping an unrelated dashboard.
+
+| Delivery slice | Contains | Must demonstrate live before called done | Blockers / ordering |
+|---|---|---|---|
+| **R0 — Make current site trustworthy** | Verify all nine menus, photos, source links, number/player lookup, Pulse specialist, flagship v2, CSV, phone/print/offline | Actual public URLs opened; recorded PASS/FAIL and fixes with screenshots when useful | No broad redesign before regressions understood |
+| **R1 — Close coverage gaps** | Onyx Extended + 2026 Pro Debut accessible in existing site | Base and auto/relic/dual-triple search, real base design, manufacturer source | Original official checklists and approved photos needed |
+| **R2 — Exact collector profile UI** | Same-page card profile, copy-to-Google, precise checklist/odds source, rainbow, base-vs-physical cues | Known v6 example correct and unknown variant handled without invention | Need reliable structured variants/odds |
+| **R3 — The school is practical** | Complete per-product education/parallel visuals, one coherent course and print/download | Each set has at least one sourced visual reference, cheat sheet and exact manufacturer links | Rights/source review |
+| **R4 — Private scan pilot** | Secure camera/photo route, checklist resolver, evidence statuses and compare | 20 known + 10 difficult images; real iOS/Android; no public exposure | Provider, privacy, tested implementation |
+| **R5 — Private collection** | Owned/missing/duplicates, binder pages, cross-device sync after scope/design | Records persist accurately without confusing prior local storage | Separate secure identity/storage model |
+
+**User feedback overrides release order when urgent**: Stadium Club was urgently missing; it moved ahead of a generic redesign. Nov 26 Onyx/Pro Debut coverage beats building an untested recognition feature. None of these slices has a promised delivery date.
+
+## 35. Specific product quality and collector-experience implications of feedback
+1. **Opening-day focus:** children and adult should not need to navigate away, read a long research report or manually find PDF odds before seeing likely card identity.
+2. **Which card is special?** Visually contrast ordinary base vs a foil/pattern/stamped variation; don't infer rarity from decoration alone.
+3. **What should be protected?** Draw attention to genuine autographs, relics/patches, 1/1s and low-serial cards, inserts and possible short-print photo changes. Do not promise high resale value.
+4. **Player context:** explain familiar major leaguers and exciting prospects when known, without converting a player ranking into pack odds.
+5. **Exact source map:** printable/online checklist, odds sheet, education sheet with link/title/format; manufacturer first, independent lists for cross-check, actual sourced photographs with ethical reuse.
+6. **Accessibility:** tap-friendly images, rapid scan/search, workable on mobile and desktop, offline fallback, printer-friendly styling; no keyboard required for clear-camera first path when later implemented.
+7. **Incremental acceptance:** ship a testable product slice and independently check; previous “nice job” for an intermediate screen was not authorization to stop before full function.
+8. **Protect working functionality:** retain save pulls and CSV while improving identification; do not overwrite older workbooks, lose source assets or create conflicting repositories.
+9. **Never mistake source formats:** a single five-card LogoFractor *pack*, a 2025 Chrome Update *Mega*, a 2025 Onyx *Hobby*, a Stadium *Mega*, and a special 2026 ASG Series 2 *Mega* have different rules.
+10. **Record feedback as history:** positive comments (“very helpful,” “oh this is cool,” “looks good so far”) and direct rejections (Canva, flagship, Pulse, download) all inform the next iteration.
+
+## 36. Genuinely inaccessible history and no-fabrication register
+The user requested literally everything in every relevant chat. The recoverable conversation-search source yields dated user constraints and paraphrases for many messages, plus current thread and several original raw pastes. However, it **does not provide a complete verbatim export of every historical conversation**. Therefore:
+- Do **not** invent missing original quote wording, screenshot content, historical version count, user acceptance decision, chat URLs, or an exact timestamp where only a date is known.
+- The direct feedback table attributes directly retrieved wording or labels close paraphrases. Original full transcripts from “Identify Topps Card,” various LogoFractor sessions, Canva revisions, and some Github QA attempts remain unavailable in full.
+- We cannot infer whether some screenshot-based feedback already caused fixes: screens only tell us what feedback existed, not whether deployed code passed.
+- No current source proves real browser smoke tests passed on the user's Windows/Chrome/iPhone for each relevant tool, despite repos containing source/QA scripts.
+- The new agile backlog is an organizing implementation framework **derived from the original user requests**, not a claim the user already consented to all optional features as immediate builds.
+- The separate full trading-card *shopping* research project has many additional purchase/price/automations discussions. They are referenced as adjacent decisions; copying every old transient merchant price into the public Card Finder would create an unhelpful and private-data-risky app, and is not what the user asked.
+- Updating the central document **does not itself implement or repair any web-app features**. The QA backlog remains a commitment to verify during development, not a fabricated success.
+
+## 37. Required operating standard for future user feedback — short cycle
+For every future user instruction or critique:
+1. **Capture** exact user wording/date and the affected screen/set/feature. Use original source if accessible; mark paraphrase when not.
+2. **Interpret** narrowly: what user wants to achieve, the pain point, constraints, rejected options and intended acceptance proof. Do not add unrelated shopping functions.
+3. **Trace** to one story/issue ID, current source file and accepted/superseded prior decision. Keep both old and new in chronology.
+4. **Implement** in the existing public or properly private location, read and verify original source assets.
+5. **Test** visibly in actual public browser with real fixture cards, PDFs, clickable images and export—record environment, timestamp, pass/fail and regression.
+6. **Report** concise result, links, verified evidence and remaining issues. Do **not** call a designed or coded item “done” if not usable.
+7. **Version** this Markdown master in the repository; ensure a genuine downloadable Markdown path.
+
+## 38. Documentation index by type of historical evidence
+| Evidence type | Named artifact / conversation | Where its findings appear |
+|---|---|---|
+| Exact user direct feedback | Oct 23 Canva/PDF/GitHub/print work; Oct 24 flagship and Stadium; Oct 25 Pulse and scan vision; Nov 22 profiles; Nov 26 incomplete master | §30 |
+| Positive user design feedback | “very helpful” parallel chart, “nice job. looks good so far,” “oh this is cool. we can build on this” | §30, §31 |
+| Feature requests | Lookup, base photos, visual parallel grids, PDF and education sheets, auto scanner, full inventory/binders, checklist completion | §16, §18–21, §32 |
+| Requested iterations | LogoFractor pilot → GitHub multiset → flagship-v2 → stadium photos → Pulse specialist → photo-prototype spec → collector v6 → HQ master | §31 |
+| Agile story decomposition | User outcomes, dependencies, release slices, test criteria | §32–34 |
+| Product/card data | Stadium, Chrome Update, LogoFractor, flagship, Pulse, Panini, Onyx, Pro Debut | §17, §20 |
+| Collector card result content | \`Topps_Collector_Card_Profiles_v6.pdf\`, direct Nov user comments | §19, §32 B |
+| Photos/rights | \`base-examples.json\`, public-site Oct 24 correction, Oct 31 formal spec | §3, §6, §22, §32 A/B |
+| Original source documents | \`School_of_Topps_Knocks_Official_Cheat_Sheet_2026.pdf\`, Onyx notes, Pro Debut prompt/checklists | §14, §18, §20, §22 |
+| Project continuity | October 29/30 HQ guides and current conversation | §23, §26, §29, §36–37 |
+| What **isn't** verified | Browser QA, exact/complete manufacturer checklists, real photo AI, local download, auto binders | §16, §25, §28, §33, §36 |
+
+### Revision history addition
+- **v3 — Nov 26, 2026:** added dated **direct-user-feedback record**, positive and negative feedback, **twelve iteration milestones**, detailed agile epics A–F with user-story acceptance criteria, **17 traceability tests**, staged release slices, ongoing feedback rules and explicit inaccessible-history limits. Reuses rather than overwrites all 29 earlier sections.
